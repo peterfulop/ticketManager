@@ -92,7 +92,7 @@ export const signupUseCase = async (
     return {
       ...authPayload,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       ...authPayload,
       userErrors: [{ ...userError, message: DBErrorMessages.SERVER_ERROR }],

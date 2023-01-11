@@ -1,0 +1,98 @@
+{
+  "ERRORS": {
+    "MISSING_TITLE_AND_CONTENT": "You must provide a title and a content to create a post!",
+    "ONE_FIELD_TO_UPDATE": "Need to have at least one filed to update",
+    "MISSING_POST": "Selected post does not exists!",
+    "SERVER_ERROR": "Something went wrong!",
+    "MISSING_SIGNUP_DATA": "You must provide a name, email, password and bio to create a user!",
+    "SHORT_PASSWORD": "Your password must be longer than 6 characters!",
+    "PASSWORDS_DO_NOT_MATCH": "Your passwords do not match!",
+    "MISSING_INPUTS": "All fields are mandatory!",
+    "INVALID_EMAIL_ADDRESS": "Your email address is invalid!",
+    "EMAIL_ADDRESS_ALREADY_IN_USE": "The email address is already in use! Please, choose another one!",
+    "AUTHORIZATION_FAILED": "Wrong login credentials!",
+    "UNAUTHENTICATED": "You are not logged in!",
+    "USER_UNAUTHORIZED": "You have no permission to edit this content!"
+  },
+  "SCREENS": {
+    "POSTS": {
+      "POST": {
+        "LABELS": {
+          "CREATED_AT": "Created At",
+          "BY": "by"
+        },
+        "BUTTONS": {
+          "PUBLISH": "Publish",
+          "UNPUBLISH": "Unpublish"
+        }
+      },
+      "ERRORS": {
+        "ERROR_ON_LOADING": "Error on loading posts",
+        "MISSING_USER_ID": "UserID is missing from the URL"
+      }
+    },
+    "PROFILE": {
+      "BUTTONS": {
+        "ADD_BUTTON": "Add Post"
+      }
+    },
+    "SIGNIN": {
+      "FORM": {
+        "LABELS": {
+          "EMAIL": "Email",
+          "PASSWORD": "Password"
+        },
+        "BUTTONS": {
+          "SIGNIN_BUTTON": "Signin"
+        }
+      },
+      "ERRORS": {
+        "ERROR_ON_LOADING": "Error on loading posts",
+        "MISSING_USER_ID": "UserID is missing from the URL"
+      }
+    },
+    "SIGNUP": {
+      "FORM": {
+        "LABELS": {
+          "NAME": "Name",
+          "EMAIL": "Email",
+          "PASSWORD": "Password",
+          "PASSWORD_CONFIRM": "Password confirmation",
+          "BIO": "Bio"
+        },
+        "BUTTONS": {
+          "SIGNUP_BUTTON": "Signup"
+        }
+      },
+      "ERRORS": {
+        "ERROR_ON_LOADING": "Error on loading posts",
+        "MISSING_USER_ID": "UserID is missing from the URL"
+      }
+    },
+    "NOT_FOUND": {
+      "LABELS": {
+        "404": "404",
+        "PAGE_NOT_FOUND": "Page not found"
+      },
+      "BUTTONS": {
+        "HOMEPAGE_BUTTON": "Home"
+      }
+    }
+  },
+  "COMMONS": {
+    "LOADING": "loading..."
+  },
+  "MODALS": {
+    "COMMONS": {
+      "ADD": "Add",
+      "CLOSE": "Close"
+    },
+    "ADD_POST_MODAL": {
+      "TITLE": "Add Post",
+      "LABELS": {
+        "TITLE": "Title",
+        "CONTENT": "Content"
+      }
+    }
+  }
+}

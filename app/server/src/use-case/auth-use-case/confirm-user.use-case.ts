@@ -52,15 +52,6 @@ export const confirmUserUseCase = async (
     };
   }
 
-  const confirmedUser = await prisma.user.update({
-    where: {
-      id: user.userId,
-    },
-    data: {
-      confirmed: true,
-    },
-  });
-
   try {
     const confirmedUser = await prisma.user.update({
       where: {

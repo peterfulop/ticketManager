@@ -3,18 +3,41 @@ schema:
   - 'http://localhost:5000/graphql':
       headers:
         Authorization: Bearer ${CODEGEN_AUTH_TOKEN}
+# documents: 'app/client/src/**/*.graphql'
 generates:
-  src/types/types.ts:
+  app/server/src/types/graphql-generated/graphql.d.ts:
     plugins:
-      - 'typescript'
-    config:
-      namingConvention:
-        enumValues: keep
-  src/types/graphql-generated/graphql.d.ts:
-    plugins:
+      - add:
+          content: '/* eslint-disable */'
       - 'typescript'
       - 'typescript-resolvers'
     config:
       avoidOptionals: true
       namingConvention:
         enumValues: keep
+  app/server/src/types/types.ts:
+    plugins:
+      - 'typescript'
+    config:
+      namingConvention:
+        enumValues: keep
+  app/client/src/apollo/graphql-generated/types.ts:
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+    config:
+      namingConvention:
+        enumValues: keep
+  app/client/src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: ./apollo/graphql-generated/types.ts
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withHooks: true

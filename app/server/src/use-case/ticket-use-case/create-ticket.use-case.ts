@@ -6,7 +6,6 @@ import {
   MutationTicketCreateArgs,
   TicketPayload,
 } from '../../types/graphql-generated/graphql';
-import { TicketPriority, TicketStatus } from '../../types/types';
 import { reduceObjectBy } from '../../utils/reduce-object';
 
 export type CreateTicketInput = {
@@ -134,8 +133,8 @@ export const createTicketUseCase = async (
       ...ticketPayload,
       ticket: {
         ...ticket,
-        status: status ? TicketStatus[status] : TicketStatus.BACKLOG,
-        priority: priority ? TicketPriority[priority] : TicketPriority.MEDIUM,
+        status,
+        priority,
         createdAt: ticket.createdAt.toISOString(),
         updatedAt: ticket.updatedAt.toISOString(),
       },
