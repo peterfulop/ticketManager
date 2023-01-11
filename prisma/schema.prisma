@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TicketStatus {
+  TO_DO
+  IN_PROGRESS
+  BLOCKED
+  REVIEW
+  DONE
+  ARCHIVED
+  BACKLOG
+}
+
+enum TicketPriority {
+  URGENT
+  HIGHT
+  MEDIUM
+  LOW
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String?
+  password  String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deleted   Boolean   @default(false)
+  confirmed Boolean   @default(false)
+  Ticket    Ticket[]
+  Project   Project[]
+
+  @@map("users")
+}
+
+model Project {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  Ticket    Ticket[]
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@map("projects")
+}
+
+model Ticket {
+  id          String         @id @default(uuid())
+  userId      String         @map("user_id")
+  projectId   String         @map("project_id")
+  title       String
+  description String?
+  status      TicketStatus   @default(TO_DO)
+  priority    TicketPriority @default(MEDIUM)
+  references  String[]
+  comment     String?
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @default(now()) @updatedAt @map("updated_at")
+  User        User           @relation(fields: [userId], references: [id])
+  Project     Project        @relation(fields: [projectId], references: [id])
+
+  @@unique([userId, title], name: "titleIdentifier")
+  @@map("tickets")
+}
