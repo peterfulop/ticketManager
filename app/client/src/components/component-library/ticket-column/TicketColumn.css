@@ -13,5 +13,5 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-bottom: 1rem;
+  padding: 0.25rem 0;
 }

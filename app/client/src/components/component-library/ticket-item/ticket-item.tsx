@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import { Ticket } from '../../../apollo/graphql-generated/types';
+import { ticketPriorityObjects } from '../../../helpers/ticket-priority-settings';
 import './TicketItem.css';
 
 export const TicketItem = (props: {
@@ -18,8 +19,10 @@ export const TicketItem = (props: {
   return (
     <div className="ticket-item" key={id} id={id} onClick={handleClick}>
       <p>{title}</p>
-      <p>{priority}</p>
-      <p>{createdAt && new Date(createdAt).toDateString()}</p>
+      <div className="ticket-item-footer">
+        {ticketPriorityObjects[priority].icon}
+        <p>{createdAt && new Date(createdAt).toDateString()}</p>
+      </div>
     </div>
   );
 };

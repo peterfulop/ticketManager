@@ -10,11 +10,14 @@ export type TicketStatusOptions = {
   title: string;
 };
 
-export const ticketStatusObject: Record<
+export const ticketStatusObjects: Record<
   EnabledTicketStatuses,
   TicketStatusOptions
 > = {
-  [TicketStatus.TO_DO]: { sequence: 1, title: 'Todo' },
+  [TicketStatus.TO_DO]: {
+    sequence: 1,
+    title: 'Todo',
+  },
   [TicketStatus.IN_PROGRESS]: { sequence: 2, title: 'In progress' },
   [TicketStatus.BLOCKED]: { sequence: 3, title: 'Blocked' },
   [TicketStatus.REVIEW]: { sequence: 4, title: 'Review' },

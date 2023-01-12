@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+p {
+  margin: 0;
+}
+
 .App {
   margin: 0px auto;
   background-color: rgb(234, 234, 234);

@@ -1,5 +1,5 @@
 import { Ticket, TicketStatus } from '../../../apollo/graphql-generated/types';
-import { ticketStatusObject } from '../../../helpers/ticket-status-settings';
+import { ticketStatusObjects } from '../../../helpers/ticket-status-settings';
 import { TicketColumn } from '../ticket-column/ticket-column';
 
 import './TicketColumns.css';
@@ -10,7 +10,7 @@ export const TicketColumns = (props: {
 }) => {
   return (
     <div className="tickets-section__columns">
-      {Object.entries(ticketStatusObject).map((status, index) => {
+      {Object.entries(ticketStatusObjects).map((status, index) => {
         return (
           <TicketColumn
             key={index}
