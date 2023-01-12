@@ -81,6 +81,7 @@ export const ticketTypeDefs = `#graphql
     storyPoints: Int
     description: String
     comment: String
+    sequenceId: String!
     references: [String]
     createdAt: String
     updatedAt: String

@@ -53,6 +53,7 @@ model Project {
   id        String   @id @default(uuid())
   userId    String   @map("user_id")
   name      String
+  sequence  Int      @default(0)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   Ticket    Ticket[]
@@ -71,6 +72,7 @@ model Ticket {
   priority    TicketPriority @default(MEDIUM)
   type        TicketType     @default(TASK)
   storyPoints Int?           @default(0) @map("story_points")
+  sequenceId  String?
   references  String[]
   comment     String?
   createdAt   DateTime       @default(now()) @map("created_at")
@@ -78,6 +80,7 @@ model Ticket {
   User        User           @relation(fields: [userId], references: [id])
   Project     Project        @relation(fields: [projectId], references: [id])
 
-  @@unique([userId, title], name: "titleIdentifier")
+  @@unique([userId, projectId, title], name: "titleIdentifier")
+  @@unique([userId, projectId, sequenceId], name: "sequenceIdentifier")
   @@map("tickets")
 }

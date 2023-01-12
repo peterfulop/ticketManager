@@ -7,8 +7,9 @@ import './TicketItem.css';
 export const TicketItem = (props: {
   ticketItem: Ticket;
   currentPath: string;
+  projectName: string;
 }): JSX.Element => {
-  const { id, title, priority, type, storyPoints, createdAt } =
+  const { id, title, priority, type, storyPoints, sequenceId } =
     props.ticketItem;
   const { currentPath } = props;
   const ticketHref = `${currentPath}/${id}`;
@@ -27,7 +28,7 @@ export const TicketItem = (props: {
           {<TicketTypeIcon type={type} size={20} />}
           <p className="story-points-window">{storyPoints}</p>
         </div>
-        <p>{createdAt && new Date(createdAt).toDateString()}</p>
+        <p>{sequenceId}</p>
       </div>
     </div>
   );

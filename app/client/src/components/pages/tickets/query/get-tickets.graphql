@@ -14,6 +14,22 @@ query GetMyTickets($ticketSearchParams: SearchTicketInput) {
       status
       references
       storyPoints
+      sequenceId
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query GetMyProject($projectId: ID!) {
+  getMyProject(id: $projectId) {
+    userErrors {
+      message
+      values
+    }
+    project {
+      id
+      name
       createdAt
       updatedAt
     }

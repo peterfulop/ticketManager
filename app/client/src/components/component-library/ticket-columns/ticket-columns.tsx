@@ -7,6 +7,7 @@ import './TicketColumns.css';
 export const TicketColumns = (props: {
   tickets: Ticket[];
   currentPath: string;
+  projectName: string;
 }) => {
   return (
     <div className="tickets-section__columns">
@@ -18,6 +19,7 @@ export const TicketColumns = (props: {
             currentPath={props.currentPath}
             status={status[0] as TicketStatus}
             columnName={status[1].title.toUpperCase()}
+            projectName={props.projectName}
           />
         );
       })}

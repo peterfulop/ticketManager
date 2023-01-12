@@ -106,6 +106,7 @@ export type Project = {
   createdAt?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  sequence: Scalars['Int'];
   updatedAt?: Maybe<Scalars['String']>;
 };
 
@@ -210,6 +211,7 @@ export type Ticket = {
   priority: TicketPriority;
   projectId: Scalars['String'];
   references?: Maybe<Array<Maybe<Scalars['String']>>>;
+  sequenceId: Scalars['String'];
   status: TicketStatus;
   storyPoints?: Maybe<Scalars['Int']>;
   title: Scalars['String'];

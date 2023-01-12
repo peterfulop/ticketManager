@@ -108,6 +108,7 @@ export type Project = {
   createdAt: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  sequence: Scalars['Int'];
   updatedAt: Maybe<Scalars['String']>;
 };
 
@@ -212,6 +213,7 @@ export type Ticket = {
   priority: TicketPriority;
   projectId: Scalars['String'];
   references: Maybe<Array<Maybe<Scalars['String']>>>;
+  sequenceId: Scalars['String'];
   status: TicketStatus;
   storyPoints: Maybe<Scalars['Int']>;
   title: Scalars['String'];
@@ -475,6 +477,7 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
   createdAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  sequence: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -526,6 +529,7 @@ export type TicketResolvers<ContextType = any, ParentType extends ResolversParen
   priority: Resolver<ResolversTypes['TicketPriority'], ParentType, ContextType>;
   projectId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   references: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  sequenceId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status: Resolver<ResolversTypes['TicketStatus'], ParentType, ContextType>;
   storyPoints: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   title: Resolver<ResolversTypes['String'], ParentType, ContextType>;

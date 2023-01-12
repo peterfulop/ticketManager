@@ -6,6 +6,7 @@ import {
   MutationTicketCreateArgs,
   TicketPayload,
 } from '../../types/graphql-generated/graphql';
+import { generateSequenceId } from '../../utils/generate-sequence-id';
 import { reduceObjectBy } from '../../utils/reduce-object';
 
 export type CreateTicketInput = {
@@ -119,7 +120,7 @@ export const createTicketUseCase = async (
   }
 
   try {
-    const ticket = await prisma.ticket.create({
+    const newTicket = await prisma.ticket.create({
       data: {
         userId,
         projectId,
@@ -133,16 +134,47 @@ export const createTicketUseCase = async (
         references: references as string[],
       },
     });
+
+    if (!newTicket) {
+      throw Error(DBErrorMessages.ERROR_ON_CREATE);
+    }
+
+    const updatedProject = await prisma.project.update({
+      where: {
+        id: newTicket.projectId,
+      },
+      data: {
+        sequence: isProjectExists.sequence + 1,
+      },
+    });
+
+    const { name, sequence } = updatedProject;
+
+    const nextSequence = generateSequenceId({
+      name,
+      sequence,
+    });
+
+    const updatedTicket = await prisma.ticket.update({
+      where: {
+        id: newTicket.id,
+      },
+      data: {
+        sequenceId: nextSequence,
+      },
+    });
+
     return {
       ...ticketPayload,
       ticket: {
-        ...ticket,
+        ...updatedTicket,
         status,
         priority,
         type,
         storyPoints,
-        createdAt: ticket.createdAt.toISOString(),
-        updatedAt: ticket.updatedAt.toISOString(),
+        sequenceId: nextSequence,
+        createdAt: newTicket.createdAt.toISOString(),
+        updatedAt: newTicket.updatedAt.toISOString(),
       },
     };
   } catch (error) {

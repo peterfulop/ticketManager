@@ -7,6 +7,7 @@ export const TicketColumn = (props: {
   columnName: string;
   status: TicketStatus;
   currentPath: string;
+  projectName: string;
 }): JSX.Element => {
   return (
     <div className="tickets-section__column">
@@ -19,6 +20,7 @@ export const TicketColumn = (props: {
                 key={index}
                 ticketItem={ticket}
                 currentPath={props.currentPath}
+                projectName={props.projectName}
               />
             )
           );

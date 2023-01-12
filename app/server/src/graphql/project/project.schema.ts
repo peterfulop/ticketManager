@@ -23,6 +23,7 @@ export const projectTypeDefs = `#graphql
   type Project {
     id: ID!
     name: String!
+    sequence: Int!
     createdAt: String
     updatedAt: String
   }
@@ -47,4 +48,5 @@ export const projectTypeDefs = `#graphql
     userErrors: [UserError!]!
     projectName: String
   }
+
 `;
