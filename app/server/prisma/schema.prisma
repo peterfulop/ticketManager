@@ -27,6 +27,13 @@ enum TicketPriority {
   LOW
 }
 
+enum TicketType {
+  BUG
+  TASK
+  STORY
+  EPIC
+}
+
 model User {
   id        String    @id @default(uuid())
   email     String    @unique
@@ -62,6 +69,7 @@ model Ticket {
   description String?
   status      TicketStatus   @default(TO_DO)
   priority    TicketPriority @default(MEDIUM)
+  type        TicketType     @default(TASK)
   references  String[]
   comment     String?
   createdAt   DateTime       @default(now()) @map("created_at")

@@ -152,10 +152,8 @@ export type Query = {
   getMyProjectIdByName: ProjectIdByNamePayload;
   getMyProjects: ProjectsPayload;
   getMyTickets: TicketsPayload;
-  getMyTicketsByProject: TicketsPayload;
   getTicket: TicketPayload;
   getUser: GetUserPayload;
-  searchTickets: TicketsPayload;
 };
 
 
@@ -174,11 +172,6 @@ export type QueryGetMyTicketsArgs = {
 };
 
 
-export type QueryGetMyTicketsByProjectArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type QueryGetTicketArgs = {
   id: Scalars['ID'];
 };
@@ -186,11 +179,6 @@ export type QueryGetTicketArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QuerySearchTicketsArgs = {
-  input: InputMaybe<SearchTicketInput>;
 };
 
 export type SearchTicketInput = {
@@ -225,6 +213,7 @@ export type Ticket = {
   references: Maybe<Array<Maybe<Scalars['String']>>>;
   status: TicketStatus;
   title: Scalars['String'];
+  type: TicketType;
   updatedAt: Maybe<Scalars['String']>;
   userId: Scalars['String'];
 };
@@ -237,6 +226,7 @@ export type TicketCreateInput = {
   references: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   status: TicketStatus;
   title: Scalars['String'];
+  type: TicketType;
 };
 
 export type TicketDeletePayload = {
@@ -268,6 +258,13 @@ export enum TicketStatus {
   TO_DO = 'TO_DO'
 }
 
+export enum TicketType {
+  BUG = 'BUG',
+  EPIC = 'EPIC',
+  STORY = 'STORY',
+  TASK = 'TASK'
+}
+
 export type TicketUpdateInput = {
   comment: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
@@ -277,6 +274,7 @@ export type TicketUpdateInput = {
   status: InputMaybe<TicketStatus>;
   ticketId: Scalars['ID'];
   title: InputMaybe<Scalars['String']>;
+  type: InputMaybe<TicketType>;
 };
 
 export type TicketsPayload = {
@@ -397,6 +395,7 @@ export type ResolversTypes = {
   TicketPayload: ResolverTypeWrapper<TicketPayload>;
   TicketPriority: TicketPriority;
   TicketStatus: TicketStatus;
+  TicketType: TicketType;
   TicketUpdateInput: TicketUpdateInput;
   TicketsPayload: ResolverTypeWrapper<TicketsPayload>;
   User: ResolverTypeWrapper<User>;
@@ -505,10 +504,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getMyProjectIdByName: Resolver<ResolversTypes['ProjectIdByNamePayload'], ParentType, ContextType, RequireFields<QueryGetMyProjectIdByNameArgs, 'projectName'>>;
   getMyProjects: Resolver<ResolversTypes['ProjectsPayload'], ParentType, ContextType>;
   getMyTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, Partial<QueryGetMyTicketsArgs>>;
-  getMyTicketsByProject: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, RequireFields<QueryGetMyTicketsByProjectArgs, 'id'>>;
   getTicket: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<QueryGetTicketArgs, 'id'>>;
   getUser: Resolver<ResolversTypes['GetUserPayload'], ParentType, ContextType, RequireFields<QueryGetUserArgs, 'id'>>;
-  searchTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, Partial<QuerySearchTicketsArgs>>;
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
@@ -525,6 +522,7 @@ export type TicketResolvers<ContextType = any, ParentType extends ResolversParen
   references: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   status: Resolver<ResolversTypes['TicketStatus'], ParentType, ContextType>;
   title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type: Resolver<ResolversTypes['TicketType'], ParentType, ContextType>;
   updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   userId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

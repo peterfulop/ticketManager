@@ -37,11 +37,19 @@ export const ticketTypeDefs = `#graphql
     LOW
   }
 
+  enum TicketType {
+    BUG
+    TASK
+    STORY
+    EPIC
+  }
+
   input TicketCreateInput {
     projectId: String!
     title: String!
     status: TicketStatus!
     priority: TicketPriority!
+    type: TicketType!
     description: String
     comment: String
     references: [String]
@@ -53,6 +61,7 @@ export const ticketTypeDefs = `#graphql
     title: String
     status: TicketStatus
     priority: TicketPriority
+    type: TicketType
     description: String
     comment: String
     references: [String]
@@ -65,6 +74,7 @@ export const ticketTypeDefs = `#graphql
     title: String!
     status: TicketStatus!
     priority: TicketPriority!
+    type: TicketType!
     description: String
     comment: String
     references: [String]

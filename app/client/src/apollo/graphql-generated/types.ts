@@ -150,10 +150,8 @@ export type Query = {
   getMyProjectIdByName: ProjectIdByNamePayload;
   getMyProjects: ProjectsPayload;
   getMyTickets: TicketsPayload;
-  getMyTicketsByProject: TicketsPayload;
   getTicket: TicketPayload;
   getUser: GetUserPayload;
-  searchTickets: TicketsPayload;
 };
 
 
@@ -172,11 +170,6 @@ export type QueryGetMyTicketsArgs = {
 };
 
 
-export type QueryGetMyTicketsByProjectArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type QueryGetTicketArgs = {
   id: Scalars['ID'];
 };
@@ -184,11 +177,6 @@ export type QueryGetTicketArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QuerySearchTicketsArgs = {
-  input?: InputMaybe<SearchTicketInput>;
 };
 
 export type SearchTicketInput = {
@@ -223,6 +211,7 @@ export type Ticket = {
   references?: Maybe<Array<Maybe<Scalars['String']>>>;
   status: TicketStatus;
   title: Scalars['String'];
+  type: TicketType;
   updatedAt?: Maybe<Scalars['String']>;
   userId: Scalars['String'];
 };
@@ -235,6 +224,7 @@ export type TicketCreateInput = {
   references?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   status: TicketStatus;
   title: Scalars['String'];
+  type: TicketType;
 };
 
 export type TicketDeletePayload = {
@@ -266,6 +256,13 @@ export enum TicketStatus {
   TO_DO = 'TO_DO'
 }
 
+export enum TicketType {
+  BUG = 'BUG',
+  EPIC = 'EPIC',
+  STORY = 'STORY',
+  TASK = 'TASK'
+}
+
 export type TicketUpdateInput = {
   comment?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
@@ -275,6 +272,7 @@ export type TicketUpdateInput = {
   status?: InputMaybe<TicketStatus>;
   ticketId: Scalars['ID'];
   title?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<TicketType>;
 };
 
 export type TicketsPayload = {

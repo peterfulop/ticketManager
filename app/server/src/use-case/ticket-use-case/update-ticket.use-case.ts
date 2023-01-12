@@ -8,7 +8,7 @@ import {
   MutationTicketUpdateArgs,
   TicketPayload,
 } from '../../types/graphql-generated/graphql';
-import { TicketPriority, TicketStatus } from '../../types/types';
+import { TicketPriority, TicketStatus, TicketType } from '../../types/types';
 import { reduceObjectBy } from '../../utils/reduce-object';
 
 export type UpdateTicketInput = {
@@ -23,6 +23,7 @@ export const updateTicketUseCase = async (
     title,
     status,
     priority,
+    type,
     projectId,
     description,
     comment,
@@ -87,6 +88,7 @@ export const updateTicketUseCase = async (
     title,
     status,
     priority,
+    type,
     projectId,
     description,
     comment,
@@ -110,6 +112,7 @@ export const updateTicketUseCase = async (
         ...ticket,
         status: status ? TicketStatus[status] : TicketStatus.BACKLOG,
         priority: priority ? TicketPriority[priority] : TicketPriority.MEDIUM,
+        type: ticket.type ? TicketType[ticket.type] : TicketType.TASK,
         createdAt: ticket.createdAt.toISOString(),
         updatedAt: ticket.updatedAt.toISOString(),
       },

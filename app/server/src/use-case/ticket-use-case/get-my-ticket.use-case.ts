@@ -5,7 +5,7 @@ import {
   QueryGetTicketArgs,
   TicketPayload,
 } from '../../types/graphql-generated/graphql';
-import { TicketPriority, TicketStatus } from '../../types/types';
+import { TicketPriority, TicketStatus, TicketType } from '../../types/types';
 
 export type GetMyTicketInput = {
   args: QueryGetTicketArgs;
@@ -47,6 +47,7 @@ export const getMyTicketUseCase = async (
       priority: ticket.priority
         ? TicketPriority[ticket.priority]
         : TicketPriority.MEDIUM,
+      type: ticket.type ? TicketType[ticket.type] : TicketType.TASK,
       createdAt: ticket.createdAt.toISOString(),
       updatedAt: ticket.updatedAt.toISOString(),
     },

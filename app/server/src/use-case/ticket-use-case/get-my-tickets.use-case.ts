@@ -2,14 +2,14 @@ import { ApolloContext } from '../../apollo';
 import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { userError } from '../../helpers/user-error';
 import {
-  QuerySearchTicketsArgs,
+  QueryGetMyTicketsArgs,
   TicketsPayload,
 } from '../../types/graphql-generated/graphql';
-import { TicketPriority, TicketStatus } from '../../types/types';
+import { TicketPriority, TicketStatus, TicketType } from '../../types/types';
 
 export type GetMyTicketsInput = {
   context: ApolloContext;
-  args: QuerySearchTicketsArgs;
+  args: QueryGetMyTicketsArgs;
 };
 
 export const getMyTicketsUseCase = async (
@@ -49,6 +49,7 @@ export const getMyTicketsUseCase = async (
       priority: ticket.priority
         ? TicketPriority[ticket.priority]
         : TicketPriority.MEDIUM,
+      type: ticket.type ? TicketType[ticket.type] : TicketType.TASK,
       createdAt: ticket.createdAt.toISOString(),
       updatedAt: ticket.updatedAt.toISOString(),
     };
