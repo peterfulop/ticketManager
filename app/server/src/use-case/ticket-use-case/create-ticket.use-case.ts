@@ -127,7 +127,7 @@ export const createTicketUseCase = async (
         status,
         priority,
         type,
-        storyPoints: 0,
+        storyPoints,
         comment,
         description,
         references: references as string[],
