@@ -3,7 +3,7 @@ schema:
   - 'http://localhost:5000/graphql':
       headers:
         Authorization: Bearer ${CODEGEN_AUTH_TOKEN}
-# documents: 'app/client/src/**/*.graphql'
+documents: 'app/client/src/**/*.graphql'
 generates:
   app/server/src/types/graphql-generated/graphql.d.ts:
     plugins:

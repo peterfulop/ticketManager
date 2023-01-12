@@ -1,7 +1,12 @@
-export enum Navigation {
+export enum NavigationPath {
   HOME = '/',
-  POSTS = '/posts',
+  PROJECTS = '/projects',
+  PROJECT = '/projects/:projectId',
+  TICKETS = '/projects/:projectId/tickets',
+  TICKET = '/projects/:projectId/tickets/:ticketId',
   SIGNUP = '/signup',
   SIGNIN = '/signin',
-  PROFILE = '/profile/:id',
+  PROFILE = '/profile',
 }
+
+export type NavigationPathType = keyof typeof NavigationPath;

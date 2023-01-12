@@ -1,0 +1,19 @@
+query GetMyTickets {
+  getMyTickets {
+    userErrors {
+      message
+      values
+    }
+    tickets {
+      id
+      projectId
+      title
+      comment
+      priority
+      status
+      references
+      createdAt
+      updatedAt
+    }
+  }
+}

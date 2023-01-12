@@ -1,0 +1,14 @@
+query GetMyProjects {
+  getMyProjects {
+    userErrors {
+      message
+      values
+    }
+    projects {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}

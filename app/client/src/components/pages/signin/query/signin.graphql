@@ -1,0 +1,9 @@
+mutation Signin($signinInput: CredentialsInput!) {
+  signin(input: $signinInput) {
+    userErrors {
+      message
+      values
+    }
+    token
+  }
+}

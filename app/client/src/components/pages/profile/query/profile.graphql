@@ -1,0 +1,14 @@
+query GetMyProfile {
+  getMyProfile {
+    userErrors {
+      message
+      values
+    }
+    user {
+      name
+      email
+      confirmed
+      createdAt
+    }
+  }
+}

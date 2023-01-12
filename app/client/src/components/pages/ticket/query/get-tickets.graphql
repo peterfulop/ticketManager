@@ -1,0 +1,20 @@
+query GetTicket($getTicketId: ID!) {
+  getTicket(id: $getTicketId) {
+    userErrors {
+      message
+      values
+    }
+    ticket {
+      id
+      projectId
+      title
+      description
+      comment
+      priority
+      status
+      references
+      createdAt
+      updatedAt
+    }
+  }
+}
