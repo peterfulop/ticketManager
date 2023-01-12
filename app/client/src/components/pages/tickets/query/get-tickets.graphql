@@ -13,6 +13,7 @@ query GetMyTickets($ticketSearchParams: SearchTicketInput) {
       type
       status
       references
+      storyPoints
       createdAt
       updatedAt
     }

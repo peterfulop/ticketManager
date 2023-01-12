@@ -8,7 +8,8 @@ export const TicketItem = (props: {
   ticketItem: Ticket;
   currentPath: string;
 }): JSX.Element => {
-  const { id, title, priority, type, createdAt } = props.ticketItem;
+  const { id, title, priority, type, storyPoints, createdAt } =
+    props.ticketItem;
   const { currentPath } = props;
   const ticketHref = `${currentPath}/${id}`;
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export const TicketItem = (props: {
         <div className="ticket-item-footer__left">
           {<PriorityIcon priority={priority} size={20} />}
           {<TicketTypeIcon type={type} size={20} />}
+          <p className="story-points-window">{storyPoints}</p>
         </div>
         <p>{createdAt && new Date(createdAt).toDateString()}</p>
       </div>

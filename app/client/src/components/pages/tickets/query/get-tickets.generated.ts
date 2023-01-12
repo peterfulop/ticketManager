@@ -9,7 +9,7 @@ export type GetMyTicketsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetMyTicketsQuery = { __typename?: 'Query', getMyTickets: { __typename?: 'TicketsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, tickets?: Array<{ __typename?: 'Ticket', id: string, projectId: string, title: string, comment?: string | null, priority: Types.TicketPriority, type: Types.TicketType, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null }> | null } };
+export type GetMyTicketsQuery = { __typename?: 'Query', getMyTickets: { __typename?: 'TicketsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, tickets?: Array<{ __typename?: 'Ticket', id: string, projectId: string, title: string, comment?: string | null, priority: Types.TicketPriority, type: Types.TicketType, status: Types.TicketStatus, references?: Array<string | null> | null, storyPoints?: number | null, createdAt?: string | null, updatedAt?: string | null }> | null } };
 
 
 export const GetMyTicketsDocument = gql`
@@ -28,6 +28,7 @@ export const GetMyTicketsDocument = gql`
       type
       status
       references
+      storyPoints
       createdAt
       updatedAt
     }
