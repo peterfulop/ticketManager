@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
-import { Navigation } from './components/navigation/navigation';
+import { Navigation } from './components/component-library/navigation/navigation';
 import { NavigationPath } from './enums/navigation.enum';
 import { NotFound } from './pages/404/not-found';
 import Home from './pages/home';

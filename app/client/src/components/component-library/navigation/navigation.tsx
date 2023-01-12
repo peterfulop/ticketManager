@@ -1,4 +1,4 @@
-import { navigationItems } from '../../helpers/navigation';
+import { navigationItems } from '../../../helpers/navigation';
 import { NavigationLink } from './navigation-item';
 import './Navigation.css';
 

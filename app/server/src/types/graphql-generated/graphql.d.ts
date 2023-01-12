@@ -152,8 +152,10 @@ export type Query = {
   getMyProjectIdByName: ProjectIdByNamePayload;
   getMyProjects: ProjectsPayload;
   getMyTickets: TicketsPayload;
+  getMyTicketsByProject: TicketsPayload;
   getTicket: TicketPayload;
   getUser: GetUserPayload;
+  searchTickets: TicketsPayload;
 };
 
 
@@ -167,6 +169,16 @@ export type QueryGetMyProjectIdByNameArgs = {
 };
 
 
+export type QueryGetMyTicketsArgs = {
+  input: InputMaybe<SearchTicketInput>;
+};
+
+
+export type QueryGetMyTicketsByProjectArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type QueryGetTicketArgs = {
   id: Scalars['ID'];
 };
@@ -174,6 +186,21 @@ export type QueryGetTicketArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QuerySearchTicketsArgs = {
+  input: InputMaybe<SearchTicketInput>;
+};
+
+export type SearchTicketInput = {
+  comment: InputMaybe<Scalars['String']>;
+  description: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['String']>;
+  priority: InputMaybe<TicketPriority>;
+  projectId: InputMaybe<Scalars['String']>;
+  status: InputMaybe<TicketStatus>;
+  title: InputMaybe<Scalars['String']>;
 };
 
 export type SignupInput = {
@@ -360,6 +387,7 @@ export type ResolversTypes = {
   ProjectUpdateInput: ProjectUpdateInput;
   ProjectsPayload: ResolverTypeWrapper<ProjectsPayload>;
   Query: ResolverTypeWrapper<{}>;
+  SearchTicketInput: SearchTicketInput;
   SignupInput: SignupInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
@@ -392,6 +420,7 @@ export type ResolversParentTypes = {
   ProjectUpdateInput: ProjectUpdateInput;
   ProjectsPayload: ProjectsPayload;
   Query: {};
+  SearchTicketInput: SearchTicketInput;
   SignupInput: SignupInput;
   String: Scalars['String'];
   Subscription: {};
@@ -475,9 +504,11 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getMyProject: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<QueryGetMyProjectArgs, 'id'>>;
   getMyProjectIdByName: Resolver<ResolversTypes['ProjectIdByNamePayload'], ParentType, ContextType, RequireFields<QueryGetMyProjectIdByNameArgs, 'projectName'>>;
   getMyProjects: Resolver<ResolversTypes['ProjectsPayload'], ParentType, ContextType>;
-  getMyTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType>;
+  getMyTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, Partial<QueryGetMyTicketsArgs>>;
+  getMyTicketsByProject: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, RequireFields<QueryGetMyTicketsByProjectArgs, 'id'>>;
   getTicket: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<QueryGetTicketArgs, 'id'>>;
   getUser: Resolver<ResolversTypes['GetUserPayload'], ParentType, ContextType, RequireFields<QueryGetUserArgs, 'id'>>;
+  searchTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, Partial<QuerySearchTicketsArgs>>;
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {

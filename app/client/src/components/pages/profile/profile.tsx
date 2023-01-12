@@ -1,5 +1,5 @@
 import EnStrings from '../../../utilities/strings';
-import { MainLayout } from '../../main-layout/main-layout';
+import { MainLayout } from '../../component-library/main-layout/main-layout';
 import { useGetMyProfileQuery } from './query/profile.generated';
 
 export const Profile = (): JSX.Element => {

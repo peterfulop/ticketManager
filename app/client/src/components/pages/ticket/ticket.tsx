@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import EnStrings from '../../../utilities/strings';
-import { MainLayout } from '../../main-layout/main-layout';
+import { MainLayout } from '../../component-library/main-layout/main-layout';
 import { useGetTicketQuery } from './query/get-tickets.generated';
 
 export const Ticket = (): JSX.Element => {

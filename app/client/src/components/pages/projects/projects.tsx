@@ -1,7 +1,11 @@
-import { Button } from 'react-bootstrap';
+import { Project } from '../../../apollo/graphql-generated/types';
 import EnStrings from '../../../utilities/strings';
-import { MainLayout } from '../../main-layout/main-layout';
+import { MainLayout } from '../../component-library/main-layout/main-layout';
+import { ProjectItem } from '../../component-library/project-tem/project-item';
+import './Projects.css';
 import { useGetMyProjectsQuery } from './query/projects.generated';
+
+import { GrAdd } from 'react-icons/gr';
 
 export const Projects = (): JSX.Element => {
   const { data, error, loading } = useGetMyProjectsQuery();
@@ -9,31 +13,33 @@ export const Projects = (): JSX.Element => {
   if (loading) {
     return <div>{EnStrings.COMMONS.LOADING}</div>;
   }
-
   if (error || !data) {
     return <div>{EnStrings.SCREENS.POSTS.ERRORS.ERROR_ON_LOADING}</div>;
   }
 
   const { projects } = data.getMyProjects;
 
-  const currentPATH = window.location.pathname;
+  if (!projects) {
+    return <>No Projects jet...</>;
+  }
+
+  const currentPath = window.location.pathname;
 
   return (
     <MainLayout>
       <h1>Projects</h1>
-      {projects?.map((project) => (
-        <div key={project?.id}>
-          <h2>{project?.name}</h2>
-          <p>{project?.createdAt}</p>
-          <Button
-            href={`${currentPATH}/${project?.id}/tickets`}
-            variant="secondary"
-            type="button"
-          >
-            {'Tickets'}
-          </Button>
+      <section className="projects-section">
+        <div className="new-project">
+          <GrAdd size={40} />
         </div>
-      ))}
+        {projects.map((project, index) => (
+          <ProjectItem
+            key={index}
+            projectItem={project as Project}
+            currentPath={currentPath}
+          />
+        ))}
+      </section>
     </MainLayout>
   );
 };

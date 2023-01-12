@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { NavigationItem } from '../../helpers/navigation';
+import { NavigationItem } from '../../../helpers/navigation';
 
 export const NavigationLink = (props: { navigationItem: NavigationItem }) => {
   return (

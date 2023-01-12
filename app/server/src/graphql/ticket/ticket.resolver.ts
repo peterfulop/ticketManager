@@ -4,6 +4,7 @@ import {
   MutationTicketDeleteArgs,
   MutationTicketUpdateArgs,
   QueryGetTicketArgs,
+  QuerySearchTicketsArgs,
   TicketDeletePayload,
   TicketPayload,
   TicketsPayload,
@@ -26,10 +27,10 @@ export const ticketGQLResolvers = {
     },
     getMyTickets: async (
       _parent: any,
-      _args: any,
+      args: QuerySearchTicketsArgs,
       context: ApolloContext
     ): Promise<TicketsPayload> => {
-      return await getMyTicketsUseCase({ context });
+      return await getMyTicketsUseCase({ args, context });
     },
   },
   Mutations: {

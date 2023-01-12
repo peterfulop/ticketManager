@@ -1,13 +1,23 @@
 export const ticketTypeDefs = `#graphql
   extend type Query {
     getTicket(id: ID!): TicketPayload!
-    getMyTickets: TicketsPayload!
+    getMyTickets(input:SearchTicketInput): TicketsPayload!
   }
 
   extend type Mutation {
     ticketCreate(input: TicketCreateInput!): TicketPayload!
     ticketUpdate(input: TicketUpdateInput!): TicketPayload!
     ticketDelete(id: ID!): TicketDeletePayload!
+  }
+
+  input SearchTicketInput {
+    id: String
+    projectId: String
+    title: String
+    status: TicketStatus
+    priority: TicketPriority
+    description: String
+    comment: String
   }
 
   enum TicketStatus {

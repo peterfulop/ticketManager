@@ -150,8 +150,10 @@ export type Query = {
   getMyProjectIdByName: ProjectIdByNamePayload;
   getMyProjects: ProjectsPayload;
   getMyTickets: TicketsPayload;
+  getMyTicketsByProject: TicketsPayload;
   getTicket: TicketPayload;
   getUser: GetUserPayload;
+  searchTickets: TicketsPayload;
 };
 
 
@@ -165,6 +167,16 @@ export type QueryGetMyProjectIdByNameArgs = {
 };
 
 
+export type QueryGetMyTicketsArgs = {
+  input?: InputMaybe<SearchTicketInput>;
+};
+
+
+export type QueryGetMyTicketsByProjectArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type QueryGetTicketArgs = {
   id: Scalars['ID'];
 };
@@ -172,6 +184,21 @@ export type QueryGetTicketArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QuerySearchTicketsArgs = {
+  input?: InputMaybe<SearchTicketInput>;
+};
+
+export type SearchTicketInput = {
+  comment?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  priority?: InputMaybe<TicketPriority>;
+  projectId?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<TicketStatus>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type SignupInput = {

@@ -1,0 +1,38 @@
+.project-item {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 10px 5px 5px rgb(220, 220, 220);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  width: 350px;
+  transition: transform 0.25s;
+}
+
+.project-item:hover {
+  background-color: rgb(255, 255, 255);
+  transform: scale(1.05);
+}
+
+.new-project {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 10px 5px 5px rgb(220, 220, 220);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+  transition: transform 0.25s;
+}
+
+.new-project:hover {
+  background-color: rgb(255, 255, 255);
+  transform: scale(1.05);
+}

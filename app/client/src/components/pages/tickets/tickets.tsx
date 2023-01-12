@@ -1,10 +1,19 @@
-import { Button } from 'react-bootstrap';
+import { useParams } from 'react-router';
+import { Ticket } from '../../../apollo/graphql-generated/types';
 import EnStrings from '../../../utilities/strings';
-import { MainLayout } from '../../main-layout/main-layout';
+import { MainLayout } from '../../component-library/main-layout/main-layout';
+import { TicketColumns } from '../../component-library/ticket-columns/ticket-columns';
 import { useGetMyTicketsQuery } from './query/get-tickets.generated';
 
 export const Tickets = (): JSX.Element => {
-  const { data, error, loading } = useGetMyTicketsQuery();
+  const { projectId } = useParams();
+
+  const { data, error, loading } = useGetMyTicketsQuery({
+    variables: {
+      ticketSearchParams: { projectId },
+    },
+    skip: !projectId,
+  });
 
   if (loading) {
     return <div>{EnStrings.COMMONS.LOADING}</div>;
@@ -21,23 +30,7 @@ export const Tickets = (): JSX.Element => {
   return (
     <MainLayout>
       <h1>Tickets</h1>
-      {tickets?.map((ticket) => (
-        <div key={ticket.id}>
-          <h2>{ticket.title}</h2>
-          <h3>{ticket.status}</h3>
-          <h3>{ticket.priority}</h3>
-          <p>{ticket.projectId}</p>
-          <p>{ticket.createdAt}</p>
-          <small>{ticket.comment}</small>
-          <Button
-            href={`${currentPATH}/${ticket?.id}`}
-            variant="secondary"
-            type="button"
-          >
-            {'Details'}
-          </Button>
-        </div>
-      ))}
+      <TicketColumns tickets={tickets as Ticket[]} currentPath={currentPATH} />
     </MainLayout>
   );
 };

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { sSTE } from '../../../utilities/set-server-type-error';
 import EnStrings from '../../../utilities/strings';
-import { MainLayout } from '../../main-layout/main-layout';
+import { MainLayout } from '../../component-library/main-layout/main-layout';
 import { useSigninMutation } from './query/signin.generated';
 export const Signin = () => {
   const [email, setEmail] = useState('');

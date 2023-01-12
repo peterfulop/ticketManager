@@ -1,5 +1,5 @@
-query GetMyTickets {
-  getMyTickets {
+query GetMyTickets($ticketSearchParams: SearchTicketInput) {
+  getMyTickets(input: $ticketSearchParams) {
     userErrors {
       message
       values
