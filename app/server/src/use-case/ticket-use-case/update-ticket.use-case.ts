@@ -113,6 +113,7 @@ export const updateTicketUseCase = async (
         status: status ? TicketStatus[status] : TicketStatus.BACKLOG,
         priority: priority ? TicketPriority[priority] : TicketPriority.MEDIUM,
         type: ticket.type ? TicketType[ticket.type] : TicketType.TASK,
+        storyPoints: ticket.storyPoints,
         createdAt: ticket.createdAt.toISOString(),
         updatedAt: ticket.updatedAt.toISOString(),
       },

@@ -189,6 +189,7 @@ export type SearchTicketInput = {
   projectId: InputMaybe<Scalars['String']>;
   status: InputMaybe<TicketStatus>;
   title: InputMaybe<Scalars['String']>;
+  type: InputMaybe<TicketType>;
 };
 
 export type SignupInput = {
@@ -212,6 +213,7 @@ export type Ticket = {
   projectId: Scalars['String'];
   references: Maybe<Array<Maybe<Scalars['String']>>>;
   status: TicketStatus;
+  storyPoints: Maybe<Scalars['Int']>;
   title: Scalars['String'];
   type: TicketType;
   updatedAt: Maybe<Scalars['String']>;
@@ -225,6 +227,7 @@ export type TicketCreateInput = {
   projectId: Scalars['String'];
   references: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   status: TicketStatus;
+  storyPoints: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type: TicketType;
 };
@@ -272,6 +275,7 @@ export type TicketUpdateInput = {
   projectId: InputMaybe<Scalars['String']>;
   references: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   status: InputMaybe<TicketStatus>;
+  storyPoints: InputMaybe<Scalars['Int']>;
   ticketId: Scalars['ID'];
   title: InputMaybe<Scalars['String']>;
   type: InputMaybe<TicketType>;
@@ -376,6 +380,7 @@ export type ResolversTypes = {
   CredentialsInput: CredentialsInput;
   GetUserPayload: ResolverTypeWrapper<GetUserPayload>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Project: ResolverTypeWrapper<Project>;
   ProjectCreateInput: ProjectCreateInput;
@@ -410,6 +415,7 @@ export type ResolversParentTypes = {
   CredentialsInput: CredentialsInput;
   GetUserPayload: GetUserPayload;
   ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Mutation: {};
   Project: Project;
   ProjectCreateInput: ProjectCreateInput;
@@ -521,6 +527,7 @@ export type TicketResolvers<ContextType = any, ParentType extends ResolversParen
   projectId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   references: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   status: Resolver<ResolversTypes['TicketStatus'], ParentType, ContextType>;
+  storyPoints: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type: Resolver<ResolversTypes['TicketType'], ParentType, ContextType>;
   updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

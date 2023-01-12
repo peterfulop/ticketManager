@@ -16,6 +16,7 @@ export const ticketTypeDefs = `#graphql
     title: String
     status: TicketStatus
     priority: TicketPriority
+    type: TicketType
     description: String
     comment: String
   }
@@ -49,6 +50,7 @@ export const ticketTypeDefs = `#graphql
     title: String!
     status: TicketStatus!
     priority: TicketPriority!
+    storyPoints: Int
     type: TicketType!
     description: String
     comment: String
@@ -61,6 +63,7 @@ export const ticketTypeDefs = `#graphql
     title: String
     status: TicketStatus
     priority: TicketPriority
+    storyPoints: Int
     type: TicketType
     description: String
     comment: String
@@ -75,6 +78,7 @@ export const ticketTypeDefs = `#graphql
     status: TicketStatus!
     priority: TicketPriority!
     type: TicketType!
+    storyPoints: Int
     description: String
     comment: String
     references: [String]

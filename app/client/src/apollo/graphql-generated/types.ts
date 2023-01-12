@@ -187,6 +187,7 @@ export type SearchTicketInput = {
   projectId?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<TicketStatus>;
   title?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<TicketType>;
 };
 
 export type SignupInput = {
@@ -210,6 +211,7 @@ export type Ticket = {
   projectId: Scalars['String'];
   references?: Maybe<Array<Maybe<Scalars['String']>>>;
   status: TicketStatus;
+  storyPoints?: Maybe<Scalars['Int']>;
   title: Scalars['String'];
   type: TicketType;
   updatedAt?: Maybe<Scalars['String']>;
@@ -223,6 +225,7 @@ export type TicketCreateInput = {
   projectId: Scalars['String'];
   references?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   status: TicketStatus;
+  storyPoints?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type: TicketType;
 };
@@ -270,6 +273,7 @@ export type TicketUpdateInput = {
   projectId?: InputMaybe<Scalars['String']>;
   references?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   status?: InputMaybe<TicketStatus>;
+  storyPoints?: InputMaybe<Scalars['Int']>;
   ticketId: Scalars['ID'];
   title?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<TicketType>;

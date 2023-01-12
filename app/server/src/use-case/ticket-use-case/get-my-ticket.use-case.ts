@@ -47,6 +47,7 @@ export const getMyTicketUseCase = async (
       priority: ticket.priority
         ? TicketPriority[ticket.priority]
         : TicketPriority.MEDIUM,
+      storyPoints: ticket.storyPoints,
       type: ticket.type ? TicketType[ticket.type] : TicketType.TASK,
       createdAt: ticket.createdAt.toISOString(),
       updatedAt: ticket.updatedAt.toISOString(),

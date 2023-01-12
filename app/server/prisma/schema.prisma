@@ -70,6 +70,7 @@ model Ticket {
   status      TicketStatus   @default(TO_DO)
   priority    TicketPriority @default(MEDIUM)
   type        TicketType     @default(TASK)
+  storyPoints Int?           @default(0) @map("story_points")
   references  String[]
   comment     String?
   createdAt   DateTime       @default(now()) @map("created_at")
