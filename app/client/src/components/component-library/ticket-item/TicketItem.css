@@ -23,3 +23,8 @@
   align-items: center;
   margin-top: 1rem;
 }
+
+.ticket-item-footer__left {
+  display: flex;
+  gap: 1rem;
+}

@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router';
 import { Ticket } from '../../../apollo/graphql-generated/types';
-import { PriorityIcon } from '../priority-arrows/priority-icons';
+import { PriorityIcon } from '../priority-icon/priority-icon';
+import { TicketTypeIcon } from '../ticket-type-icons/ticket-type-icons';
 import './TicketItem.css';
 
 export const TicketItem = (props: {
   ticketItem: Ticket;
   currentPath: string;
 }): JSX.Element => {
-  const { id, title, priority, createdAt } = props.ticketItem;
+  const { id, title, priority, type, createdAt } = props.ticketItem;
   const { currentPath } = props;
   const ticketHref = `${currentPath}/${id}`;
   const navigate = useNavigate();
@@ -20,8 +21,10 @@ export const TicketItem = (props: {
     <div className="ticket-item" key={id} id={id} onClick={handleClick}>
       <p>{title}</p>
       <div className="ticket-item-footer">
-        {/* {ticketPriorityObjects[priority].icon} */}
-        {<PriorityIcon priority={priority} />}
+        <div className="ticket-item-footer__left">
+          {<PriorityIcon priority={priority} size={20} />}
+          {<TicketTypeIcon type={type} size={20} />}
+        </div>
         <p>{createdAt && new Date(createdAt).toDateString()}</p>
       </div>
     </div>
