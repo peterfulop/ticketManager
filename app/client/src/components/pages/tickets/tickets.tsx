@@ -36,11 +36,11 @@ export const Tickets = (): JSX.Element => {
   const { tickets } = data.getMyTickets;
 
   const currentPATH = window.location.pathname;
-  const projectName = projectById.getMyProject.project?.name || 'unknown';
+  const projectName = projectById.getMyProject.project?.name as string;
 
   return (
     <MainLayout>
-      <h1>{projectName}</h1>
+      <h1 className="mb-3">{projectName}</h1>
       <TicketColumns
         tickets={tickets as Ticket[]}
         currentPath={currentPATH}

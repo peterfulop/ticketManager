@@ -1,4 +1,4 @@
-import { BiBug, BiFlag, BiTask } from 'react-icons/bi';
+import { BiBookmark, BiBug, BiTask } from 'react-icons/bi';
 import { RiShieldFlashLine } from 'react-icons/ri';
 import { TicketType } from '../../../apollo/graphql-generated/types';
 export const TicketTypeIcon = (props: { type: TicketType; size: number }) => {
@@ -20,7 +20,11 @@ export const TicketTypeIcon = (props: { type: TicketType; size: number }) => {
       break;
     case TicketType.STORY:
       icon = (
-        <BiFlag size={props.size} title={TicketType.STORY} color={'green'} />
+        <BiBookmark
+          size={props.size}
+          title={TicketType.STORY}
+          color={'green'}
+        />
       );
       break;
     case TicketType.TASK:
