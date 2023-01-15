@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as Types from '../../../../apollo/graphql-generated/types';
+import * as Types from '../../apollo/graphql-generated/types';
 
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';

@@ -18,12 +18,16 @@ export const navigationItems: NavigationItem[] = [
     href: NavigationPath.PROJECTS,
     title: 'Projects',
   },
-  {
-    href: NavigationPath.SIGNIN,
-    title: 'Login',
-  },
-  {
-    href: NavigationPath.SIGNUP,
-    title: 'Signup',
-  },
+  // {
+  //   href: NavigationPath.SIGNIN,
+  //   title: 'Login',
+  // },
+  // {
+  //   href: NavigationPath.SIGNUP,
+  //   title: 'Signup',
+  // },
+  // {
+  //   href: NavigationPath.SIGNOUT,
+  //   title: 'Sign out',
+  // },
 ];

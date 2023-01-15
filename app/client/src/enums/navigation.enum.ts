@@ -6,6 +6,7 @@ export enum NavigationPath {
   TICKET = '/projects/:projectId/tickets/:ticketId',
   SIGNUP = '/signup',
   SIGNIN = '/signin',
+  SIGNOUT = '/signout',
   PROFILE = '/profile',
   USER_CONFIRM = '/user/confirm/:confirmToken',
 }

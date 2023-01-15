@@ -13,6 +13,7 @@ export const Projects = (): JSX.Element => {
   if (loading) {
     return <div>{EnStrings.COMMONS.LOADING}</div>;
   }
+
   if (error || !data) {
     return <div>{EnStrings.SCREENS.POSTS.ERRORS.ERROR_ON_LOADING}</div>;
   }

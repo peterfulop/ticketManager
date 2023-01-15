@@ -10,7 +10,8 @@ export type GetMyProfileInput = {
 export const getMyProfileUseCase = async (
   input: GetMyProfileInput
 ): Promise<GetUserPayload> => {
-  const { prisma, user } = input.context;
+  const { prisma, user } = input.context;  
+
 
   if (!user?.userId) {
     return {

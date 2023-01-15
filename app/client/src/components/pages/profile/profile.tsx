@@ -1,9 +1,11 @@
 import EnStrings from '../../../utilities/strings';
+import { useGetMyProfileQuery } from '../../common-queries/common-queries.generated';
 import { MainLayout } from '../../component-library/main-layout/main-layout';
-import { useGetMyProfileQuery } from './query/profile.generated';
 
 export const Profile = (): JSX.Element => {
-  const { data, error, loading } = useGetMyProfileQuery();
+  const { data, error, loading } = useGetMyProfileQuery({
+    fetchPolicy: 'no-cache',
+  });
 
   if (loading) {
     return <div>{EnStrings.COMMONS.LOADING}</div>;

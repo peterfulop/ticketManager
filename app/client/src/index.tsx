@@ -11,6 +11,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { Cookies, CookiesProvider, useCookies } from 'react-cookie';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -22,6 +23,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
+
   return {
     headers: {
       ...headers,
@@ -33,14 +35,16 @@ const authLink = setContext((_, { headers }) => {
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
+  credentials: 'include',
 });
-
 
 root.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <CookiesProvider>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </CookiesProvider>
   </React.StrictMode>
 );
 

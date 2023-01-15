@@ -9,6 +9,8 @@ import {
 } from './query/signin.generated';
 import { useNavigate } from 'react-router';
 import { NavigationPath } from '../../../enums/navigation.enum';
+import { accessToken, setAccessToken } from '../../../utilities/accessToken';
+import { useCookies } from 'react-cookie';
 export const Signin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -17,6 +19,7 @@ export const Signin = () => {
   const [userConfirmError, setUserConfirmError] = useState<null | boolean>(
     null
   );
+  const [_, setCookie] = useCookies();
 
   const [
     signinMutation,
@@ -74,8 +77,12 @@ export const Signin = () => {
         setError(errMessage);
       }
       if (signinData.signin.token) {
-        localStorage.setItem('token', signinData.signin.token);
+        setCookie('ticket-manager-session', signinData.signin.token, {
+          path: '/',
+        });
+
         resetForm();
+        setAccessToken(signinData.signin.token);
         navigate(NavigationPath.PROFILE);
       }
     }
@@ -131,9 +138,19 @@ export const Signin = () => {
           />
         </Form.Group>
         {error && <p>{error}</p>}
-        <Button type="submit">
-          {EnStrings.SCREENS.SIGNIN.FORM.BUTTONS.SIGNIN_BUTTON}
-        </Button>
+        <div className="d-flex justify-content-between mt-3">
+          <Button type="submit">
+            {EnStrings.SCREENS.SIGNIN.FORM.BUTTONS.SIGNIN_BUTTON}
+          </Button>
+          <Button
+            name="navigate-to-signup"
+            variant="warning"
+            type="button"
+            onClick={() => navigate(NavigationPath.SIGNUP)}
+          >
+            {EnStrings.SCREENS.SIGNUP.FORM.BUTTONS.SIGNUP_BUTTON}
+          </Button>
+        </div>
       </Form>
       {userConfirmError && (
         <Button

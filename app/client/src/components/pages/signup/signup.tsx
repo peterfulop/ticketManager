@@ -4,12 +4,15 @@ import EnStrings from '../../../utilities/strings';
 import { useSignupMutation } from './query/signup.generated';
 import { sSTE } from '../../../utilities/set-server-type-error';
 import { MainLayout } from '../../component-library/main-layout/main-layout';
+import { NavigationPath } from '../../../enums/navigation.enum';
+import { useNavigate } from 'react-router';
 
 export const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [name, setName] = useState('');
+  const navigate = useNavigate();
 
   const [error, setError] = useState<null | string>(null);
 
@@ -103,9 +106,20 @@ export const Signup = () => {
           />
         </Form.Group>
         {error && <p>{error}</p>}
-        <Button type="submit">
-          {EnStrings.SCREENS.SIGNUP.FORM.BUTTONS.SIGNUP_BUTTON}
-        </Button>
+
+        <div className="d-flex justify-content-between mt-3">
+          <Button type="submit">
+            {EnStrings.SCREENS.SIGNUP.FORM.BUTTONS.SIGNUP_BUTTON}
+          </Button>
+          <Button
+            name="navigate-to-signin"
+            variant="warning"
+            type="button"
+            onClick={() => navigate(NavigationPath.SIGNIN)}
+          >
+            {EnStrings.SCREENS.SIGNIN.FORM.BUTTONS.SIGNIN_BUTTON}
+          </Button>
+        </div>
       </Form>
     </MainLayout>
   );
