@@ -1,5 +1,5 @@
 {
-  "name": "@todo_app/server",
+  "name": "@ticket_manager/server",
   "version": "1.0.0",
   "main": "index.js",
   "private": true,
@@ -23,6 +23,8 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
+    "codegen:prisma": "prisma generate",
+    "db:push": "prisma db push",
     "start:server": "nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
     "build": "rimraf dist && swc ./src -d dist",
     "start:backend": "ts-node src/index.ts dotenv_config_path=./.env",

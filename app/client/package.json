@@ -1,5 +1,5 @@
 {
-  "name": "@todo_app/client",
+  "name": "@ticket_manager/client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

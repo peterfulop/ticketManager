@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:14.1-alpine
     environment:
-      POSTGRES_DB: todo_app
+      POSTGRES_DB: ticketManager
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:

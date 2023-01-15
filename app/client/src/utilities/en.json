@@ -12,7 +12,8 @@
     "EMAIL_ADDRESS_ALREADY_IN_USE": "The email address is already in use! Please, choose another one!",
     "AUTHORIZATION_FAILED": "Wrong login credentials!",
     "UNAUTHENTICATED": "You are not logged in!",
-    "USER_UNAUTHORIZED": "You have no permission to edit this content!"
+    "USER_UNAUTHORIZED": "You have no permission to edit this content!",
+    "UNCONFIRMED_USER": "Please, confirm your registration by email!"
   },
   "SCREENS": {
     "POSTS": {
@@ -43,7 +44,8 @@
           "PASSWORD": "Password"
         },
         "BUTTONS": {
-          "SIGNIN_BUTTON": "Signin"
+          "SIGNIN_BUTTON": "Signin",
+          "RESEND_CONFIRM": "Resend confirmation email"
         }
       },
       "ERRORS": {
@@ -67,6 +69,16 @@
       "ERRORS": {
         "ERROR_ON_LOADING": "Error on loading posts",
         "MISSING_USER_ID": "UserID is missing from the URL"
+      }
+    },
+    "USER_CONFIRM":{
+      "FORM":{
+        "LABELS":{
+          "CONFIRM_TEXT": "Az alábbi gombra kattintva tudod megerősíteni a regisztrációdat!"
+        },
+        "BUTTONS": {
+          "USER_CONFIRM_BUTTON": "Regisztráció megerősítése"
+        }
       }
     },
     "NOT_FOUND": {

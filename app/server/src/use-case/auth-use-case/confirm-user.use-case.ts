@@ -24,7 +24,7 @@ export const confirmUserUseCase = async (
     userErrors: [],
   };
 
-  const user = JWTVerify(token);
+  const user = JWTVerify(token);  
 
   if (!user) {
     return {

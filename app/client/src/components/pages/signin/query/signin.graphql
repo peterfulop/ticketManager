@@ -7,3 +7,12 @@ mutation Signin($signinInput: CredentialsInput!) {
     token
   }
 }
+
+mutation ConfirmResend($email: String!) {
+  confirmResend(email: $email) {
+    userErrors {
+      message
+      values
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "@todo_app/root",
+  "name": "@ticket_manager/root",
   "private": true,
   "version": "1.0.0",
   "main": "index.js",
@@ -7,11 +7,13 @@
     "app/*"
   ],
   "repository": "https://github.com/peterfulop/todo_app.git",
-  "author": "peterfulop <peterfulop@codingsans.com>",
+  "author": "peterfulop <mrpeterfulop@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:fe": "yarn workspace @todo_app/client start",
-    "start:be": "yarn workspace @todo_app/server start:server",
+    "codegen:prisma": "yarn workspace @ticket_manager/server codegen:prisma",
+    "db:push": "yarn workspace @ticket_manager/server db:push",
+    "start:fe": "yarn workspace @ticket_manager/client start",
+    "start:be": "yarn workspace @ticket_manager/server start:server",
     "codegen:gql": "graphql-codegen --require dotenv/config --config codegen.yml dotenv_config_path=.env"
   },
   "devDependencies": {
