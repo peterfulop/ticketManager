@@ -7,6 +7,7 @@ export enum NavigationPath {
   SIGNUP = '/signup',
   SIGNIN = '/signin',
   PROFILE = '/profile',
+  USER_CONFIRM = '/user/confirm/:confirmToken',
 }
 
 export type NavigationPathType = keyof typeof NavigationPath;

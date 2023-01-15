@@ -3,6 +3,10 @@ import { NavigationLink } from './navigation-item';
 import './Navigation.css';
 
 export const Navigation = (): JSX.Element => {
+
+
+  
+
   return (
     <header>
       <nav>
@@ -16,6 +20,6 @@ export const Navigation = (): JSX.Element => {
           })}
         </ul>
       </nav>
-    </header>
+    </header> 
   );
 };

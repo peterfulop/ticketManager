@@ -11,6 +11,9 @@ import Projects from './pages/projects';
 import Signin from './pages/signin/signin';
 import Ticket from './pages/ticket';
 import Tickets from './pages/tickets';
+import Signup from './pages/signup';
+import { PrivateRoute } from './components/component-library/private-route/private-route';
+import UserConfirm from './pages/user-confirm';
 
 function App() {
   return (
@@ -18,13 +21,17 @@ function App() {
       <BrowserRouter>
         <Navigation />
         <Routes>
-          <Route path={NavigationPath.HOME} element={<Home />} />
-          <Route path={NavigationPath.PROFILE} element={<Profile />} />
-          <Route path={NavigationPath.PROJECTS} element={<Projects />} />
-          <Route path={NavigationPath.PROJECT} element={<Project />} />
-          <Route path={NavigationPath.TICKETS} element={<Tickets />} />
-          <Route path={NavigationPath.TICKET} element={<Ticket />} />
+          <Route element={<PrivateRoute />}>
+            <Route path={NavigationPath.HOME} element={<Home />} />
+            <Route path={NavigationPath.PROFILE} element={<Profile />} />
+            <Route path={NavigationPath.PROJECTS} element={<Projects />} />
+            <Route path={NavigationPath.PROJECT} element={<Project />} />
+            <Route path={NavigationPath.TICKETS} element={<Tickets />} />
+            <Route path={NavigationPath.TICKET} element={<Ticket />} />
+          </Route>
           <Route path={NavigationPath.SIGNIN} element={<Signin />} />
+          <Route path={NavigationPath.SIGNUP} element={<Signup />} />
+          <Route path={NavigationPath.USER_CONFIRM} element={<UserConfirm />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

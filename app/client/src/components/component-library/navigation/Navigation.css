@@ -32,3 +32,8 @@ a {
   display: flex;
   justify-content: center;
 }
+
+.active {
+  background-color: #444444;
+  color: lightblue;
+}

@@ -22,4 +22,8 @@ export const navigationItems: NavigationItem[] = [
     href: NavigationPath.SIGNIN,
     title: 'Login',
   },
+  {
+    href: NavigationPath.SIGNUP,
+    title: 'Signup',
+  },
 ];
