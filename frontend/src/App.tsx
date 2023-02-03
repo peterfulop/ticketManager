@@ -6,7 +6,7 @@ import { AuthProvider } from './context/auth-context';
 import { useTokenValidation } from './hooks/use-token-validation';
 
 function App() {
-  useTokenValidation();
+  const { error } = useTokenValidation();
   return (
     <AuthProvider>
       <Navigation />

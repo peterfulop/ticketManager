@@ -61,25 +61,3 @@ export const createApolloServer = async () => {
     `🚀 Server ready at http://localhost:${config.server.port}/graphql`
   );
 };
-
-// export const createApolloServer = async () => {
-//   const server = new ApolloServer<ApolloContext>({
-//     typeDefs,
-//     resolvers,
-//   });
-
-//   const { url } = await startStandaloneServer(server, {
-//     context: async ({ req }) => {
-//       const token = req.headers.authorization || '';
-//       const user = JWTVerify(token);
-//       console.log('user',user);
-//       return {
-//         prisma,
-//         user,
-//       };
-//     },
-//     listen: { port: config.backendPort },
-//   });
-
-//   return { url };
-// };

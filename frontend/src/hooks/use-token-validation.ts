@@ -17,7 +17,7 @@ export const useTokenValidation = () => {
     const token = localStorage.getItem('token');
     if (token === null) {
       authContext.logout();
-      setError('No token! pleasse, log in!');
+      ('No token! pleasse, log in!');
     } else {
       return Validate({
         token,
@@ -26,6 +26,8 @@ export const useTokenValidation = () => {
             authContext.logout();
             setError('No token! pleasse, log in!');
           } else if (user) {
+            console.log('logging is ok');
+
             authContext.login({ user, token });
             setLoading(false);
           }
