@@ -27,7 +27,7 @@
   "scripts": {
     "codegen:prisma": "prisma generate",
     "db:push": "prisma db push",
-    "start:server": "nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
+    "dev": "npx nodemon",
     "build": "rimraf dist && swc ./src -d dist",
     "start:backend": "ts-node src/index.ts dotenv_config_path=./.env",
     "codegen:gql": "graphql-codegen --require dotenv/config --config codegen.yml dotenv_config_path=.env"
