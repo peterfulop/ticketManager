@@ -1,7 +1,8 @@
 import { FC } from 'react';
+import { MainContainer } from '../../../components/main-content/main-content';
 
 interface IProjectsPage {}
 
 export const ProjectsPage: FC<IProjectsPage> = () => {
-  return <div>ProjectPage</div>;
+  return <MainContainer>ProjectPage</MainContainer>;
 };
