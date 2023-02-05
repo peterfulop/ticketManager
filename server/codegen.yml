@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-  - 'http://localhost:5000/graphql':
+  - 'http://localhost:1338/graphql':
       headers:
         Authorization: Bearer ${CODEGEN_AUTH_TOKEN}
 generates:

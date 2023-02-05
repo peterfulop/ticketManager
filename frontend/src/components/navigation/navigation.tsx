@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../assets/theme';
-import { AuthContext } from '../../context/auth-context';
+import UserContext from '../../context/user';
 import { RoutePath } from '../../types/enums/routes.enum';
 import { Content } from '../main-content/main-content';
 import { NavigationItem } from './navigation-item';
@@ -29,14 +29,13 @@ const Div = styled.div({
 });
 
 export const Navigation = () => {
-  const authContext = useContext(AuthContext);
-  const isUser = authContext.user;
+  const { user } = useContext(UserContext).userState;
 
   return (
     <Nav>
       <Content>
         <NavigationItem to={RoutePath.HOME}>Home</NavigationItem>
-        {isUser ? (
+        {user ? (
           <Div>
             <NavigationItem to={RoutePath.PROFILE}>Profile</NavigationItem>
             <NavigationItem to={RoutePath.PROJECTS}>Projects</NavigationItem>

@@ -7,12 +7,23 @@ import {
   MutationSigninArgs,
   MutationSignupArgs,
 } from '../../types/graphql-generated/graphql';
+import { QueryVerifyUserArgs, VerifyPayload } from '../../types/types';
 import { confirmResendUseCase } from '../../use-case/auth-use-case/confirm-resend.use-case';
 import { confirmUserUseCase } from '../../use-case/auth-use-case/confirm-user.use-case';
 import { signinUseCase } from '../../use-case/auth-use-case/signin.use-case';
 import { signupUseCase } from '../../use-case/auth-use-case/signup.use-case';
+import { verifyUserUseCase } from '../../use-case/auth-use-case/verify-user.use-case';
 
 export const authGQLResolver = {
+  Query: {
+    verifyUser: async (
+      _parent: any,
+      args: QueryVerifyUserArgs,
+      context: ApolloContext
+    ): Promise<VerifyPayload> => {
+      return await verifyUserUseCase({ args, context });
+    },
+  },
   Mutation: {
     signup: async (
       _parent: any,

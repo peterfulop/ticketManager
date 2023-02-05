@@ -39,13 +39,14 @@ const { Query: ticketQueries, Mutations: ticketMutations } = ticketGQLResolvers;
 const { Query: projectQueries, Mutations: projectMutations } =
   projectGQLResolver;
 const { Query: userQueries } = userGQLResolver;
-const { Mutation: authMutations } = authGQLResolver;
+const { Query: authQueries, Mutation: authMutations } = authGQLResolver;
 
 export const resolvers = {
   Query: {
     ...userQueries,
     ...projectQueries,
     ...ticketQueries,
+    ...authQueries,
   },
   Mutation: {
     ...authMutations,

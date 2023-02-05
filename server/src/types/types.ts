@@ -152,6 +152,7 @@ export type Query = {
   getMyTickets: TicketsPayload;
   getTicket: TicketPayload;
   getUser: GetUserPayload;
+  verifyUser: VerifyPayload;
 };
 
 
@@ -177,6 +178,11 @@ export type QueryGetTicketArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryVerifyUserArgs = {
+  token: Scalars['String'];
 };
 
 export type SearchTicketInput = {
@@ -302,4 +308,10 @@ export type UserError = {
   __typename?: 'UserError';
   message: Scalars['String'];
   values?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type VerifyPayload = {
+  __typename?: 'VerifyPayload';
+  user?: Maybe<User>;
+  userErrors: Array<UserError>;
 };

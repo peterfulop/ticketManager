@@ -3,5 +3,19 @@ mutation ConfirmUser($token: String!) {
     userErrors {
       message
     }
+    confirmed
+  }
+}
+
+query VerifyUser($token: String!) {
+  verifyUser(token: $token) {
+    userErrors {
+      message
+    }
+    user {
+      id
+      name
+      email
+    }
   }
 }

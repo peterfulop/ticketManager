@@ -19,16 +19,16 @@ export const confirmUserUseCase = async (
   const { token } = input.args;
   const { prisma } = input.context;
 
-  const authPayload: ConfirmPayload = {
+  const confirmPayload: ConfirmPayload = {
     confirmed: null,
     userErrors: [],
   };
 
-  const user = JWTVerify(token);  
+  const user = JWTVerify(token);
 
   if (!user) {
     return {
-      ...authPayload,
+      ...confirmPayload,
       userErrors: [
         {
           ...userError,
@@ -47,7 +47,7 @@ export const confirmUserUseCase = async (
 
   if (!userById) {
     return {
-      ...authPayload,
+      ...confirmPayload,
       userErrors: [{ ...userError, message: DBErrorMessages.MISSING_RECORD }],
     };
   }
@@ -62,13 +62,13 @@ export const confirmUserUseCase = async (
       },
     });
     return {
-      ...authPayload,
+      ...confirmPayload,
       confirmed: confirmedUser.confirmed,
     };
   } catch (error) {
     const { userErrors } = prismaRequestErrorHandler(error);
     return {
-      ...authPayload,
+      ...confirmPayload,
       userErrors,
     };
   }

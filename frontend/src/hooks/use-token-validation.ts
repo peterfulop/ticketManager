@@ -1,34 +1,38 @@
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context/auth-context';
+import { useEffect, useReducer, useState } from 'react';
+import { initialUserState, userReducer } from '../context/user';
 import { Validate } from '../modules/validate';
 
 export const useTokenValidation = () => {
+  const [userState, userDispatch] = useReducer(userReducer, initialUserState);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
-  const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    checkLocalStorageForCredentials();
+    CheckLocalStorageForCredentials();
   }, []);
 
-  const checkLocalStorageForCredentials = async () => {
-    setLoading(false);
-    setError('');
+  const CheckLocalStorageForCredentials = () => {
     const token = localStorage.getItem('token');
     if (token === null) {
-      authContext.logout();
-      ('No token! pleasse, log in!');
+      userDispatch({
+        type: 'logout',
+        payload: initialUserState,
+      });
+      setLoading(false);
     } else {
       return Validate({
         token,
         callback: (error, user) => {
           if (error) {
-            authContext.logout();
-            setError('No token! pleasse, log in!');
+            userDispatch({
+              type: 'logout',
+              payload: initialUserState,
+            });
+            setLoading(false);
           } else if (user) {
-            console.log('logging is ok');
-
-            authContext.login({ user, token });
+            userDispatch({
+              type: 'login',
+              payload: { user, token },
+            });
             setLoading(false);
           }
         },
@@ -36,5 +40,10 @@ export const useTokenValidation = () => {
     }
   };
 
-  return { loading, error, checkLocalStorageForCredentials };
+  const userContextValues = {
+    userState,
+    userDispatch,
+  };
+
+  return { userContextValues, loading, CheckLocalStorageForCredentials };
 };

@@ -2,13 +2,13 @@ import { Route, Routes } from 'react-router-dom';
 import { AuthRoute } from './components/auth-route/auth-route';
 import { Navigation } from './components/navigation/navigation';
 import routes from './config/routes';
-import { AuthProvider } from './context/auth-context';
+import { UserContextProvider } from './context/user';
 import { useTokenValidation } from './hooks/use-token-validation';
 
 function App() {
-  const { error } = useTokenValidation();
+  const { userContextValues } = useTokenValidation();
   return (
-    <AuthProvider>
+    <UserContextProvider value={userContextValues}>
       <Navigation />
       <Routes>
         {routes.map((route, index) => {
@@ -34,7 +34,7 @@ function App() {
           );
         })}
       </Routes>
-    </AuthProvider>
+    </UserContextProvider>
   );
 }
 

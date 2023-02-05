@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { GraphQLResolveInfo } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -155,6 +154,7 @@ export type Query = {
   getMyTickets: TicketsPayload;
   getTicket: TicketPayload;
   getUser: GetUserPayload;
+  verifyUser: VerifyPayload;
 };
 
 
@@ -180,6 +180,11 @@ export type QueryGetTicketArgs = {
 
 export type QueryGetUserArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryVerifyUserArgs = {
+  token: Scalars['String'];
 };
 
 export type SearchTicketInput = {
@@ -307,6 +312,12 @@ export type UserError = {
   values: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+export type VerifyPayload = {
+  __typename?: 'VerifyPayload';
+  user: Maybe<User>;
+  userErrors: Array<UserError>;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -407,6 +418,7 @@ export type ResolversTypes = {
   TicketsPayload: ResolverTypeWrapper<TicketsPayload>;
   User: ResolverTypeWrapper<User>;
   UserError: ResolverTypeWrapper<UserError>;
+  VerifyPayload: ResolverTypeWrapper<VerifyPayload>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -439,6 +451,7 @@ export type ResolversParentTypes = {
   TicketsPayload: TicketsPayload;
   User: User;
   UserError: UserError;
+  VerifyPayload: VerifyPayload;
 };
 
 export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
@@ -515,6 +528,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getMyTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, Partial<QueryGetMyTicketsArgs>>;
   getTicket: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<QueryGetTicketArgs, 'id'>>;
   getUser: Resolver<ResolversTypes['GetUserPayload'], ParentType, ContextType, RequireFields<QueryGetUserArgs, 'id'>>;
+  verifyUser: Resolver<ResolversTypes['VerifyPayload'], ParentType, ContextType, RequireFields<QueryVerifyUserArgs, 'token'>>;
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
@@ -575,6 +589,12 @@ export type UserErrorResolvers<ContextType = any, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type VerifyPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['VerifyPayload'] = ResolversParentTypes['VerifyPayload']> = {
+  user: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   AuthPayload: AuthPayloadResolvers<ContextType>;
   ConfirmPayload: ConfirmPayloadResolvers<ContextType>;
@@ -593,5 +613,6 @@ export type Resolvers<ContextType = any> = {
   TicketsPayload: TicketsPayloadResolvers<ContextType>;
   User: UserResolvers<ContextType>;
   UserError: UserErrorResolvers<ContextType>;
+  VerifyPayload: VerifyPayloadResolvers<ContextType>;
 };
 
