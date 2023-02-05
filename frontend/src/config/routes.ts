@@ -1,10 +1,10 @@
 import { NotFound } from '../pages/404/not-found';
 import { ConfirmUser } from '../pages/confirm-user/confirm-user';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
 import { ProjectDetailsPage } from '../pages/project/project-details/project-details';
 import { ProjectsPage } from '../pages/project/projects/projects';
-import { SigninPage } from '../pages/signin/signin';
 import { SignupPage } from '../pages/signup/signin';
 import { TicketsDetailsPage } from '../pages/ticket/ticket-details/ticket-details';
 import { TicketsPage } from '../pages/ticket/tickets/tickets';
@@ -13,9 +13,9 @@ import IRoute from '../types/interfaces/route.iterface';
 
 const authRoutes: IRoute[] = [
   {
-    path: RoutePath.SIGNIN,
+    path: RoutePath.LOGIN,
     auth: false,
-    component: SigninPage,
+    component: LoginPage,
     name: 'Login',
   },
   {
@@ -23,6 +23,12 @@ const authRoutes: IRoute[] = [
     auth: false,
     component: SignupPage,
     name: 'Register',
+  },
+  {
+    path: RoutePath.LOGOUT,
+    auth: false,
+    component: SignupPage,
+    name: 'Logout',
   },
   {
     path: RoutePath.CONFIRM_USER,

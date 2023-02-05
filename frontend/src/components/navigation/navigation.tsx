@@ -1,7 +1,8 @@
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '../../assets/theme';
-import UserContext from '../../context/user';
+import UserContext, { initialUserState } from '../../context/user';
 import { RoutePath } from '../../types/enums/routes.enum';
 import { Content } from '../main-content/main-content';
 import { NavigationItem } from './navigation-item';
@@ -29,7 +30,14 @@ const Div = styled.div({
 });
 
 export const Navigation = () => {
-  const { user } = useContext(UserContext).userState;
+  const {
+    userState: { user },
+  } = useContext(UserContext);
+  const userContext = useContext(UserContext);
+
+  const logout = () => {
+    userContext.userDispatch({ type: 'logout', payload: initialUserState });
+  };
 
   return (
     <Nav>
@@ -39,10 +47,13 @@ export const Navigation = () => {
           <Div>
             <NavigationItem to={RoutePath.PROFILE}>Profile</NavigationItem>
             <NavigationItem to={RoutePath.PROJECTS}>Projects</NavigationItem>
+            <Link to={RoutePath.HOME} onClick={logout}>
+              Log Out
+            </Link>
           </Div>
         ) : (
           <Div>
-            <NavigationItem to={RoutePath.SIGNIN}>Login</NavigationItem>
+            <NavigationItem to={RoutePath.LOGIN}>LogIn</NavigationItem>
             <NavigationItem to={RoutePath.SIGNUP}>Register</NavigationItem>
           </Div>
         )}

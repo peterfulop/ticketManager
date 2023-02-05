@@ -10,7 +10,7 @@ export const AuthRoute: FC<IAuthRouteProps> = (props) => {
   const { children } = props;
   const { user } = useContext(UserContext).userState;
   if (!user) {
-    return <Navigate to={RoutePath.SIGNIN} />;
+    return <Navigate to={RoutePath.LOGIN} />;
   } else {
     return <>{children}</>;
   }
