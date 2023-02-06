@@ -11,6 +11,14 @@ const configObject = convict({
       env: 'BACKEND_PORT',
     },
   },
+  application: {
+    port: {
+      doc: 'port of the application',
+      format: Number,
+      default: 5173,
+      env: 'APPLICATION_PORT',
+    },
+  },
   bcryptSalt: {
     doc: 'salt string to hash data',
     format: String,

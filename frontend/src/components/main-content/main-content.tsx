@@ -14,12 +14,14 @@ export const Content = styled.div({
   width: '100%',
 });
 
-interface IMainContainer extends IReact {}
+interface IMainContainer extends IReact {
+  style?: React.CSSProperties | undefined;
+}
 
 export const MainContainer: FC<IMainContainer> = (props) => {
   return (
     <Main>
-      <Content>{props?.children}</Content>
+      <Content style={props.style}>{props?.children}</Content>
     </Main>
   );
 };

@@ -7,7 +7,11 @@ import {
   MutationSigninArgs,
   MutationSignupArgs,
 } from '../../types/graphql-generated/graphql';
-import { QueryVerifyUserArgs, VerifyPayload } from '../../types/types';
+import {
+  QueryVerifyUserArgs,
+  SigninPayload,
+  VerifyPayload,
+} from '../../types/types';
 import { confirmResendUseCase } from '../../use-case/auth-use-case/confirm-resend.use-case';
 import { confirmUserUseCase } from '../../use-case/auth-use-case/confirm-user.use-case';
 import { signinUseCase } from '../../use-case/auth-use-case/signin.use-case';
@@ -36,7 +40,7 @@ export const authGQLResolver = {
       _parent: any,
       args: MutationSigninArgs,
       context: ApolloContext
-    ): Promise<AuthPayload> => {
+    ): Promise<SigninPayload> => {
       return await signinUseCase({ args, context });
     },
     confirmUser: async (

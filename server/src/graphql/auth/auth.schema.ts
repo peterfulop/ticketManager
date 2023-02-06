@@ -1,7 +1,7 @@
 export const authTypeDefs = `#graphql
  extend type Mutation {
     signup(input:SignupInput!):AuthPayload!
-    signin(input:CredentialsInput!):AuthPayload!
+    signin(input:CredentialsInput!):SigninPayload!
     confirmUser(token:String!):ConfirmPayload!
     confirmResend(email:String!):AuthPayload!
   }
@@ -19,6 +19,12 @@ export const authTypeDefs = `#graphql
   input CredentialsInput {
     email: String!
     password: String!
+  }
+
+  type SigninPayload {
+    userErrors: [UserError!]!
+    token: String
+    user: User
   }
 
   type AuthPayload {

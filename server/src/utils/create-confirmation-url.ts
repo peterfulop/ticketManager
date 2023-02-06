@@ -11,5 +11,5 @@ export const createConfirmationUrl = (
     expiresIn: config.cookie.confirmationExp,
   });
 
-  return `http://localhost:3000/user/confirm/${confirmationToken}`;
+  return `http://localhost:${config.application.port}/user/confirm/${confirmationToken}`;
 };

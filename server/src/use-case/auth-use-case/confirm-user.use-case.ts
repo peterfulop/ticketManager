@@ -52,6 +52,15 @@ export const confirmUserUseCase = async (
     };
   }
 
+  if (userById.confirmed) {
+    return {
+      ...confirmPayload,
+      userErrors: [
+        { ...userError, message: DBErrorMessages.ALREADY_CONFIRMED_USER },
+      ],
+    };
+  }
+
   try {
     const confirmedUser = await prisma.user.update({
       where: {

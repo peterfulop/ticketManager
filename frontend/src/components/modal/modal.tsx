@@ -17,16 +17,15 @@ const ModalOverlay = styled.div({
   background: 'rgba(0, 0, 0, 0.7)',
   display: 'flex',
   justifyContent: 'center',
+  paddingTop: '2rem',
   alignItems: 'center',
 });
 
 const ModalBox = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-start',
   background: 'white',
-  width: '80%',
-  height: '80%',
   padding: '1rem',
   borderRadius: '1rem',
   transition: 'transform 0.25s ease',
@@ -39,11 +38,11 @@ const ModalBoxTitle = styled.div({
 
 const ModalBoxContent = styled.div({
   display: 'flex',
-});
-
-const ModalBoxFooter = styled.div({
-  display: 'flex',
   justifyContent: 'space-between',
+  gap: '1rem',
+  width: '100%',
+  marginTop: '1rem',
+  paddingTop: '1rem',
 });
 
 const CloseButton = styled.button({
@@ -66,16 +65,26 @@ interface ModalType extends IReact {
   isOpen: boolean;
   enabledOverlayClose: boolean;
   toggle: () => void;
-  width?: string;
-  height?: string;
   title?: string;
+  positionTop?: boolean;
+  modalStyle?: {
+    width?: string | number;
+    height?: string | number;
+  };
 }
+
+const ModalOverlayPositionTop: React.CSSProperties = {
+  justifyContent: 'center',
+  paddingTop: '5rem',
+  alignItems: 'flex-start',
+};
 
 export const Modal = (props: ModalType) => {
   return (
-    <ModalContainer style={{ width: props.width, height: props.height }}>
+    <ModalContainer>
       {props.isOpen && (
         <ModalOverlay
+          style={props?.positionTop ? ModalOverlayPositionTop : undefined}
           onClick={(event) => {
             if (props.enabledOverlayClose) {
               props.toggle();
@@ -95,15 +104,18 @@ export const Modal = (props: ModalType) => {
               e.stopPropagation();
             }}
             id='modal-box'
+            style={{
+              width: props?.modalStyle?.width || '80%',
+              height: props?.modalStyle?.height || '80%',
+            }}
           >
             <ModalBoxTitle>
-              <h2>Ticket description 1</h2>
+              <h2>{props.title}</h2>
               <CloseButton onClick={props.toggle} title='close window'>
                 <GrClose />
               </CloseButton>
             </ModalBoxTitle>
             <ModalBoxContent>{props.children}</ModalBoxContent>
-            <ModalBoxFooter></ModalBoxFooter>
           </ModalBox>
         </ModalOverlay>
       )}

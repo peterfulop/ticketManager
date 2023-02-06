@@ -45,7 +45,7 @@ export type Mutation = {
   projectCreate: ProjectPayload;
   projectDelete: ProjectDeletePayload;
   projectUpdate: ProjectPayload;
-  signin: AuthPayload;
+  signin: SigninPayload;
   signup: AuthPayload;
   ticketCreate: TicketPayload;
   ticketDelete: TicketDeletePayload;
@@ -196,6 +196,13 @@ export type SearchTicketInput = {
   status: InputMaybe<TicketStatus>;
   title: InputMaybe<Scalars['String']>;
   type: InputMaybe<TicketType>;
+};
+
+export type SigninPayload = {
+  __typename?: 'SigninPayload';
+  token: Maybe<Scalars['String']>;
+  user: Maybe<User>;
+  userErrors: Array<UserError>;
 };
 
 export type SignupInput = {
@@ -404,6 +411,7 @@ export type ResolversTypes = {
   ProjectsPayload: ResolverTypeWrapper<ProjectsPayload>;
   Query: ResolverTypeWrapper<{}>;
   SearchTicketInput: SearchTicketInput;
+  SigninPayload: ResolverTypeWrapper<SigninPayload>;
   SignupInput: SignupInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
@@ -440,6 +448,7 @@ export type ResolversParentTypes = {
   ProjectsPayload: ProjectsPayload;
   Query: {};
   SearchTicketInput: SearchTicketInput;
+  SigninPayload: SigninPayload;
   SignupInput: SignupInput;
   String: Scalars['String'];
   Subscription: {};
@@ -479,7 +488,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   projectCreate: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<MutationProjectCreateArgs, 'input'>>;
   projectDelete: Resolver<ResolversTypes['ProjectDeletePayload'], ParentType, ContextType, RequireFields<MutationProjectDeleteArgs, 'id'>>;
   projectUpdate: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<MutationProjectUpdateArgs, 'input'>>;
-  signin: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'input'>>;
+  signin: Resolver<ResolversTypes['SigninPayload'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'input'>>;
   signup: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'input'>>;
   ticketCreate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketCreateArgs, 'input'>>;
   ticketDelete: Resolver<ResolversTypes['TicketDeletePayload'], ParentType, ContextType, RequireFields<MutationTicketDeleteArgs, 'id'>>;
@@ -529,6 +538,13 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getTicket: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<QueryGetTicketArgs, 'id'>>;
   getUser: Resolver<ResolversTypes['GetUserPayload'], ParentType, ContextType, RequireFields<QueryGetUserArgs, 'id'>>;
   verifyUser: Resolver<ResolversTypes['VerifyPayload'], ParentType, ContextType, RequireFields<QueryVerifyUserArgs, 'token'>>;
+};
+
+export type SigninPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SigninPayload'] = ResolversParentTypes['SigninPayload']> = {
+  token: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  user: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
@@ -606,6 +622,7 @@ export type Resolvers<ContextType = any> = {
   ProjectPayload: ProjectPayloadResolvers<ContextType>;
   ProjectsPayload: ProjectsPayloadResolvers<ContextType>;
   Query: QueryResolvers<ContextType>;
+  SigninPayload: SigninPayloadResolvers<ContextType>;
   Subscription: SubscriptionResolvers<ContextType>;
   Ticket: TicketResolvers<ContextType>;
   TicketDeletePayload: TicketDeletePayloadResolvers<ContextType>;

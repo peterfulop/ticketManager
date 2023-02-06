@@ -10,7 +10,7 @@ export const useTokenValidation = () => {
     CheckLocalStorageForCredentials();
   }, []);
 
-  const CheckLocalStorageForCredentials = () => {
+  const CheckLocalStorageForCredentials = async () => {
     const token = localStorage.getItem('token');
     if (token === null) {
       userDispatch({
@@ -19,7 +19,7 @@ export const useTokenValidation = () => {
       });
       setLoading(false);
     } else {
-      return Validate({
+      return await Validate({
         token,
         callback: (error, user) => {
           if (error) {

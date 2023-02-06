@@ -44,7 +44,7 @@ export type Mutation = {
   projectCreate: ProjectPayload;
   projectDelete: ProjectDeletePayload;
   projectUpdate: ProjectPayload;
-  signin: AuthPayload;
+  signin: SigninPayload;
   signup: AuthPayload;
   ticketCreate: TicketPayload;
   ticketDelete: TicketDeletePayload;
@@ -195,6 +195,13 @@ export type SearchTicketInput = {
   status?: InputMaybe<TicketStatus>;
   title?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<TicketType>;
+};
+
+export type SigninPayload = {
+  __typename?: 'SigninPayload';
+  token?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  userErrors: Array<UserError>;
 };
 
 export type SignupInput = {
