@@ -16,7 +16,7 @@ export type ConfirmResendMutationVariables = Types.Exact<{
 }>;
 
 
-export type ConfirmResendMutation = { __typename?: 'Mutation', confirmResend: { __typename?: 'AuthPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
+export type ConfirmResendMutation = { __typename?: 'Mutation', confirmResend: { __typename?: 'ConfirmResendPayload', resent?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
 
 
 export const SigninDocument = gql`
@@ -68,6 +68,7 @@ export const ConfirmResendDocument = gql`
       message
       values
     }
+    resent
   }
 }
     `;

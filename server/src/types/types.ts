@@ -24,6 +24,12 @@ export type ConfirmPayload = {
   userErrors: Array<UserError>;
 };
 
+export type ConfirmResendPayload = {
+  __typename?: 'ConfirmResendPayload';
+  resent?: Maybe<Scalars['Boolean']>;
+  userErrors: Array<UserError>;
+};
+
 export type CredentialsInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -38,7 +44,7 @@ export type GetUserPayload = {
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']>;
-  confirmResend: AuthPayload;
+  confirmResend: ConfirmResendPayload;
   confirmUser: ConfirmPayload;
   projectCreate: ProjectPayload;
   projectDelete: ProjectDeletePayload;

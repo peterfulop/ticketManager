@@ -22,7 +22,6 @@ export const useForm = (props: IUseForm) => {
   return {
     onChange,
     onSubmit,
-    setValues,
     values,
   };
 };

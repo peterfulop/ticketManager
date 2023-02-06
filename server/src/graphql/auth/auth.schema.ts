@@ -3,7 +3,7 @@ export const authTypeDefs = `#graphql
     signup(input:SignupInput!):AuthPayload!
     signin(input:CredentialsInput!):SigninPayload!
     confirmUser(token:String!):ConfirmPayload!
-    confirmResend(email:String!):AuthPayload!
+    confirmResend(email:String!):ConfirmResendPayload!
   }
 
   extend type Query {
@@ -35,6 +35,11 @@ export const authTypeDefs = `#graphql
   type ConfirmPayload {
     userErrors: [UserError!]!
     confirmed: Boolean
+  }
+
+  type ConfirmResendPayload {
+    userErrors: [UserError!]!
+    resent: Boolean
   }
 
   type VerifyPayload {

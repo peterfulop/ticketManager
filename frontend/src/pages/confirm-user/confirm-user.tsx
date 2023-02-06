@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useConfirmUserMutation } from '../../apollo/common-queries/auth.generated';
 import { MainContainer } from '../../components/main-content/main-content';
@@ -11,14 +12,16 @@ import EnStrings from '../../utils/strings';
 interface IConfirmUser {}
 
 export const ConfirmUser: FC<IConfirmUser> = () => {
-  const [error, setError] = useState<null | string>(null);
+  const [alertMessage, setAlertMessage] = useState<null | string>(null);
+  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
+
   const { confirmToken } = useParams();
   const navigate = useNavigate();
 
   const [confirmUser, { loading }] = useConfirmUserMutation();
 
   const handleConfirmUser = async () => {
-    setError(null);
+    setAlertMessage(null);
     const res = await confirmUser({
       variables: {
         token: confirmToken as string,
@@ -26,12 +29,20 @@ export const ConfirmUser: FC<IConfirmUser> = () => {
     });
     if (res.data?.confirmUser?.userErrors?.length) {
       const errMessage = sSTE(res.data.confirmUser.userErrors[0].message);
-      setError(errMessage);
+      setAlertMessageColor('danger');
+      setAlertMessage(errMessage);
     }
     if (res.data?.confirmUser.confirmed) {
-      navigate(RoutePath.LOGIN);
+      setAlertMessageColor('success');
+      setAlertMessage(
+        `Successfully confirmed your account! Redirecting to the login page...`
+      );
+      setTimeout(() => {
+        navigate(RoutePath.LOGIN);
+      }, 3000);
     }
   };
+
   return (
     <MainContainer>
       <div className='mt-3 p-3'>
@@ -39,7 +50,9 @@ export const ConfirmUser: FC<IConfirmUser> = () => {
         <p className='mb-3'>
           {EnStrings.SCREENS.USER_CONFIRM.FORM.LABELS.CONFIRM_TEXT}
         </p>
-        {error && <MyAlert variant='danger' content={error} />}
+        {alertMessage && (
+          <MyAlert variant={alertMessageColor} content={alertMessage} />
+        )}
         <Button type='submit' onClick={handleConfirmUser} disabled={loading}>
           {EnStrings.SCREENS.USER_CONFIRM.FORM.BUTTONS.USER_CONFIRM_BUTTON}
         </Button>

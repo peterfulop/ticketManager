@@ -26,6 +26,12 @@ export type ConfirmPayload = {
   userErrors: Array<UserError>;
 };
 
+export type ConfirmResendPayload = {
+  __typename?: 'ConfirmResendPayload';
+  resent: Maybe<Scalars['Boolean']>;
+  userErrors: Array<UserError>;
+};
+
 export type CredentialsInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -40,7 +46,7 @@ export type GetUserPayload = {
 export type Mutation = {
   __typename?: 'Mutation';
   _: Maybe<Scalars['Boolean']>;
-  confirmResend: AuthPayload;
+  confirmResend: ConfirmResendPayload;
   confirmUser: ConfirmPayload;
   projectCreate: ProjectPayload;
   projectDelete: ProjectDeletePayload;
@@ -397,6 +403,7 @@ export type ResolversTypes = {
   AuthPayload: ResolverTypeWrapper<AuthPayload>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   ConfirmPayload: ResolverTypeWrapper<ConfirmPayload>;
+  ConfirmResendPayload: ResolverTypeWrapper<ConfirmResendPayload>;
   CredentialsInput: CredentialsInput;
   GetUserPayload: ResolverTypeWrapper<GetUserPayload>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -434,6 +441,7 @@ export type ResolversParentTypes = {
   AuthPayload: AuthPayload;
   Boolean: Scalars['Boolean'];
   ConfirmPayload: ConfirmPayload;
+  ConfirmResendPayload: ConfirmResendPayload;
   CredentialsInput: CredentialsInput;
   GetUserPayload: GetUserPayload;
   ID: Scalars['ID'];
@@ -475,6 +483,12 @@ export type ConfirmPayloadResolvers<ContextType = any, ParentType extends Resolv
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ConfirmResendPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['ConfirmResendPayload'] = ResolversParentTypes['ConfirmResendPayload']> = {
+  resent: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type GetUserPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['GetUserPayload'] = ResolversParentTypes['GetUserPayload']> = {
   user: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
@@ -483,7 +497,7 @@ export type GetUserPayloadResolvers<ContextType = any, ParentType extends Resolv
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  confirmResend: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationConfirmResendArgs, 'email'>>;
+  confirmResend: Resolver<ResolversTypes['ConfirmResendPayload'], ParentType, ContextType, RequireFields<MutationConfirmResendArgs, 'email'>>;
   confirmUser: Resolver<ResolversTypes['ConfirmPayload'], ParentType, ContextType, RequireFields<MutationConfirmUserArgs, 'token'>>;
   projectCreate: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<MutationProjectCreateArgs, 'input'>>;
   projectDelete: Resolver<ResolversTypes['ProjectDeletePayload'], ParentType, ContextType, RequireFields<MutationProjectDeleteArgs, 'id'>>;
@@ -614,6 +628,7 @@ export type VerifyPayloadResolvers<ContextType = any, ParentType extends Resolve
 export type Resolvers<ContextType = any> = {
   AuthPayload: AuthPayloadResolvers<ContextType>;
   ConfirmPayload: ConfirmPayloadResolvers<ContextType>;
+  ConfirmResendPayload: ConfirmResendPayloadResolvers<ContextType>;
   GetUserPayload: GetUserPayloadResolvers<ContextType>;
   Mutation: MutationResolvers<ContextType>;
   Project: ProjectResolvers<ContextType>;

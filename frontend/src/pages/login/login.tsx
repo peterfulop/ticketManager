@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { MainContainer } from '../../components/main-content/main-content';
@@ -32,36 +33,27 @@ const FormContainer = styled.div({
 });
 
 export const LoginPage = () => {
-  const [error, setError] = useState<string | null>(null);
-  const [userConfirmError, setUserConfirmError] = useState<null | boolean>(
-    null
-  );
-
-  const userContext = useContext(UserContext);
-
-  const [
-    signinMutation,
-    { data: signinData, loading: signinLoading, error: signinError },
-  ] = useSigninMutation();
-
-  const [
-    confirmResendMutation,
-    {
-      data: confirmResendData,
-      loading: confirmResendLoading,
-      error: confirmResendError,
-    },
-  ] = useConfirmResendMutation();
-
   const navigate = useNavigate();
+  const userContext = useContext(UserContext);
 
   const signinInitialInputs = {
     email: '',
     password: '',
   };
 
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('error');
+  const [userConfirmError, setUserConfirmError] = useState<null | boolean>(
+    null
+  );
+
+  const [signinMutation, { loading: signinLoading }] = useSigninMutation();
+
+  const [confirmResendMutation, { loading: confirmResendLoading }] =
+    useConfirmResendMutation();
+
   const useFormCallBackFn = async () => {
-    setError(null);
+    setAlertMessage(null);
     const res = await signinMutation({
       variables: {
         signinInput: {
@@ -73,9 +65,12 @@ export const LoginPage = () => {
     if (res.data?.signin.userErrors.length) {
       const errMessage = sSTE(res.data.signin.userErrors[0].message);
       if (errMessage === EnStrings.ERRORS.UNCONFIRMED_USER) {
+        setAlertMessageColor('warning');
         setUserConfirmError(true);
+        return setAlertMessage(errMessage);
       }
-      return setError(errMessage);
+      setAlertMessageColor('danger');
+      return setAlertMessage(errMessage);
     }
     if (res.data?.signin.token && res.data.signin.user) {
       const { token, user } = res.data.signin;
@@ -90,24 +85,32 @@ export const LoginPage = () => {
     }
   };
 
-  const { onChange, onSubmit, setValues, values } = useForm({
+  const { onChange, onSubmit, values } = useForm({
     callback: useFormCallBackFn,
     initialState: signinInitialInputs,
   });
 
   const resetForm = () => {
-    setError(null);
+    setAlertMessage(null);
     setUserConfirmError(false);
-    setValues(signinInitialInputs);
+    setAlertMessageColor('danger');
   };
 
   const handleResendConfirmation = async () => {
-    setError(null);
-    await confirmResendMutation({
+    setAlertMessage(null);
+    const res = await confirmResendMutation({
       variables: {
         email: values.email,
       },
     });
+    if (res.data?.confirmResend.userErrors.length) {
+      const errMessage = sSTE(res.data.confirmResend.userErrors[0].message);
+      setAlertMessage(errMessage);
+    }
+    if (res.data?.confirmResend.resent) {
+      setAlertMessageColor('success');
+      setAlertMessage('Email successfully resent!');
+    }
   };
 
   return (
@@ -116,7 +119,7 @@ export const LoginPage = () => {
         <Form
           onSubmit={(e) => onSubmit(e)}
           onChange={() => {
-            if (error) {
+            if (alertMessage) {
               resetForm();
             }
           }}
@@ -146,7 +149,9 @@ export const LoginPage = () => {
               disabled={signinLoading || confirmResendLoading}
             />
           </Form.Group>
-          {error && <MyAlert variant='danger' content={error} />}
+          {alertMessage && (
+            <MyAlert variant={alertMessageColor} content={alertMessage} />
+          )}
           {!userConfirmError && (
             <div className='d-flex justify-content-between'>
               <Button

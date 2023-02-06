@@ -8,6 +8,7 @@ import {
   MutationSignupArgs,
 } from '../../types/graphql-generated/graphql';
 import {
+  ConfirmResendPayload,
   QueryVerifyUserArgs,
   SigninPayload,
   VerifyPayload,
@@ -54,7 +55,7 @@ export const authGQLResolver = {
       _parent: any,
       args: MutationConfirmResendArgs,
       context: ApolloContext
-    ): Promise<AuthPayload> => {
+    ): Promise<ConfirmResendPayload> => {
       return await confirmResendUseCase({ args, context });
     },
   },
