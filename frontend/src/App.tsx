@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { AuthRoute } from './components/auth-route/auth-route';
-import Modal from './components/modal/modal';
+import { Modal } from './components/modal/modal';
 import { Navigation } from './components/navigation/navigation';
 import routes from './config/routes';
 import { UserContextProvider } from './context/user';
@@ -19,8 +19,6 @@ function App() {
         enabledOverlayClose={false}
       ></Modal>
       <Navigation />
-      <button onClick={toggle}>Open Modal </button>
-
       <Routes>
         {routes.map((route, index) => {
           if (route.auth) {
