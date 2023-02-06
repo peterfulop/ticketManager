@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +32,7 @@ const FormContainer = styled.div({
   },
 });
 
-export const LoginPage = () => {
+export const LoginPage: FC = () => {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
 

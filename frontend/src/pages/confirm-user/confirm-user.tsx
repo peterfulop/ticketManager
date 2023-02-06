@@ -9,9 +9,7 @@ import { RoutePath } from '../../types/enums/routes.enum';
 import { sSTE } from '../../utils/set-server-type-error';
 import EnStrings from '../../utils/strings';
 
-interface IConfirmUser {}
-
-export const ConfirmUser: FC<IConfirmUser> = () => {
+export const ConfirmUser: FC = () => {
   const [alertMessage, setAlertMessage] = useState<null | string>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
 

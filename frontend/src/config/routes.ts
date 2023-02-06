@@ -5,7 +5,7 @@ import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
 import { ProjectDetailsPage } from '../pages/project/project-details/project-details';
 import { ProjectsPage } from '../pages/project/projects/projects';
-import { SignupPage } from '../pages/signup/signin';
+import { SignupPage } from '../pages/signup/signup';
 import { TicketsDetailsPage } from '../pages/ticket/ticket-details/ticket-details';
 import { TicketsPage } from '../pages/ticket/tickets/tickets';
 import { RoutePath } from '../types/enums/routes.enum';
