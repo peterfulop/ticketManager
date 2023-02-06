@@ -11,12 +11,14 @@ import { JWTVerify } from './helpers/jwt';
 
 import type Prisma from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
+import morgan from 'morgan';
 import { config } from './config/config';
 
 export const prisma = new PrismaClient();
 
 const app = express();
 const httpServer = http.createServer(app);
+app.use(morgan('dev'));
 
 export interface ApolloContext {
   prisma: Prisma.PrismaClient<
