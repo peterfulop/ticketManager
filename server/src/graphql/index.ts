@@ -36,9 +36,12 @@ export const typeDefs = [
 ];
 
 const { Query: ticketQueries, Mutations: ticketMutations } = ticketGQLResolvers;
-const { Query: projectQueries, Mutations: projectMutations } =
-  projectGQLResolver;
-const { Query: userQueries } = userGQLResolver;
+const {
+  Query: projectQueries,
+  Mutations: projectMutations,
+  Project,
+} = projectGQLResolver;
+const { Query: userQueries, User } = userGQLResolver;
 const { Query: authQueries, Mutation: authMutations } = authGQLResolver;
 
 export const resolvers = {
@@ -53,4 +56,6 @@ export const resolvers = {
     ...ticketMutations,
     ...projectMutations,
   },
+  User,
+  Project,
 };

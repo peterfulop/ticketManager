@@ -110,7 +110,7 @@ export const Modal = (props: ModalType) => {
             }}
           >
             <ModalBoxTitle>
-              <h2>{props.title}</h2>
+              <h3>{props.title}</h3>
               <CloseButton onClick={props.toggle} title='close window'>
                 <GrClose />
               </CloseButton>

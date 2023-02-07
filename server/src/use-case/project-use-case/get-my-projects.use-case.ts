@@ -17,7 +17,7 @@ export const getMyProjectsUseCase = async (
       userErrors: [
         { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
       ],
-      projects: null,
+      projects: [],
     };
   }
 
@@ -38,5 +38,5 @@ export const getMyProjectsUseCase = async (
   return {
     userErrors: [],
     projects: projectsWithDate,
-  };
+  } as unknown as ProjectsPayload;
 };

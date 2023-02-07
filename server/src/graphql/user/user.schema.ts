@@ -8,8 +8,8 @@ export const userTypeDefs = `#graphql
     id: ID!
     name: String!
     email: String!
-    tickets: [Ticket!]
-    projects: [Project!]
+    tickets: [Ticket!]!
+    projects: [Project!]!
     createdAt: String
     updatedAt: String
     confirmed: Boolean

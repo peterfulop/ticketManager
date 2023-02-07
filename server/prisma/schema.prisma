@@ -52,13 +52,14 @@ model User {
 model Project {
   id        String   @id @default(uuid())
   userId    String   @map("user_id")
-  name      String   @unique
+  name      String
   sequence  Int      @default(0)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   Ticket    Ticket[]
   User      User     @relation(fields: [userId], references: [id])
 
+  @@unique([userId, name], name: "projectNameIdentifier")
   @@map("projects")
 }
 

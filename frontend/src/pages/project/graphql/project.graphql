@@ -9,6 +9,10 @@ query GetMyProjects {
       name
       createdAt
       updatedAt
+      tickets {
+        id
+        status
+      }
     }
   }
 }

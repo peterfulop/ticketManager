@@ -56,4 +56,13 @@ export const ticketGQLResolvers = {
       return await deleteTicketUseCase({ args, context });
     },
   },
+  // Project: {
+  //   tickets: async (
+  //     parent: ResolversParentTypes['Project'],
+  //     _args: any,
+  //     context: ApolloContext
+  //   ): Promise<Project> => {
+  //     return await getProjectWithTicketsUseCase({ parent, context });
+  //   },
+  // },
 };

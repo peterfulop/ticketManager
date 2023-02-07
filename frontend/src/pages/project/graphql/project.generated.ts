@@ -7,7 +7,7 @@ const defaultOptions = {} as const;
 export type GetMyProjectsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetMyProjectsQuery = { __typename?: 'Query', getMyProjects: { __typename?: 'ProjectsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, projects?: Array<{ __typename?: 'Project', id: string, name: string, createdAt?: string | null, updatedAt?: string | null } | null> | null } };
+export type GetMyProjectsQuery = { __typename?: 'Query', getMyProjects: { __typename?: 'ProjectsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, projects: Array<{ __typename?: 'Project', id: string, name: string, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, status: Types.TicketStatus }> }> } };
 
 export type GetMyProjectQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
@@ -36,6 +36,10 @@ export const GetMyProjectsDocument = gql`
       name
       createdAt
       updatedAt
+      tickets {
+        id
+        status
+      }
     }
   }
 }

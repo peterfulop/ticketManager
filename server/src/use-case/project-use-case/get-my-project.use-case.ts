@@ -54,5 +54,5 @@ export const getMyProjectUseCase = async (
   return {
     ...projectPayload,
     project: projectsWithDate,
-  };
+  } as unknown as ProjectPayload;
 };

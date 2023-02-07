@@ -26,6 +26,9 @@ export const projectTypeDefs = `#graphql
     sequence: Int!
     createdAt: String
     updatedAt: String
+    tickets:[Ticket!]!
+    user: User!
+    userId: String!
   }
 
   type ProjectPayload {
@@ -35,7 +38,7 @@ export const projectTypeDefs = `#graphql
 
   type ProjectsPayload {
     userErrors: [UserError!]!
-    projects: [Project]
+    projects: [Project!]!
   }
 
 

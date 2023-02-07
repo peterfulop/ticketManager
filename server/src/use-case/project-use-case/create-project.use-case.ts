@@ -71,8 +71,9 @@ export const createProjectUseCase = async (
         ...project,
         createdAt: project.createdAt.toISOString(),
         updatedAt: project.updatedAt.toISOString(),
+        tickets: [],
       },
-    };
+    } as unknown as ProjectPayload;
   } catch (error) {
     const { userErrors } = prismaRequestErrorHandler(error);
     return {

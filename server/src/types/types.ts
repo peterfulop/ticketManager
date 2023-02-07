@@ -18,18 +18,6 @@ export type AuthPayload = {
   userErrors: Array<UserError>;
 };
 
-export type ConfirmPayload = {
-  __typename?: 'ConfirmPayload';
-  confirmed?: Maybe<Scalars['Boolean']>;
-  userErrors: Array<UserError>;
-};
-
-export type ConfirmResendPayload = {
-  __typename?: 'ConfirmResendPayload';
-  resent?: Maybe<Scalars['Boolean']>;
-  userErrors: Array<UserError>;
-};
-
 export type CredentialsInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -112,7 +100,10 @@ export type Project = {
   id: Scalars['ID'];
   name: Scalars['String'];
   sequence: Scalars['Int'];
+  tickets: Array<Ticket>;
   updatedAt?: Maybe<Scalars['String']>;
+  user: User;
+  userId: Scalars['String'];
 };
 
 export type ProjectCreateInput = {
@@ -144,7 +135,7 @@ export type ProjectUpdateInput = {
 
 export type ProjectsPayload = {
   __typename?: 'ProjectsPayload';
-  projects?: Maybe<Array<Maybe<Project>>>;
+  projects: Array<Project>;
   userErrors: Array<UserError>;
 };
 
@@ -312,8 +303,8 @@ export type User = {
   email: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  projects?: Maybe<Array<Project>>;
-  tickets?: Maybe<Array<Ticket>>;
+  projects: Array<Project>;
+  tickets: Array<Ticket>;
   updatedAt?: Maybe<Scalars['String']>;
 };
 

@@ -9,6 +9,8 @@ import {
   ProjectsPayload,
   QueryGetMyProjectArgs,
   QueryGetMyProjectIdByNameArgs,
+  ResolversParentTypes,
+  Ticket,
 } from '../../types/graphql-generated/graphql';
 
 import { createProjectUseCase } from '../../use-case/project-use-case/create-project.use-case';
@@ -16,6 +18,7 @@ import { deleteProjectUseCase } from '../../use-case/project-use-case/delete-pro
 import { getMyProjectByNameUseCase } from '../../use-case/project-use-case/get-my-project-id-by-name.use-case';
 import { getMyProjectUseCase } from '../../use-case/project-use-case/get-my-project.use-case';
 import { getMyProjectsUseCase } from '../../use-case/project-use-case/get-my-projects.use-case';
+import { getProjectWithTicketsUseCase } from '../../use-case/project-use-case/get-project-with-tickets.use-case';
 import { updateProjectUseCase } from '../../use-case/project-use-case/update-project.use-case';
 
 export const projectGQLResolver = {
@@ -63,6 +66,15 @@ export const projectGQLResolver = {
       context: ApolloContext
     ): Promise<ProjectDeletePayload> => {
       return await deleteProjectUseCase({ args, context });
+    },
+  },
+  Project: {
+    tickets: async (
+      parent: ResolversParentTypes['Project'],
+      _args: any,
+      context: ApolloContext
+    ): Promise<Ticket> => {
+      return await getProjectWithTicketsUseCase({ parent, context });
     },
   },
 };

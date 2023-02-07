@@ -86,6 +86,8 @@ export const signinUseCase = async (
       ...userByEmail,
       createdAt: userByEmail.createdAt.toISOString(),
       updatedAt: userByEmail.updatedAt.toISOString(),
+      tickets: [], // Update later!
+      projects: [], // Update later!
     },
   };
 };
