@@ -2,7 +2,8 @@ import { ApolloContext } from '../../apollo';
 import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { JWTVerify } from '../../helpers/jwt';
 import { userError } from '../../helpers/user-error';
-import { QueryVerifyUserArgs, VerifyPayload } from '../../types/types';
+import { QueryVerifyUserArgs } from '../../types/graphql-generated/graphql';
+import { VerifyPayload } from '../../types/types';
 
 export type VerifyUserInput = {
   args: QueryVerifyUserArgs;

@@ -5,12 +5,10 @@ import {
   MutationConfirmUserArgs,
   MutationSigninArgs,
   MutationSignupArgs,
-} from '../../types/graphql-generated/graphql';
-import {
   QueryVerifyUserArgs,
-  SigninPayload,
-  VerifyPayload,
-} from '../../types/types';
+} from '../../types/graphql-generated/graphql';
+import { SigninPayload, VerifyPayload } from '../../types/types';
+
 import { confirmResendUseCase } from '../../use-case/auth-use-case/confirm-resend.use-case';
 import { confirmUserUseCase } from '../../use-case/auth-use-case/confirm-user.use-case';
 import { signinUseCase } from '../../use-case/auth-use-case/signin.use-case';
