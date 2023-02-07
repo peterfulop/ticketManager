@@ -9,7 +9,7 @@ import { useForm } from '../../hooks/use-form.hook';
 import { RoutePath } from '../../types/enums/routes.enum';
 import { sSTE } from '../../utils/set-server-type-error';
 import EnStrings from '../../utils/strings';
-import { useSignupMutation } from './query/signup.generated';
+import { useSignupMutation } from './graphql/signup.generated';
 
 const FormContainer = styled.div({
   margin: '2rem',

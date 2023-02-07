@@ -27,7 +27,7 @@ const ModalBox = styled.div({
   justifyContent: 'flex-start',
   background: 'white',
   padding: '1rem',
-  borderRadius: '1rem',
+  borderRadius: '.5rem',
   transition: 'transform 0.25s ease',
 });
 

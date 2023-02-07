@@ -13,7 +13,7 @@ import { sSTE } from '../../utils/set-server-type-error';
 import {
   useConfirmResendMutation,
   useSigninMutation,
-} from './query/login.generated';
+} from './graphql/login.generated';
 
 const FormContainer = styled.div({
   margin: '2rem',
@@ -81,7 +81,7 @@ export const LoginPage: FC = () => {
           user,
         },
       });
-      navigate(RoutePath.PROFILE);
+      navigate(RoutePath.PROJECTS);
     }
   };
 

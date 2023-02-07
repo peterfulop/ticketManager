@@ -12,6 +12,12 @@ export const NavigationItem: FC<INavigationItem> = (props) => {
     <NavLink
       to={props.to}
       className={({ isActive }) => (isActive ? 'link-active' : 'link')}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
+      }}
     >
       {props.children}
     </NavLink>

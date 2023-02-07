@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useConfirmUserMutation } from '../../apollo/common-queries/auth.generated';
+import { useConfirmUserMutation } from '../../apollo/graphql/auth.generated';
 import { MainContainer } from '../../components/main-content/main-content';
 import { MyAlert } from '../../components/my-alert/my-alert';
 import { RoutePath } from '../../types/enums/routes.enum';
