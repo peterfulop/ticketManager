@@ -3,7 +3,7 @@ mutation ConfirmUser($token: String!) {
     userErrors {
       message
     }
-    confirmed
+    success
   }
 }
 

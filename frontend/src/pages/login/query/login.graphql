@@ -19,6 +19,6 @@ mutation ConfirmResend($email: String!) {
       message
       values
     }
-    resent
+    success
   }
 }

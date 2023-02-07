@@ -1,14 +1,12 @@
 import { ApolloContext } from '../../apollo';
 import {
   AuthPayload,
-  ConfirmPayload,
   MutationConfirmResendArgs,
   MutationConfirmUserArgs,
   MutationSigninArgs,
   MutationSignupArgs,
 } from '../../types/graphql-generated/graphql';
 import {
-  ConfirmResendPayload,
   QueryVerifyUserArgs,
   SigninPayload,
   VerifyPayload,
@@ -48,14 +46,14 @@ export const authGQLResolver = {
       _parent: any,
       args: MutationConfirmUserArgs,
       context: ApolloContext
-    ): Promise<ConfirmPayload> => {
+    ): Promise<AuthPayload> => {
       return await confirmUserUseCase({ args, context });
     },
     confirmResend: async (
       _parent: any,
       args: MutationConfirmResendArgs,
       context: ApolloContext
-    ): Promise<ConfirmResendPayload> => {
+    ): Promise<AuthPayload> => {
       return await confirmResendUseCase({ args, context });
     },
   },

@@ -30,7 +30,7 @@ export const ConfirmUser: FC = () => {
       setAlertMessageColor('danger');
       setAlertMessage(errMessage);
     }
-    if (res.data?.confirmUser.confirmed) {
+    if (res.data?.confirmUser.success) {
       setAlertMessageColor('success');
       setAlertMessage(
         `Successfully confirmed your account! Redirecting to the login page...`

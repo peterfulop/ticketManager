@@ -3,8 +3,10 @@ import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { prismaRequestErrorHandler } from '../../helpers/prisma-request-error-handler.helper';
 import { sendEmail } from '../../helpers/send-email';
 import { userError } from '../../helpers/user-error';
-import { MutationConfirmResendArgs } from '../../types/graphql-generated/graphql';
-import { ConfirmResendPayload } from '../../types/types';
+import {
+  AuthPayload,
+  MutationConfirmResendArgs,
+} from '../../types/graphql-generated/graphql';
 import { createConfirmationUrl } from '../../utils/create-confirmation-url';
 
 export type ConfirmResendInput = {
@@ -14,12 +16,12 @@ export type ConfirmResendInput = {
 
 export const confirmResendUseCase = async (
   input: ConfirmResendInput
-): Promise<ConfirmResendPayload> => {
+): Promise<AuthPayload> => {
   const { email } = input.args;
   const { prisma } = input.context;
 
-  const confirmResendPayload: ConfirmResendPayload = {
-    resent: false,
+  const authPayload: AuthPayload = {
+    success: false,
     userErrors: [],
   };
 
@@ -31,7 +33,7 @@ export const confirmResendUseCase = async (
 
   if (!userByEmail || userByEmail.confirmed) {
     return {
-      ...confirmResendPayload,
+      ...authPayload,
       userErrors: [{ ...userError, message: DBErrorMessages.MISSING_RECORD }],
     };
   }
@@ -42,13 +44,13 @@ export const confirmResendUseCase = async (
       createConfirmationUrl(userByEmail.id, userByEmail.email)
     );
     return {
-      ...confirmResendPayload,
-      resent: true,
+      ...authPayload,
+      success: true,
     };
   } catch (error) {
     const { userErrors } = prismaRequestErrorHandler(error);
     return {
-      ...confirmResendPayload,
+      ...authPayload,
       userErrors,
     };
   }

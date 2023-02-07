@@ -107,7 +107,7 @@ export const LoginPage: FC = () => {
       const errMessage = sSTE(res.data.confirmResend.userErrors[0].message);
       setAlertMessage(errMessage);
     }
-    if (res.data?.confirmResend.resent) {
+    if (res.data?.confirmResend.success) {
       setAlertMessageColor('success');
       setAlertMessage('Email successfully resent!');
     }

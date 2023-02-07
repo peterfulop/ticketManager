@@ -24,7 +24,7 @@ export const signupUseCase = async (
   const { prisma } = input.context;
 
   const authPayload: AuthPayload = {
-    token: null,
+    success: false,
     userErrors: [],
   };
 
@@ -91,6 +91,7 @@ export const signupUseCase = async (
 
     return {
       ...authPayload,
+      success: true,
     };
   } catch (error: unknown) {
     return {

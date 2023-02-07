@@ -14,7 +14,7 @@ export type Scalars = {
 
 export type AuthPayload = {
   __typename?: 'AuthPayload';
-  token?: Maybe<Scalars['String']>;
+  success?: Maybe<Scalars['Boolean']>;
   userErrors: Array<UserError>;
 };
 
@@ -44,8 +44,8 @@ export type GetUserPayload = {
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']>;
-  confirmResend: ConfirmResendPayload;
-  confirmUser: ConfirmPayload;
+  confirmResend: AuthPayload;
+  confirmUser: AuthPayload;
   projectCreate: ProjectPayload;
   projectDelete: ProjectDeletePayload;
   projectUpdate: ProjectPayload;

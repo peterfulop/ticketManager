@@ -4,7 +4,7 @@ import { JWTVerify } from '../../helpers/jwt';
 import { prismaRequestErrorHandler } from '../../helpers/prisma-request-error-handler.helper';
 import { userError } from '../../helpers/user-error';
 import {
-  ConfirmPayload,
+  AuthPayload,
   MutationConfirmUserArgs,
 } from '../../types/graphql-generated/graphql';
 
@@ -15,12 +15,12 @@ export type ConfirmUserInput = {
 
 export const confirmUserUseCase = async (
   input: ConfirmUserInput
-): Promise<ConfirmPayload> => {
+): Promise<AuthPayload> => {
   const { token } = input.args;
   const { prisma } = input.context;
 
-  const confirmPayload: ConfirmPayload = {
-    confirmed: null,
+  const authPayload: AuthPayload = {
+    success: false,
     userErrors: [],
   };
 
@@ -28,7 +28,7 @@ export const confirmUserUseCase = async (
 
   if (!user) {
     return {
-      ...confirmPayload,
+      ...authPayload,
       userErrors: [
         {
           ...userError,
@@ -47,14 +47,14 @@ export const confirmUserUseCase = async (
 
   if (!userById) {
     return {
-      ...confirmPayload,
+      ...authPayload,
       userErrors: [{ ...userError, message: DBErrorMessages.MISSING_RECORD }],
     };
   }
 
   if (userById.confirmed) {
     return {
-      ...confirmPayload,
+      ...authPayload,
       userErrors: [
         { ...userError, message: DBErrorMessages.ALREADY_CONFIRMED_USER },
       ],
@@ -71,13 +71,13 @@ export const confirmUserUseCase = async (
       },
     });
     return {
-      ...confirmPayload,
-      confirmed: confirmedUser.confirmed,
+      ...authPayload,
+      success: confirmedUser.confirmed,
     };
   } catch (error) {
     const { userErrors } = prismaRequestErrorHandler(error);
     return {
-      ...confirmPayload,
+      ...authPayload,
       userErrors,
     };
   }

@@ -16,7 +16,7 @@ export type Scalars = {
 
 export type AuthPayload = {
   __typename?: 'AuthPayload';
-  token: Maybe<Scalars['String']>;
+  success: Maybe<Scalars['Boolean']>;
   userErrors: Array<UserError>;
 };
 
@@ -46,8 +46,8 @@ export type GetUserPayload = {
 export type Mutation = {
   __typename?: 'Mutation';
   _: Maybe<Scalars['Boolean']>;
-  confirmResend: ConfirmResendPayload;
-  confirmUser: ConfirmPayload;
+  confirmResend: AuthPayload;
+  confirmUser: AuthPayload;
   projectCreate: ProjectPayload;
   projectDelete: ProjectDeletePayload;
   projectUpdate: ProjectPayload;
@@ -472,7 +472,7 @@ export type ResolversParentTypes = {
 };
 
 export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
-  token: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -497,8 +497,8 @@ export type GetUserPayloadResolvers<ContextType = any, ParentType extends Resolv
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  confirmResend: Resolver<ResolversTypes['ConfirmResendPayload'], ParentType, ContextType, RequireFields<MutationConfirmResendArgs, 'email'>>;
-  confirmUser: Resolver<ResolversTypes['ConfirmPayload'], ParentType, ContextType, RequireFields<MutationConfirmUserArgs, 'token'>>;
+  confirmResend: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationConfirmResendArgs, 'email'>>;
+  confirmUser: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationConfirmUserArgs, 'token'>>;
   projectCreate: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<MutationProjectCreateArgs, 'input'>>;
   projectDelete: Resolver<ResolversTypes['ProjectDeletePayload'], ParentType, ContextType, RequireFields<MutationProjectDeleteArgs, 'id'>>;
   projectUpdate: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<MutationProjectUpdateArgs, 'input'>>;

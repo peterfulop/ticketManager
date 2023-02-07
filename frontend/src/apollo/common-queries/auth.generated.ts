@@ -9,7 +9,7 @@ export type ConfirmUserMutationVariables = Types.Exact<{
 }>;
 
 
-export type ConfirmUserMutation = { __typename?: 'Mutation', confirmUser: { __typename?: 'ConfirmPayload', confirmed?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string }> } };
+export type ConfirmUserMutation = { __typename?: 'Mutation', confirmUser: { __typename?: 'AuthPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string }> } };
 
 export type VerifyUserQueryVariables = Types.Exact<{
   token: Types.Scalars['String'];
@@ -25,7 +25,7 @@ export const ConfirmUserDocument = gql`
     userErrors {
       message
     }
-    confirmed
+    success
   }
 }
     `;
