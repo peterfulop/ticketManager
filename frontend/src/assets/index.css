@@ -22,3 +22,8 @@
   --disabled: #ffffff52;
   --error: rgb(210, 55, 27);
 }
+
+p {
+  margin: 0;
+  padding: 0;
+}

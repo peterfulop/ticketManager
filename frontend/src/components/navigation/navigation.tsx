@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { breakPoints, theme } from '../../assets/theme';
 import UserContext, { initialUserState } from '../../context/user';
+import { translate } from '../../helpers/translate/translate';
+import { TEXT } from '../../helpers/translate/translate-objects';
 import useModal from '../../hooks/use-modal.hook';
 import { RoutePath } from '../../types/enums/routes.enum';
 import { Content } from '../main-content/main-content';
@@ -33,8 +35,6 @@ const Nav = styled.nav({
     background: theme.colors.G40,
   },
   p: {
-    margin: 0,
-    padding: 0,
     [`@media screen and (max-width: ${breakPoints.sm})`]: {
       display: 'none',
     },
@@ -75,7 +75,7 @@ export const Navigation = () => {
           style={{ width: '50%' }}
           onClick={toggle}
         >
-          Back
+          {translate(TEXT.buttons.cancelBtn)}
         </Button>
         <Button
           type='button'
@@ -83,25 +83,25 @@ export const Navigation = () => {
           style={{ width: '50%' }}
           onClick={logout}
         >
-          Log out
+          {translate(TEXT.buttons.logOutBtn)}
         </Button>
       </Modal>
       <Nav>
         <Content>
           <NavigationItem to={RoutePath.HOME}>
             <AiOutlineHome size={20} />
-            <p>Home</p>
+            <p>{translate(TEXT.pages.home.name)}</p>
           </NavigationItem>
           {user ? (
             <Div>
               <NavigationItem to={RoutePath.PROJECTS}>
                 <AiOutlineFundProjectionScreen size={20} />
-                <p>Projects</p>
+                <p>{translate(TEXT.pages.projects.name)}</p>
               </NavigationItem>
 
               <NavigationItem to={RoutePath.PROFILE}>
                 <AiOutlineUser size={20} />
-                <p>Profile</p>
+                <p>{translate(TEXT.pages.profile.name)}</p>
               </NavigationItem>
               <Link
                 to={RoutePath.HOME}
@@ -118,10 +118,10 @@ export const Navigation = () => {
           ) : (
             <Div>
               <NavigationItem to={RoutePath.LOGIN}>
-                <p>LogIn</p>
+                <p>{translate(TEXT.pages.login.name)}</p>
               </NavigationItem>
               <NavigationItem to={RoutePath.SIGNUP}>
-                <p>Register</p>
+                <p>{translate(TEXT.pages.signup.name)}</p>
               </NavigationItem>
             </Div>
           )}

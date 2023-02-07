@@ -5,9 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useConfirmUserMutation } from '../../apollo/graphql/auth.generated';
 import { MainContainer } from '../../components/main-content/main-content';
 import { MyAlert } from '../../components/my-alert/my-alert';
+import { translate, translateERR } from '../../helpers/translate/translate';
+import { TEXT } from '../../helpers/translate/translate-objects';
 import { RoutePath } from '../../types/enums/routes.enum';
-import { sSTE } from '../../utils/set-server-type-error';
-import EnStrings from '../../utils/strings';
 
 export const ConfirmUser: FC = () => {
   const [alertMessage, setAlertMessage] = useState<null | string>(null);
@@ -20,40 +20,49 @@ export const ConfirmUser: FC = () => {
 
   const handleConfirmUser = async () => {
     setAlertMessage(null);
-    const res = await confirmUser({
-      variables: {
-        token: confirmToken as string,
-      },
-    });
-    if (res.data?.confirmUser?.userErrors?.length) {
-      const errMessage = sSTE(res.data.confirmUser.userErrors[0].message);
-      setAlertMessageColor('danger');
-      setAlertMessage(errMessage);
-    }
-    if (res.data?.confirmUser.success) {
-      setAlertMessageColor('success');
-      setAlertMessage(
-        `Successfully confirmed your account! Redirecting to the login page...`
-      );
-      setTimeout(() => {
-        navigate(RoutePath.LOGIN);
-      }, 3000);
+    try {
+      const res = await confirmUser({
+        variables: {
+          token: confirmToken as string,
+        },
+      });
+      if (res.data?.confirmUser?.userErrors?.length) {
+        const errorMessage = res.data.confirmUser.userErrors[0].message;
+        const translatedError = translateERR(errorMessage);
+        setAlertMessageColor('danger');
+        setAlertMessage(translatedError);
+      }
+      if (res.data?.confirmUser.success) {
+        setAlertMessageColor('success');
+        setAlertMessage(
+          translate(
+            TEXT.forms.confirmUserForm.alerts.successfulUserConfirmation
+          )
+        );
+        setTimeout(() => {
+          navigate(RoutePath.LOGIN);
+        }, 3000);
+      }
+    } catch (error) {
+      setAlertMessage(translate(TEXT.ERRORS.SERVER_ERROR));
     }
   };
 
   return (
     <MainContainer>
       <div className='mt-3 p-3'>
-        <h1>{EnStrings.SCREENS.USER_CONFIRM.FORM.LABELS.TITLE}</h1>
+        <h1>{translate(TEXT.forms.confirmUserForm.title)}</h1>
         <p className='mb-3'>
-          {EnStrings.SCREENS.USER_CONFIRM.FORM.LABELS.CONFIRM_TEXT}
+          {translate(TEXT.forms.confirmUserForm.labels.confirmText)}
         </p>
         {alertMessage && (
           <MyAlert variant={alertMessageColor} content={alertMessage} />
         )}
-        <Button type='submit' onClick={handleConfirmUser} disabled={loading}>
-          {EnStrings.SCREENS.USER_CONFIRM.FORM.BUTTONS.USER_CONFIRM_BUTTON}
-        </Button>
+        {!alertMessage && (
+          <Button type='submit' onClick={handleConfirmUser} disabled={loading}>
+            {translate(TEXT.forms.confirmUserForm.buttons.confirmBtn)}
+          </Button>
+        )}
       </div>
     </MainContainer>
   );

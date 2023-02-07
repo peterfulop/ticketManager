@@ -13,7 +13,12 @@ export const MyAlert: FC<IAlertBlock> = ({ variant, heading, content }) => {
   const [show, setShow] = useState(true);
 
   return show ? (
-    <Alert variant={variant} onClose={() => setShow(false)} dismissible>
+    <Alert
+      className='d-flex'
+      variant={variant}
+      onClose={() => setShow(false)}
+      dismissible
+    >
       <Alert.Heading>{heading}</Alert.Heading>
       <p>{content}</p>
     </Alert>

@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { MainContainer } from '../../components/main-content/main-content';
 import { MyAlert } from '../../components/my-alert/my-alert';
+import { translate, translateERR } from '../../helpers/translate/translate';
+import { TEXT } from '../../helpers/translate/translate-objects';
 import { useForm } from '../../hooks/use-form.hook';
 import { RoutePath } from '../../types/enums/routes.enum';
-import { sSTE } from '../../utils/set-server-type-error';
-import EnStrings from '../../utils/strings';
 import { useSignupMutation } from './graphql/signup.generated';
 
 const FormContainer = styled.div({
@@ -39,36 +39,42 @@ export const SignupPage: FC = () => {
   };
 
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('error');
+  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
   const [success, setSuccess] = useState<boolean>(false);
 
-  const [signupMutation, { loading, data }] = useSignupMutation();
+  const [signupMutation, { loading }] = useSignupMutation();
 
   const useFormCallBackFn = async () => {
     setAlertMessage(null);
-    const res = await signupMutation({
-      variables: {
-        input: {
-          name: values.name,
-          credentials: {
-            email: values.email,
-            password: values.password,
+
+    try {
+      const res = await signupMutation({
+        variables: {
+          input: {
+            name: values.name,
+            credentials: {
+              email: values.email,
+              password: values.password,
+            },
+            passwordConfirm: values.passwordConfirm,
           },
-          passwordConfirm: values.passwordConfirm,
         },
-      },
-    });
-    if (res.data?.signup.userErrors.length) {
-      const errMessage = sSTE(res.data.signup.userErrors[0].message);
-      setAlertMessageColor('danger');
-      return setAlertMessage(errMessage);
-    }
-    if (res.data?.signup.success) {
-      setSuccess(res.data?.signup.success);
-      setAlertMessageColor('success');
-      setAlertMessage(
-        'You successfully registered! Please, confirm your acount via email!'
-      );
+      });
+      if (res.data?.signup.userErrors.length) {
+        const errorMessage = res.data.signup.userErrors[0].message;
+        const translatedError = translateERR(errorMessage);
+        setAlertMessageColor('danger');
+        return setAlertMessage(translatedError);
+      }
+      if (res.data?.signup.success) {
+        setSuccess(res.data?.signup.success);
+        setAlertMessageColor('success');
+        setAlertMessage(
+          translate(TEXT.forms.signupForm.alerts.successfullRegistration)
+        );
+      }
+    } catch (error) {
+      setAlertMessage(translate(TEXT.ERRORS.SERVER_ERROR));
     }
   };
 
@@ -94,9 +100,12 @@ export const SignupPage: FC = () => {
             }
           }}
         >
-          <h2>{EnStrings.SCREENS.SIGNUP.FORM.LABELS.TITLE}</h2>
+          <h2>{translate(TEXT.forms.signupForm.title)}</h2>
           <Form.Group className='mb-3'>
-            <Form.Label>{EnStrings.SCREENS.SIGNUP.FORM.LABELS.NAME}</Form.Label>
+            <Form.Label>
+              {' '}
+              {translate(TEXT.forms.signupForm.labels.name)}
+            </Form.Label>
             <Form.Control
               name='name'
               type='text'
@@ -107,11 +116,11 @@ export const SignupPage: FC = () => {
           </Form.Group>
           <Form.Group className='mb-3'>
             <Form.Label>
-              {EnStrings.SCREENS.SIGNUP.FORM.LABELS.EMAIL}
+              {translate(TEXT.forms.signupForm.labels.email)}
             </Form.Label>
             <Form.Control
               name='email'
-              type='text'
+              type='email'
               placeholder=''
               onChange={onChange}
               disabled={loading}
@@ -119,7 +128,7 @@ export const SignupPage: FC = () => {
           </Form.Group>
           <Form.Group className='mb-3'>
             <Form.Label>
-              {EnStrings.SCREENS.SIGNUP.FORM.LABELS.PASSWORD}
+              {translate(TEXT.forms.signupForm.labels.password)}
             </Form.Label>
             <Form.Control
               name='password'
@@ -131,7 +140,7 @@ export const SignupPage: FC = () => {
           </Form.Group>
           <Form.Group className='mb-3'>
             <Form.Label>
-              {EnStrings.SCREENS.SIGNUP.FORM.LABELS.PASSWORD_CONFIRM}
+              {translate(TEXT.forms.signupForm.labels.passwordConfirm)}
             </Form.Label>
             <Form.Control
               name='passwordConfirm'
@@ -153,10 +162,10 @@ export const SignupPage: FC = () => {
                 onClick={() => navigate(RoutePath.LOGIN)}
                 disabled={loading}
               >
-                {EnStrings.SCREENS.SIGNUP.FORM.BUTTONS.LOGIN}
+                {translate(TEXT.forms.signupForm.buttons.loginBtn)}
               </Button>
               <Button type='submit' className='w-50' disabled={loading}>
-                {EnStrings.SCREENS.SIGNIN.FORM.BUTTONS.SIGNIN_BUTTON}
+                {translate(TEXT.forms.signupForm.buttons.signupBtn)}
               </Button>
             </div>
           )}

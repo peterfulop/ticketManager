@@ -6,10 +6,11 @@ import styled from 'styled-components';
 import { MainContainer } from '../../components/main-content/main-content';
 import { MyAlert } from '../../components/my-alert/my-alert';
 import UserContext from '../../context/user';
+import { translate, translateERR } from '../../helpers/translate/translate';
+import { TEXT } from '../../helpers/translate/translate-objects';
 import { useForm } from '../../hooks/use-form.hook';
+import { ServerSideError } from '../../types/enums/db-errors.enum';
 import { RoutePath } from '../../types/enums/routes.enum';
-import EnStrings from '../../utils/en.json';
-import { sSTE } from '../../utils/set-server-type-error';
 import {
   useConfirmResendMutation,
   useSigninMutation,
@@ -42,7 +43,7 @@ export const LoginPage: FC = () => {
   };
 
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('error');
+  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
   const [userConfirmError, setUserConfirmError] = useState<null | boolean>(
     null
   );
@@ -54,34 +55,39 @@ export const LoginPage: FC = () => {
 
   const useFormCallBackFn = async () => {
     setAlertMessage(null);
-    const res = await signinMutation({
-      variables: {
-        input: {
-          email: values.email,
-          password: values.password,
-        },
-      },
-    });
-    if (res.data?.signin.userErrors.length) {
-      const errMessage = sSTE(res.data.signin.userErrors[0].message);
-      if (errMessage === EnStrings.ERRORS.UNCONFIRMED_USER) {
-        setAlertMessageColor('warning');
-        setUserConfirmError(true);
-        return setAlertMessage(errMessage);
-      }
-      setAlertMessageColor('danger');
-      return setAlertMessage(errMessage);
-    }
-    if (res.data?.signin.token && res.data.signin.user) {
-      const { token, user } = res.data.signin;
-      userContext.userDispatch({
-        type: 'login',
-        payload: {
-          token,
-          user,
+    try {
+      const res = await signinMutation({
+        variables: {
+          input: {
+            email: values.email,
+            password: values.password,
+          },
         },
       });
-      navigate(RoutePath.PROJECTS);
+      if (res.data?.signin.userErrors.length) {
+        const errorMessage = res.data.signin.userErrors[0].message;
+        const translatedError = translateERR(errorMessage);
+        if (errorMessage === ServerSideError.UNCONFIRMED_USER) {
+          setAlertMessageColor('warning');
+          setUserConfirmError(true);
+          return setAlertMessage(translate(TEXT.ERRORS.UNCONFIRMED_USER));
+        }
+        setAlertMessageColor('danger');
+        return setAlertMessage(translatedError);
+      }
+      if (res.data?.signin.token && res.data.signin.user) {
+        const { token, user } = res.data.signin;
+        userContext.userDispatch({
+          type: 'login',
+          payload: {
+            token,
+            user,
+          },
+        });
+        navigate(RoutePath.PROJECTS);
+      }
+    } catch (error) {
+      setAlertMessage(translate(TEXT.ERRORS.SERVER_ERROR));
     }
   };
 
@@ -98,18 +104,25 @@ export const LoginPage: FC = () => {
 
   const handleResendConfirmation = async () => {
     setAlertMessage(null);
-    const res = await confirmResendMutation({
-      variables: {
-        email: values.email,
-      },
-    });
-    if (res.data?.confirmResend.userErrors.length) {
-      const errMessage = sSTE(res.data.confirmResend.userErrors[0].message);
-      setAlertMessage(errMessage);
-    }
-    if (res.data?.confirmResend.success) {
-      setAlertMessageColor('success');
-      setAlertMessage('Email successfully resent!');
+    try {
+      const res = await confirmResendMutation({
+        variables: {
+          email: values.email,
+        },
+      });
+      if (res.data?.confirmResend.userErrors.length) {
+        const errorMessage = res.data.confirmResend.userErrors[0].message;
+        const translatedError = translateERR(errorMessage);
+        setAlertMessage(translatedError);
+      }
+      if (res.data?.confirmResend.success) {
+        setAlertMessageColor('success');
+        setAlertMessage(
+          translate(TEXT.forms.loginForm.alerts.successfulEmailResent)
+        );
+      }
+    } catch (error) {
+      setAlertMessage(translate(TEXT.ERRORS.SERVER_ERROR));
     }
   };
 
@@ -124,14 +137,14 @@ export const LoginPage: FC = () => {
             }
           }}
         >
-          <h2>{EnStrings.SCREENS.SIGNIN.FORM.LABELS.TITLE}</h2>
+          <h2>{translate(TEXT.forms.loginForm.title)}</h2>
           <Form.Group className='mb-3'>
             <Form.Label>
-              {EnStrings.SCREENS.SIGNIN.FORM.LABELS.EMAIL}
+              {translate(TEXT.forms.loginForm.labels.email)}
             </Form.Label>
             <Form.Control
               name='email'
-              type='text'
+              type='email'
               placeholder=''
               onChange={onChange}
               disabled={signinLoading || confirmResendLoading}
@@ -139,7 +152,7 @@ export const LoginPage: FC = () => {
           </Form.Group>
           <Form.Group className='mb-3'>
             <Form.Label>
-              {EnStrings.SCREENS.SIGNIN.FORM.LABELS.PASSWORD}
+              {translate(TEXT.forms.loginForm.labels.password)}
             </Form.Label>
             <Form.Control
               name='password'
@@ -160,10 +173,10 @@ export const LoginPage: FC = () => {
                 type='button'
                 onClick={() => navigate(RoutePath.SIGNUP)}
               >
-                {EnStrings.SCREENS.SIGNUP.FORM.BUTTONS.SIGNUP_BUTTON}
+                {translate(TEXT.forms.loginForm.buttons.signupBtn)}
               </Button>
               <Button type='submit' className='w-50'>
-                {EnStrings.SCREENS.SIGNIN.FORM.BUTTONS.SIGNIN_BUTTON}
+                {translate(TEXT.forms.loginForm.buttons.loginBtn)}
               </Button>
             </div>
           )}
@@ -175,7 +188,7 @@ export const LoginPage: FC = () => {
             type='button'
             onClick={handleResendConfirmation}
           >
-            {EnStrings.SCREENS.SIGNIN.FORM.BUTTONS.RESEND_CONFIRM}
+            {translate(TEXT.forms.loginForm.buttons.resendBtn)}
           </Button>
         )}
       </FormContainer>

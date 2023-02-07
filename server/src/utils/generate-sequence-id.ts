@@ -4,6 +4,8 @@ export const generateSequenceId = (params: {
   chars?: number;
 }) => {
   return params.name
+    .split(' ')
+    .join('')
     .slice(0, 3)
     .toUpperCase()
     .concat('-', params.sequence.toString().padStart(params.chars || 4, '0'));

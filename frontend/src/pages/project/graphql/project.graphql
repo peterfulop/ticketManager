@@ -1,0 +1,44 @@
+query GetMyProjects {
+  getMyProjects {
+    userErrors {
+      message
+      values
+    }
+    projects {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query GetMyProject($id: ID!) {
+  getMyProject(id: $id) {
+    userErrors {
+      message
+      values
+    }
+    project {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation ProjectCreate($input: ProjectCreateInput!) {
+  projectCreate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    project {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}
