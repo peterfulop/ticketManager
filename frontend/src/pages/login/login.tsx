@@ -56,7 +56,7 @@ export const LoginPage: FC = () => {
     setAlertMessage(null);
     const res = await signinMutation({
       variables: {
-        signinInput: {
+        input: {
           email: values.email,
           password: values.password,
         },
@@ -162,7 +162,7 @@ export const LoginPage: FC = () => {
               >
                 {EnStrings.SCREENS.SIGNUP.FORM.BUTTONS.SIGNUP_BUTTON}
               </Button>
-              <Button type='submit'>
+              <Button type='submit' className='w-50'>
                 {EnStrings.SCREENS.SIGNIN.FORM.BUTTONS.SIGNIN_BUTTON}
               </Button>
             </div>

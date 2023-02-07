@@ -1,5 +1,5 @@
-mutation Signin($signinInput: CredentialsInput!) {
-  signin(input: $signinInput) {
+mutation Signin($input: CredentialsInput!) {
+  signin(input: $input) {
     userErrors {
       message
       values

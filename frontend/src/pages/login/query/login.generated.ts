@@ -5,7 +5,7 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type SigninMutationVariables = Types.Exact<{
-  signinInput: Types.CredentialsInput;
+  input: Types.CredentialsInput;
 }>;
 
 
@@ -20,8 +20,8 @@ export type ConfirmResendMutation = { __typename?: 'Mutation', confirmResend: { 
 
 
 export const SigninDocument = gql`
-    mutation Signin($signinInput: CredentialsInput!) {
-  signin(input: $signinInput) {
+    mutation Signin($input: CredentialsInput!) {
+  signin(input: $input) {
     userErrors {
       message
       values
@@ -50,7 +50,7 @@ export type SigninMutationFn = Apollo.MutationFunction<SigninMutation, SigninMut
  * @example
  * const [signinMutation, { data, loading, error }] = useSigninMutation({
  *   variables: {
- *      signinInput: // value for 'signinInput'
+ *      input: // value for 'input'
  *   },
  * });
  */

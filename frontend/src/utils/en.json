@@ -4,7 +4,7 @@
     "ONE_FIELD_TO_UPDATE": "Need to have at least one filed to update",
     "MISSING_POST": "Selected post does not exists!",
     "SERVER_ERROR": "Something went wrong!",
-    "MISSING_SIGNUP_DATA": "You must provide a name, email, password and bio to create a user!",
+    "MISSING_SIGNUP_DATA": "You must provide a name, email and password to create a user!",
     "SHORT_PASSWORD": "Your password must be longer than 6 characters!",
     "PASSWORDS_DO_NOT_MATCH": "Your passwords do not match!",
     "MISSING_INPUTS": "All fields are mandatory!",
@@ -58,14 +58,15 @@
     "SIGNUP": {
       "FORM": {
         "LABELS": {
+          "TITLE": "Register",
           "NAME": "Name",
           "EMAIL": "Email",
           "PASSWORD": "Password",
-          "PASSWORD_CONFIRM": "Password confirmation",
-          "BIO": "Bio"
+          "PASSWORD_CONFIRM": "Password confirmation"
         },
         "BUTTONS": {
-          "SIGNUP_BUTTON": "Signup"
+          "SIGNUP_BUTTON": "Signup",
+          "LOGIN": "Login"
         }
       },
       "ERRORS": {
