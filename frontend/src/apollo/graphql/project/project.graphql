@@ -68,6 +68,6 @@ mutation ProjectDelete($id: ID!) {
       message
       values
     }
-    projectName
+    success
   }
 }

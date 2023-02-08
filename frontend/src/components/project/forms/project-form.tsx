@@ -17,6 +17,7 @@ import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
 import { createProjectMutation } from '../../../modules/project-modules/create-project';
+import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
 import { EMutationTypes } from '../../../types/enums/common.enum';
 import { Modal } from '../../modal/modal';
@@ -98,7 +99,13 @@ export const ProjectForm: FC<IProjectForm> = ({
           setAlertMessageColor,
         });
       case EMutationTypes.DELETE:
-        break;
+        return await deleteProjectMutation({
+          projectId: selectedId,
+          setSuccess,
+          deleteProject,
+          setAlertMessage,
+          setAlertMessageColor,
+        });
     }
   };
 
@@ -130,7 +137,7 @@ export const ProjectForm: FC<IProjectForm> = ({
               name='name'
               type='text'
               onChange={onChange}
-              disabled={loading}
+              disabled={loading || mutation === EMutationTypes.DELETE}
               value={values.name}
             />
           </Form.Group>
@@ -138,9 +145,31 @@ export const ProjectForm: FC<IProjectForm> = ({
             <MyAlert variant={alertMessageColor} content={alertMessage} />
           )}
           {!success && (
-            <Button type='submit' className='w-100' disabled={loading}>
-              {translate(TEXT.forms.projectForms[mutation].buttons.submitBtn)}
-            </Button>
+            <div className='d-flex gap-3 justify-content-between'>
+              <Button
+                type='button'
+                variant={'secondary'}
+                className='w-100'
+                disabled={loading}
+                onClick={toggle}
+              >
+                {translate(TEXT.buttons.cancelBtn)}
+              </Button>
+              <Button
+                type='submit'
+                variant={
+                  mutation === EMutationTypes.DELETE
+                    ? 'danger'
+                    : mutation === EMutationTypes.UPDATE
+                    ? 'warning'
+                    : 'primary'
+                }
+                className='w-100'
+                disabled={loading}
+              >
+                {translate(TEXT.forms.projectForms[mutation].buttons.submitBtn)}
+              </Button>
+            </div>
           )}
         </Form>
       </ProjectFormDiv>

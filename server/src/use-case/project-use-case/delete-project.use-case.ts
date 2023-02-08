@@ -21,7 +21,7 @@ export const deleteProjectUseCase = async (
   const { prisma, user } = input.context;
 
   const projectDeletePayload: ProjectDeletePayload = {
-    projectName: '',
+    success: false,
     userErrors: [],
   };
 
@@ -52,7 +52,7 @@ export const deleteProjectUseCase = async (
     await prisma.project.delete({ where: { id } });
     return {
       ...projectDeletePayload,
-      projectName: projectToDelete.name,
+      success: true,
     };
   } catch (error) {
     const { userErrors } = prismaRequestErrorHandler(error);

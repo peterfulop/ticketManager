@@ -49,7 +49,7 @@ export const projectTypeDefs = `#graphql
 
   type ProjectDeletePayload {
     userErrors: [UserError!]!
-    projectName: String
+    success: Boolean
   }
 
 `;

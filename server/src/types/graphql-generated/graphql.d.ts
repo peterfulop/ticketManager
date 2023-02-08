@@ -114,7 +114,7 @@ export type ProjectCreateInput = {
 
 export type ProjectDeletePayload = {
   __typename?: 'ProjectDeletePayload';
-  projectName: Maybe<Scalars['String']>;
+  success: Maybe<Scalars['Boolean']>;
   userErrors: Array<UserError>;
 };
 
@@ -497,7 +497,7 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type ProjectDeletePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProjectDeletePayload'] = ResolversParentTypes['ProjectDeletePayload']> = {
-  projectName: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

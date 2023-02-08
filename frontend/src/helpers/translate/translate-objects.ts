@@ -122,7 +122,7 @@ export const TEXT: Text = {
           },
         },
         buttons: {
-          submitBtn: { ENG: 'update project' },
+          submitBtn: { ENG: 'delete project' },
         },
         alerts: {
           successful: {

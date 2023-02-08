@@ -57,7 +57,7 @@ model Project {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   Ticket    Ticket[]
-  User      User     @relation(fields: [userId], references: [id])
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([userId, name], name: "projectNameIdentifier")
   @@map("projects")
@@ -78,8 +78,8 @@ model Ticket {
   comment     String?
   createdAt   DateTime       @default(now()) @map("created_at")
   updatedAt   DateTime       @default(now()) @updatedAt @map("updated_at")
-  User        User           @relation(fields: [userId], references: [id])
-  Project     Project        @relation(fields: [projectId], references: [id])
+  User        User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Project     Project        @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([userId, projectId, title], name: "titleIdentifier")
   @@unique([userId, projectId, sequenceId], name: "sequenceIdentifier")

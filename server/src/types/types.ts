@@ -112,7 +112,7 @@ export type ProjectCreateInput = {
 
 export type ProjectDeletePayload = {
   __typename?: 'ProjectDeletePayload';
-  projectName?: Maybe<Scalars['String']>;
+  success?: Maybe<Scalars['Boolean']>;
   userErrors: Array<UserError>;
 };
 

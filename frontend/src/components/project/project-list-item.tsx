@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { BiEdit } from 'react-icons/bi';
+import { MdDeleteOutline } from 'react-icons/md';
 import styled from 'styled-components';
 import {
   Project,
@@ -42,7 +43,9 @@ const ListItem = styled.div({
 
 const EditProjectBtn = styled.div({
   display: 'flex',
+  alignItems: 'center',
   justifyContent: 'flex-end',
+  gap: '.5rem',
   width: '100%',
   marginBottom: '5px',
   svg: {
@@ -79,11 +82,24 @@ export const ProjectListItem: FC<IProjectListItem> = ({
       <EditProjectBtn>
         <BiEdit
           size={22}
+          style={{
+            marginTop: '2px',
+          }}
           onClick={(e) => {
             e.stopPropagation();
             setSelectedId(project.id);
             setProjectInitialInputs({ name: project.name });
             setMutationType(EMutationTypes.UPDATE);
+            toggle();
+          }}
+        />
+        <MdDeleteOutline
+          size={22}
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedId(project.id);
+            setProjectInitialInputs({ name: project.name });
+            setMutationType(EMutationTypes.DELETE);
             toggle();
           }}
         />
