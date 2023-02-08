@@ -4,6 +4,7 @@ import { MainContainer } from '../../../components/main-content/main-content';
 import { CreateProject } from '../../../components/project/create-project';
 import { NewProjectButton } from '../../../components/project/new-project-button';
 import { ProjectList } from '../../../components/project/project-list';
+import { UpdateProject } from '../../../components/project/update-project';
 import useModal from '../../../hooks/use-modal.hook';
 import { useGetMyProjectsQuery } from '../graphql/project.generated';
 
@@ -26,10 +27,11 @@ export const ProjectsPage: FC<IProjectsPage> = () => {
   return (
     <>
       <CreateProject toggle={toggle} isOpen={isOpen} refetch={refetch} />
+      <UpdateProject toggle={toggle} isOpen={isOpen} refetch={refetch} />
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
         <NewProjectButton toggle={toggle} />
         {loading && <p>loading...</p>}
-        {!loading && <ProjectList projects={projects} />}
+        {!loading && <ProjectList projects={projects} toggle={toggle} />}
       </MainContainer>
     </>
   );

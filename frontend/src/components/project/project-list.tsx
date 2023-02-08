@@ -22,14 +22,17 @@ const Projects = styled.div({
 
 interface IProjectList extends IReact {
   projects: Project[];
+  toggle: () => void;
 }
 
-export const ProjectList: FC<IProjectList> = ({ projects }) => {
+export const ProjectList: FC<IProjectList> = ({ projects, toggle }) => {
   return (
     <Projects>
       {projects.length ? (
         projects.map((project, key) => {
-          return <ProjectListItem key={key} project={project} />;
+          return (
+            <ProjectListItem key={key} project={project} toggle={toggle} />
+          );
         })
       ) : (
         <p>{translate(TEXT.pages.projects.labels.noProjects)}</p>

@@ -14,10 +14,10 @@ const ModalOverlay = styled.div({
   height: '100vh',
   position: 'absolute',
   top: 0,
-  background: 'rgba(0, 0, 0, 0.7)',
+  background: 'rgba(0, 0, 0, 0.275)',
   display: 'flex',
   justifyContent: 'center',
-  paddingTop: '2rem',
+  padding: '2rem',
   alignItems: 'center',
 });
 
@@ -71,6 +71,7 @@ interface ModalType extends IReact {
     width?: string | number;
     height?: string | number;
   };
+  component?: any;
 }
 
 const ModalOverlayPositionTop: React.CSSProperties = {
@@ -115,7 +116,10 @@ export const Modal = (props: ModalType) => {
                 <GrClose />
               </CloseButton>
             </ModalBoxTitle>
-            <ModalBoxContent>{props.children}</ModalBoxContent>
+            <ModalBoxContent>
+              {props.component}
+              {props.children}
+            </ModalBoxContent>
           </ModalBox>
         </ModalOverlay>
       )}
