@@ -1,48 +1,48 @@
+import { FC } from 'react';
+import ReactDOM from 'react-dom';
 import { GrClose } from 'react-icons/gr';
 import styled from 'styled-components';
 import { IReact } from '../../types/interfaces/common.interface';
 
+const BackdropDiv = styled.div({
+  position: 'fixed',
+  top: '0',
+  left: '0',
+  width: '100%',
+  height: '100vh',
+  zIndex: ' 20',
+  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+});
+
 const ModalContainer = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  width: '100%',
+  height: '100vh',
+  position: 'absolute',
+  padding: '2rem',
   '.scale': {
     transform: 'scale(1.01)',
   },
 });
 
-const ModalOverlay = styled.div({
-  zIndex: 9999,
-  width: '100vw',
-  height: '100vh',
-  position: 'absolute',
-  top: 0,
-  background: 'rgba(0, 0, 0, 0.275)',
-  display: 'flex',
-  justifyContent: 'center',
-  padding: '2rem',
-  alignItems: 'center',
-});
-
 const ModalBox = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  background: 'white',
+  width: '100%',
+  marginTop: '2rem',
   padding: '1rem',
-  borderRadius: '.5rem',
+  maxWidth: '500px',
+  backgroundColor: 'white',
+  borderRadius: '8px',
+  zIndex: '30',
   transition: 'transform 0.25s ease',
 });
 
-const ModalBoxTitle = styled.div({
+const ModalHeading = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
-});
-
-const ModalBoxContent = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  gap: '1rem',
+  alignItems: 'center',
   width: '100%',
-  marginTop: '1rem',
-  paddingTop: '1rem',
 });
 
 const CloseButton = styled.button({
@@ -61,68 +61,67 @@ const CloseButton = styled.button({
   },
 });
 
-interface ModalType extends IReact {
-  isOpen: boolean;
-  enabledOverlayClose: boolean;
+interface IBackdrop {
   toggle: () => void;
-  title?: string;
-  positionTop?: boolean;
-  modalStyle?: {
-    width?: string | number;
-    height?: string | number;
-  };
-  component?: any;
+  closeOnBackdrop: boolean;
 }
 
-const ModalOverlayPositionTop: React.CSSProperties = {
-  justifyContent: 'center',
-  paddingTop: '5rem',
-  alignItems: 'flex-start',
+const Backdrop: FC<IBackdrop> = ({ toggle, closeOnBackdrop }) => {
+  return (
+    <BackdropDiv
+      onClick={(event) => {
+        if (closeOnBackdrop) {
+          toggle();
+        } else {
+          const modalBox = document.getElementById('modal-box');
+
+          if (event.target === event.currentTarget) {
+            modalBox?.classList.add('scale');
+            setTimeout(() => {
+              modalBox?.classList.remove('scale');
+            }, 100);
+          }
+        }
+      }}
+    />
+  );
 };
 
-export const Modal = (props: ModalType) => {
+const portalElement = document.getElementById('overlays') as HTMLElement;
+
+interface IModal extends IReact {
+  toggle: () => void;
+  children: React.ReactNode;
+  closeOnBackdrop: boolean;
+  title?: string;
+}
+
+export const Modal: FC<IModal> = ({
+  toggle,
+  children,
+  closeOnBackdrop,
+  title,
+}) => {
   return (
-    <ModalContainer>
-      {props.isOpen && (
-        <ModalOverlay
-          style={props?.positionTop ? ModalOverlayPositionTop : undefined}
-          onClick={(event) => {
-            if (props.enabledOverlayClose) {
-              props.toggle();
-            } else {
-              const modalBox = document.getElementById('modal-box');
-              if (event.target === event.currentTarget) {
-                modalBox?.classList.add('scale');
-                setTimeout(() => {
-                  modalBox?.classList.remove('scale');
-                }, 100);
-              }
-            }
-          }}
-        >
-          <ModalBox
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-            id='modal-box'
-            style={{
-              width: props?.modalStyle?.width || '80%',
-              height: props?.modalStyle?.height || '80%',
-            }}
-          >
-            <ModalBoxTitle>
-              <h3>{props.title}</h3>
-              <CloseButton onClick={props.toggle} title='close window'>
+    <>
+      {ReactDOM.createPortal(
+        <Backdrop closeOnBackdrop={closeOnBackdrop} toggle={toggle} />,
+        portalElement
+      )}
+      {ReactDOM.createPortal(
+        <ModalContainer>
+          <ModalBox id='modal-box'>
+            <ModalHeading>
+              <h4>{title}</h4>
+              <CloseButton onClick={toggle} title='close window'>
                 <GrClose />
               </CloseButton>
-            </ModalBoxTitle>
-            <ModalBoxContent>
-              {props.component}
-              {props.children}
-            </ModalBoxContent>
+            </ModalHeading>
+            {children}
           </ModalBox>
-        </ModalOverlay>
+        </ModalContainer>,
+        portalElement
       )}
-    </ModalContainer>
+    </>
   );
 };

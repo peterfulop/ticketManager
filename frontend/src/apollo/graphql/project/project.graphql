@@ -46,3 +46,28 @@ mutation ProjectCreate($input: ProjectCreateInput!) {
     }
   }
 }
+
+mutation ProjectUpdate($input: ProjectUpdateInput!) {
+  projectUpdate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    project {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation ProjectDelete($id: ID!) {
+  projectDelete(id: $id) {
+    userErrors {
+      message
+      values
+    }
+    projectName
+  }
+}

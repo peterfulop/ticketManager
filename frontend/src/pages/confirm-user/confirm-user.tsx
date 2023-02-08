@@ -2,12 +2,12 @@ import { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useConfirmUserMutation } from '../../apollo/graphql/auth.generated';
+import { useConfirmUserMutation } from '../../apollo/graphql/auth/auth.generated';
 import { MainContainer } from '../../components/main-content/main-content';
 import { MyAlert } from '../../components/my-alert/my-alert';
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { RoutePath } from '../../types/enums/routes.enum';
+import { ERoutePath } from '../../types/enums/routes.enum';
 
 export const ConfirmUser: FC = () => {
   const [alertMessage, setAlertMessage] = useState<null | string>(null);
@@ -40,7 +40,7 @@ export const ConfirmUser: FC = () => {
           )
         );
         setTimeout(() => {
-          navigate(RoutePath.LOGIN);
+          navigate(ERoutePath.LOGIN);
         }, 3000);
       }
     } catch (error) {

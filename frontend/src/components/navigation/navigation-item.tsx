@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { RoutePath } from '../../types/enums/routes.enum';
+import { ERoutePath } from '../../types/enums/routes.enum';
 import { IReact } from '../../types/interfaces/common.interface';
 
 interface INavigationItem extends IReact {
-  to: RoutePath;
+  to: ERoutePath;
 }
 
 export const NavigationItem: FC<INavigationItem> = (props) => {

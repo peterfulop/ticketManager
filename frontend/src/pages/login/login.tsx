@@ -3,18 +3,18 @@ import { Button, Form } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import {
+  useConfirmResendMutation,
+  useSigninMutation,
+} from '../../apollo/graphql/auth/auth.generated';
 import { MainContainer } from '../../components/main-content/main-content';
 import { MyAlert } from '../../components/my-alert/my-alert';
 import UserContext from '../../context/user';
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useForm } from '../../hooks/use-form.hook';
-import { ServerSideError } from '../../types/enums/db-errors.enum';
-import { RoutePath } from '../../types/enums/routes.enum';
-import {
-  useConfirmResendMutation,
-  useSigninMutation,
-} from './graphql/login.generated';
+import { EServerSideError } from '../../types/enums/db-errors.enum';
+import { ERoutePath } from '../../types/enums/routes.enum';
 
 const FormContainer = styled.div({
   margin: '2rem',
@@ -67,7 +67,7 @@ export const LoginPage: FC = () => {
       if (res.data?.signin.userErrors.length) {
         const errorMessage = res.data.signin.userErrors[0].message;
         const translatedError = translateERR(errorMessage);
-        if (errorMessage === ServerSideError.UNCONFIRMED_USER) {
+        if (errorMessage === EServerSideError.UNCONFIRMED_USER) {
           setAlertMessageColor('warning');
           setUserConfirmError(true);
           return setAlertMessage(translate(TEXT.ERRORS.UNCONFIRMED_USER));
@@ -84,7 +84,7 @@ export const LoginPage: FC = () => {
             user,
           },
         });
-        navigate(RoutePath.PROJECTS);
+        navigate(ERoutePath.PROJECTS);
       }
     } catch (error) {
       setAlertMessage(translate(TEXT.ERRORS.SERVER_ERROR));
@@ -171,7 +171,7 @@ export const LoginPage: FC = () => {
                 name='navigate-to-signup'
                 variant='link'
                 type='button'
-                onClick={() => navigate(RoutePath.SIGNUP)}
+                onClick={() => navigate(ERoutePath.SIGNUP)}
               >
                 {translate(TEXT.forms.loginForm.buttons.signupBtn)}
               </Button>

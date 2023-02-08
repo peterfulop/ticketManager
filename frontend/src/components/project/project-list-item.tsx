@@ -1,9 +1,13 @@
 import { FC } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import styled from 'styled-components';
-import { Project } from '../../apollo/graphql-generated/types';
+import {
+  Project,
+  ProjectCreateInput,
+} from '../../apollo/graphql-generated/types';
 import { breakPoints } from '../../assets/theme';
-import { IReact } from '../../types/interfaces/common.interface';
+import { EMutationTypes } from '../../types/enums/common.enum';
+import { IReact, MutationProps } from '../../types/interfaces/common.interface';
 
 const ListItem = styled.div({
   display: 'flex',
@@ -11,7 +15,8 @@ const ListItem = styled.div({
   justifyContent: 'flex-start',
   alignItems: 'center',
   backgroundColor: 'rgb(255, 255, 255)',
-  maxWidth: '200px',
+  maxWidth: '220px',
+  minWidth: '220px',
   width: '100%',
   padding: '10px 10px 30px 10px',
   borderRadius: '5px',
@@ -50,26 +55,38 @@ const EditProjectBtn = styled.div({
   visibility: 'hidden',
 });
 
-interface IProjectListItem extends IReact {
+interface IProjectListItem extends IReact, MutationProps {
   project: Project;
   toggle: () => void;
+  setProjectInitialInputs: React.Dispatch<
+    React.SetStateAction<ProjectCreateInput>
+  >;
 }
 
-export const ProjectListItem: FC<IProjectListItem> = ({ project, toggle }) => {
+export const ProjectListItem: FC<IProjectListItem> = ({
+  project,
+  toggle,
+  setSelectedId,
+  setMutationType,
+  setProjectInitialInputs,
+}) => {
   return (
     <ListItem
       onClick={() => {
         console.log('most');
       }}
     >
-      <EditProjectBtn
-        id={project.id}
-        onClick={(e) => {
-          e.stopPropagation();
-          toggle();
-        }}
-      >
-        <BiEdit size={22} />
+      <EditProjectBtn>
+        <BiEdit
+          size={22}
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedId(project.id);
+            setProjectInitialInputs({ name: project.name });
+            setMutationType(EMutationTypes.UPDATE);
+            toggle();
+          }}
+        />
       </EditProjectBtn>
       <h6>{project.name}</h6>
       <p>

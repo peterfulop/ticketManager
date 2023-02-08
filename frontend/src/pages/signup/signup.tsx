@@ -3,13 +3,13 @@ import { Button, Form } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSignupMutation } from '../../apollo/graphql/auth/auth.generated';
 import { MainContainer } from '../../components/main-content/main-content';
 import { MyAlert } from '../../components/my-alert/my-alert';
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useForm } from '../../hooks/use-form.hook';
-import { RoutePath } from '../../types/enums/routes.enum';
-import { useSignupMutation } from './graphql/signup.generated';
+import { ERoutePath } from '../../types/enums/routes.enum';
 
 const FormContainer = styled.div({
   margin: '2rem',
@@ -159,7 +159,7 @@ export const SignupPage: FC = () => {
                 name='navigate-to-signup'
                 variant='link'
                 type='button'
-                onClick={() => navigate(RoutePath.LOGIN)}
+                onClick={() => navigate(ERoutePath.LOGIN)}
                 disabled={loading}
               >
                 {translate(TEXT.forms.signupForm.buttons.loginBtn)}

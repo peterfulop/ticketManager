@@ -1,6 +1,6 @@
 import client from '../apollo-client';
 import { User } from '../apollo/graphql-generated/types';
-import { VerifyUserDocument } from '../apollo/graphql/auth.generated';
+import { VerifyUserDocument } from '../apollo/graphql/auth/auth.generated';
 
 type ValidateInputs = {
   token: string;

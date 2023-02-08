@@ -1,28 +1,25 @@
 import { useContext } from 'react';
-import { Button } from 'react-bootstrap';
 import {
   AiOutlineFundProjectionScreen,
   AiOutlineHome,
   AiOutlineUser,
 } from 'react-icons/ai';
 import { TbLogout } from 'react-icons/tb';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { breakPoints, theme } from '../../assets/theme';
-import UserContext, { initialUserState } from '../../context/user';
+import UserContext from '../../context/user';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import useModal from '../../hooks/use-modal.hook';
-import { RoutePath } from '../../types/enums/routes.enum';
+import { useModal } from '../../hooks/use-modal.hook';
+import { ERoutePath } from '../../types/enums/routes.enum';
+import { LogoutForm } from '../logout-form/logout-form';
 import { Content } from '../main-content/main-content';
-import { Modal } from '../modal/modal';
 import { NavigationItem } from './navigation-item';
 
 const Nav = styled.nav({
   display: 'flex',
   justifyContent: 'center',
   background: theme.colors.G10,
-  height: 62,
   a: {
     color: theme.colors.primary,
     textDecoration: 'none',
@@ -44,83 +41,55 @@ const Nav = styled.nav({
 const Div = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
+const LogOutBtn = styled.div({
+  display: 'flex',
+  padding: '1rem',
+  cursor: 'pointer',
+  ':hover': {
+    background: theme.colors.G40,
+  },
 });
 
 export const Navigation = () => {
-  const { isOpen, toggle } = useModal();
-
   const {
     userState: { user },
   } = useContext(UserContext);
-  const userContext = useContext(UserContext);
 
-  const logout = () => {
-    userContext.userDispatch({ type: 'logout', payload: initialUserState });
-    toggle();
-  };
+  const { toggle, isOpen } = useModal();
 
   return (
     <>
-      <Modal
-        isOpen={isOpen}
-        toggle={toggle}
-        enabledOverlayClose={true}
-        title='Logging out?'
-        modalStyle={{ width: 300, height: 'auto' }}
-        positionTop={true}
-      >
-        <Button
-          type='button'
-          variant='secondary'
-          style={{ width: '50%' }}
-          onClick={toggle}
-        >
-          {translate(TEXT.buttons.cancelBtn)}
-        </Button>
-        <Button
-          type='button'
-          variant='success'
-          style={{ width: '50%' }}
-          onClick={logout}
-        >
-          {translate(TEXT.buttons.logOutBtn)}
-        </Button>
-      </Modal>
+      {isOpen && <LogoutForm toggle={toggle} />}
       <Nav>
         <Content>
-          <NavigationItem to={RoutePath.HOME}>
+          <NavigationItem to={ERoutePath.HOME}>
             <AiOutlineHome size={20} />
             <p>{translate(TEXT.pages.home.name)}</p>
           </NavigationItem>
           {user ? (
             <Div>
-              <NavigationItem to={RoutePath.PROJECTS}>
+              <NavigationItem to={ERoutePath.PROJECTS}>
                 <AiOutlineFundProjectionScreen size={20} />
                 <p>{translate(TEXT.pages.projects.name)}</p>
               </NavigationItem>
 
-              <NavigationItem to={RoutePath.PROFILE}>
+              <NavigationItem to={ERoutePath.PROFILE}>
                 <AiOutlineUser size={20} />
                 <p>{translate(TEXT.pages.profile.name)}</p>
               </NavigationItem>
-              <Link
-                to={RoutePath.HOME}
-                onClick={toggle}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
+              <LogOutBtn onClick={toggle}>
                 <TbLogout color='white' size={20} />
-              </Link>
+              </LogOutBtn>
             </Div>
           ) : (
             <Div>
-              <NavigationItem to={RoutePath.LOGIN}>
+              <NavigationItem to={ERoutePath.LOGIN}>
                 <p>{translate(TEXT.pages.login.name)}</p>
               </NavigationItem>
-              <NavigationItem to={RoutePath.SIGNUP}>
+              <NavigationItem to={ERoutePath.SIGNUP}>
                 <p>{translate(TEXT.pages.signup.name)}</p>
               </NavigationItem>
             </Div>

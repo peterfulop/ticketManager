@@ -8,30 +8,30 @@ import { ProjectsPage } from '../pages/project/projects/projects';
 import { SignupPage } from '../pages/signup/signup';
 import { TicketsDetailsPage } from '../pages/ticket/ticket-details/ticket-details';
 import { TicketsPage } from '../pages/ticket/tickets/tickets';
-import { RoutePath } from '../types/enums/routes.enum';
+import { ERoutePath } from '../types/enums/routes.enum';
 import IRoute from '../types/interfaces/route.iterface';
 
 const authRoutes: IRoute[] = [
   {
-    path: RoutePath.LOGIN,
+    path: ERoutePath.LOGIN,
     auth: false,
     component: LoginPage,
     name: 'Login',
   },
   {
-    path: RoutePath.SIGNUP,
+    path: ERoutePath.SIGNUP,
     auth: false,
     component: SignupPage,
     name: 'Register',
   },
   {
-    path: RoutePath.LOGOUT,
+    path: ERoutePath.LOGOUT,
     auth: false,
     component: SignupPage,
     name: 'Logout',
   },
   {
-    path: RoutePath.CONFIRM_USER,
+    path: ERoutePath.CONFIRM_USER,
     auth: false,
     component: ConfirmUser,
     name: 'User confirm',
@@ -40,19 +40,19 @@ const authRoutes: IRoute[] = [
 
 const mainRoutes: IRoute[] = [
   {
-    path: RoutePath.HOME,
+    path: ERoutePath.HOME,
     auth: false,
     component: HomePage,
     name: 'Home',
   },
   {
-    path: RoutePath.PROFILE,
+    path: ERoutePath.PROFILE,
     auth: true,
     component: ProfilePage,
     name: 'Profile',
   },
   {
-    path: RoutePath.NOT_FOUND,
+    path: ERoutePath.NOT_FOUND,
     auth: false,
     component: NotFound,
     name: '404',
@@ -61,13 +61,13 @@ const mainRoutes: IRoute[] = [
 
 const projectRoutes: IRoute[] = [
   {
-    path: RoutePath.PROJECTS,
+    path: ERoutePath.PROJECTS,
     auth: true,
     component: ProjectsPage,
     name: 'Projects page',
   },
   {
-    path: RoutePath.PROJECT_DETAILS,
+    path: ERoutePath.PROJECT_DETAILS,
     auth: true,
     component: ProjectDetailsPage,
     name: 'Project details page',
@@ -76,13 +76,13 @@ const projectRoutes: IRoute[] = [
 
 const ticketRoutes: IRoute[] = [
   {
-    path: RoutePath.TICKETS,
+    path: ERoutePath.TICKETS,
     auth: true,
     component: TicketsPage,
     name: 'Tickets page',
   },
   {
-    path: RoutePath.TICKET_DETAILS,
+    path: ERoutePath.TICKET_DETAILS,
     auth: true,
     component: TicketsDetailsPage,
     name: 'Ticket details page',

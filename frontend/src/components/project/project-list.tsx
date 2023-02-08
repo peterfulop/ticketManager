@@ -1,10 +1,13 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-import { Project } from '../../apollo/graphql-generated/types';
+import {
+  Project,
+  ProjectCreateInput,
+} from '../../apollo/graphql-generated/types';
 import { breakPoints } from '../../assets/theme';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { IReact } from '../../types/interfaces/common.interface';
+import { IReact, MutationProps } from '../../types/interfaces/common.interface';
 import { ProjectListItem } from './project-list-item';
 
 const Projects = styled.div({
@@ -12,6 +15,7 @@ const Projects = styled.div({
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',
+  flexWrap: 'wrap',
   gap: '2rem',
   width: '100%',
   [`@media screen and (max-width: ${breakPoints.sm})`]: {
@@ -20,18 +24,36 @@ const Projects = styled.div({
   },
 });
 
-interface IProjectList extends IReact {
+interface IProjectList extends IReact, MutationProps {
   projects: Project[];
   toggle: () => void;
+  setProjectInitialInputs: React.Dispatch<
+    React.SetStateAction<ProjectCreateInput>
+  >;
 }
 
-export const ProjectList: FC<IProjectList> = ({ projects, toggle }) => {
+export const ProjectList: FC<IProjectList> = ({
+  projects,
+  toggle,
+  setProjectInitialInputs,
+  setMutationType,
+  setSelectedId,
+  selectedId,
+}) => {
   return (
     <Projects>
       {projects.length ? (
         projects.map((project, key) => {
           return (
-            <ProjectListItem key={key} project={project} toggle={toggle} />
+            <ProjectListItem
+              key={key}
+              project={project}
+              toggle={toggle}
+              setProjectInitialInputs={setProjectInitialInputs}
+              setMutationType={setMutationType}
+              setSelectedId={setSelectedId}
+              selectedId={selectedId}
+            />
           );
         })
       ) : (

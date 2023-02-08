@@ -81,31 +81,54 @@ export const TEXT: Text = {
         },
       },
     },
-    createProjectForm: {
-      title: { ENG: 'Create new project' },
-      labels: {
-        projectName: {
-          ENG: 'Project name:',
+    projectForms: {
+      CREATE: {
+        title: { ENG: 'Create new project' },
+        labels: {
+          name: {
+            ENG: 'Project name:',
+          },
+        },
+        buttons: {
+          submitBtn: { ENG: 'create project' },
+        },
+        alerts: {
+          successful: {
+            ENG: 'You successfully created the project!',
+          },
         },
       },
-      buttons: {
-        createProjectBtn: { ENG: 'create project' },
-      },
-      alerts: {
-        successfulProjectCreation: {
-          ENG: 'You successfully created the project!',
+      UPDATE: {
+        title: { ENG: 'Update project' },
+        labels: {
+          name: {
+            ENG: 'Current name:',
+          },
+        },
+        buttons: {
+          submitBtn: { ENG: 'update project' },
+        },
+        alerts: {
+          successful: {
+            ENG: 'You successfully updated the project!',
+          },
         },
       },
-    },
-    updateProjectForm: {
-      title: { ENG: 'Create new project' },
-      labels: {
-        projectName: {
-          ENG: 'Project name:',
+      DELETE: {
+        title: { ENG: 'Delete project' },
+        labels: {
+          name: {
+            ENG: 'Current project:',
+          },
         },
-      },
-      buttons: {
-        createProjectBtn: { ENG: 'create project' },
+        buttons: {
+          submitBtn: { ENG: 'update project' },
+        },
+        alerts: {
+          successful: {
+            ENG: 'You successfully deleted the project, and the connected tickets!',
+          },
+        },
       },
     },
   },

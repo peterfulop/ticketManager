@@ -1,4 +1,4 @@
-export enum RoutePath {
+export enum ERoutePath {
   HOME = '/',
   NOT_FOUND = '/*',
   SIGNUP = '/signup',

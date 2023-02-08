@@ -1,10 +1,29 @@
-import { ServerSideError } from '../../types/enums/db-errors.enum';
+import { EMutationTypes, EProjectInputs } from '../../types/enums/common.enum';
+import { EServerSideError } from '../../types/enums/db-errors.enum';
 
 export enum Languages {
   ENG = 'ENG',
 }
 
 export type Content = Record<Languages, string>;
+
+type Form = {
+  title: Content;
+  buttons: {
+    backBtn?: Content;
+    submitBtn: Content;
+  };
+  alerts: {
+    successful: Content;
+  };
+};
+
+type ProjectForms = Record<
+  EMutationTypes,
+  Form & {
+    labels: Record<EProjectInputs, Content>;
+  }
+>;
 
 export type Text = {
   pages: {
@@ -79,27 +98,7 @@ export type Text = {
         successfulUserConfirmation: Content;
       };
     };
-    createProjectForm: {
-      title: Content;
-      labels: {
-        projectName: Content;
-      };
-      buttons: {
-        createProjectBtn: Content;
-      };
-      alerts: {
-        successfulProjectCreation: Content;
-      };
-    };
-    updateProjectForm: {
-      title: Content;
-      labels: {
-        projectName: Content;
-      };
-      buttons: {
-        createProjectBtn: Content;
-      };
-    };
+    projectForms: ProjectForms;
   };
   buttons: {
     addNewBtn: Content;
@@ -120,6 +119,6 @@ export type Text = {
 };
 
 export type ServerSideErrorObject = Record<
-  keyof typeof ServerSideError,
+  keyof typeof EServerSideError,
   Content
 >;
