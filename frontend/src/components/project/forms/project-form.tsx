@@ -19,7 +19,7 @@ import { useForm } from '../../../hooks/use-form.hook';
 import { createProjectMutation } from '../../../modules/project-modules/create-project';
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
-import { EMutationTypes } from '../../../types/enums/common.enum';
+import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
 import { Modal } from '../../modal/modal';
 import { MyAlert } from '../../my-alert/my-alert';
 
@@ -34,7 +34,7 @@ const ProjectFormDiv = styled.div({
 interface IProjectForm {
   projectInitialInputs: ProjectCreateInput;
   selectedId: string;
-  mutation: EMutationTypes;
+  action: MutationTypes;
   toggle: () => void;
   refetch: (
     variables?:
@@ -50,7 +50,7 @@ interface IProjectForm {
 export const ProjectForm: FC<IProjectForm> = ({
   toggle,
   refetch,
-  mutation,
+  action,
   selectedId,
   projectInitialInputs,
 }) => {
@@ -59,20 +59,21 @@ export const ProjectForm: FC<IProjectForm> = ({
 
   const [success, setSuccess] = useState<boolean>(false);
 
-  const [createProject, { loading: createLoading }] =
+  const [createProject, { loading: createLoading, data: createData }] =
     useProjectCreateMutation();
-
-  const [updateProject, { loading: updateLoading }] =
+  const [updateProject, { loading: updateLoading, data: updateData }] =
     useProjectUpdateMutation();
-
-  const [deleteProject, { loading: deleteLoading }] =
+  const [deleteProject, { loading: deleteLoading, data: deleteData }] =
     useProjectDeleteMutation();
 
   const loading = createLoading || updateLoading || deleteLoading;
+  const data = createData || updateData || deleteData;
 
   useEffect(() => {
-    refetch();
-  }, [success]);
+    if (data) {
+      refetch();
+    }
+  }, [data]);
 
   const resetForm = () => {
     setAlertMessage(null);
@@ -80,8 +81,8 @@ export const ProjectForm: FC<IProjectForm> = ({
   };
 
   const selectMutation = async () => {
-    switch (mutation) {
-      case EMutationTypes.CREATE:
+    switch (action) {
+      case EActionTypes.CREATE:
         return await createProjectMutation({
           values,
           setSuccess,
@@ -89,7 +90,7 @@ export const ProjectForm: FC<IProjectForm> = ({
           setAlertMessage,
           setAlertMessageColor,
         });
-      case EMutationTypes.UPDATE:
+      case EActionTypes.UPDATE:
         return await updateProjectMutation({
           projectId: selectedId,
           values,
@@ -98,7 +99,7 @@ export const ProjectForm: FC<IProjectForm> = ({
           setAlertMessage,
           setAlertMessageColor,
         });
-      case EMutationTypes.DELETE:
+      case EActionTypes.DELETE:
         return await deleteProjectMutation({
           projectId: selectedId,
           setSuccess,
@@ -118,7 +119,7 @@ export const ProjectForm: FC<IProjectForm> = ({
     <Modal
       toggle={toggle}
       closeOnBackdrop={true}
-      title={translate(TEXT.forms.projectForms[mutation].title)}
+      title={translate(TEXT.forms.projectForms[action].title)}
     >
       <ProjectFormDiv>
         <Form
@@ -131,13 +132,13 @@ export const ProjectForm: FC<IProjectForm> = ({
         >
           <Form.Group className='mb-3'>
             <Form.Label>
-              {translate(TEXT.forms.projectForms[mutation].labels.name)}
+              {translate(TEXT.forms.projectForms[action].labels.name)}
             </Form.Label>
             <Form.Control
               name='name'
               type='text'
               onChange={onChange}
-              disabled={loading || mutation === EMutationTypes.DELETE}
+              disabled={loading || action === EActionTypes.DELETE}
               value={values.name}
             />
           </Form.Group>
@@ -158,16 +159,16 @@ export const ProjectForm: FC<IProjectForm> = ({
               <Button
                 type='submit'
                 variant={
-                  mutation === EMutationTypes.DELETE
+                  action === EActionTypes.DELETE
                     ? 'danger'
-                    : mutation === EMutationTypes.UPDATE
+                    : action === EActionTypes.UPDATE
                     ? 'warning'
                     : 'primary'
                 }
                 className='w-100'
                 disabled={loading}
               >
-                {translate(TEXT.forms.projectForms[mutation].buttons.submitBtn)}
+                {translate(TEXT.forms.projectForms[action].buttons.submitBtn)}
               </Button>
             </div>
           )}

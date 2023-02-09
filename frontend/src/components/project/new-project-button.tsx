@@ -5,7 +5,7 @@ import { ProjectCreateInput } from '../../apollo/graphql-generated/types';
 import { breakPoints } from '../../assets/theme';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { EMutationTypes } from '../../types/enums/common.enum';
+import { EActionTypes } from '../../types/enums/common.enum';
 
 const NewProject = styled.div({
   display: 'flex',
@@ -30,7 +30,7 @@ const NewProject = styled.div({
 
 interface INewProjectButton {
   toggle: () => void;
-  setMutationType: React.Dispatch<React.SetStateAction<EMutationTypes>>;
+  setActionType: React.Dispatch<React.SetStateAction<EActionTypes>>;
   setProjectInitialInputs: React.Dispatch<
     React.SetStateAction<ProjectCreateInput>
   >;
@@ -38,14 +38,14 @@ interface INewProjectButton {
 
 export const NewProjectButton: FC<INewProjectButton> = ({
   toggle,
-  setMutationType,
+  setActionType,
   setProjectInitialInputs,
 }) => {
   return (
     <NewProject
       onClick={() => {
         setProjectInitialInputs({ name: '' });
-        setMutationType(EMutationTypes.CREATE);
+        setActionType(EActionTypes.CREATE);
         toggle();
       }}
     >

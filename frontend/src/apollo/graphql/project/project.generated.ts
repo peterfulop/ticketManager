@@ -14,7 +14,7 @@ export type GetMyProjectQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetMyProjectQuery = { __typename?: 'Query', getMyProject: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type GetMyProjectQuery = { __typename?: 'Query', getMyProject: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, sequence: number, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, status: Types.TicketStatus }> } | null } };
 
 export type ProjectCreateMutationVariables = Types.Exact<{
   input: Types.ProjectCreateInput;
@@ -95,8 +95,13 @@ export const GetMyProjectDocument = gql`
     project {
       id
       name
+      sequence
       createdAt
       updatedAt
+      tickets {
+        id
+        status
+      }
     }
   }
 }

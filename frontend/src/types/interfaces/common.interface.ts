@@ -1,4 +1,4 @@
-import { EMutationTypes } from '../enums/common.enum';
+import { EActionTypes } from '../enums/common.enum';
 
 export interface IReact {
   children?: React.ReactNode;
@@ -10,7 +10,7 @@ export interface MutationAlerts {
 }
 
 export interface MutationProps {
-  setMutationType: React.Dispatch<React.SetStateAction<EMutationTypes>>;
+  setActionType: React.Dispatch<React.SetStateAction<EActionTypes>>;
   setSelectedId: React.Dispatch<React.SetStateAction<string>>;
   selectedId: string;
 }

@@ -26,8 +26,13 @@ query GetMyProject($id: ID!) {
     project {
       id
       name
+      sequence
       createdAt
       updatedAt
+      tickets {
+        id
+        status
+      }
     }
   }
 }

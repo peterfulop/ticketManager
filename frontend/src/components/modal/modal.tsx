@@ -43,6 +43,9 @@ const ModalHeading = styled.div({
   justifyContent: 'space-between',
   alignItems: 'center',
   width: '100%',
+  h4: {
+    margin: 0,
+  },
 });
 
 const CloseButton = styled.button({

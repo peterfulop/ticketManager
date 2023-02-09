@@ -36,7 +36,7 @@ export const ProjectList: FC<IProjectList> = ({
   projects,
   toggle,
   setProjectInitialInputs,
-  setMutationType,
+  setActionType,
   setSelectedId,
   selectedId,
 }) => {
@@ -50,7 +50,7 @@ export const ProjectList: FC<IProjectList> = ({
               project={project}
               toggle={toggle}
               setProjectInitialInputs={setProjectInitialInputs}
-              setMutationType={setMutationType}
+              setActionType={setActionType}
               setSelectedId={setSelectedId}
               selectedId={selectedId}
             />

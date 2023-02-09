@@ -1,4 +1,4 @@
-import { EMutationTypes, EProjectInputs } from '../../types/enums/common.enum';
+import { EActionTypes, EProjectInputs } from '../../types/enums/common.enum';
 import { EServerSideError } from '../../types/enums/db-errors.enum';
 
 export enum Languages {
@@ -19,7 +19,7 @@ type Form = {
 };
 
 type ProjectForms = Record<
-  EMutationTypes,
+  Exclude<EActionTypes, EActionTypes.READ>,
   Form & {
     labels: Record<EProjectInputs, Content>;
   }
@@ -43,6 +43,12 @@ export type Text = {
       name: Content;
       labels: {
         noProjects: Content;
+        projectDetails: Content;
+        projectName: Content;
+        sequence: Content;
+        tickets: Content;
+        createdAt: Content;
+        updatedAt: Content;
       };
     };
     profile: { name: Content };

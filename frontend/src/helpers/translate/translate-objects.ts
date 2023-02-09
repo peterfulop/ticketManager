@@ -18,6 +18,12 @@ export const TEXT: Text = {
       name: { ENG: 'Projects' },
       labels: {
         noProjects: { ENG: 'No projects yet!' },
+        projectDetails: { ENG: 'Project details' },
+        projectName: { ENG: 'Project name:' },
+        sequence: { ENG: 'Sequence:' },
+        tickets: { ENG: 'Tickets:' },
+        createdAt: { ENG: 'Created at:' },
+        updatedAt: { ENG: 'Updated at:' },
       },
     },
     notFound: {
