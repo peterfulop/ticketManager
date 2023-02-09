@@ -255,27 +255,27 @@ export type TicketPayload = {
 };
 
 export enum TicketPriority {
-  Hight = 'HIGHT',
-  Low = 'LOW',
-  Medium = 'MEDIUM',
-  Urgent = 'URGENT'
+  HIGHT = 'HIGHT',
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  URGENT = 'URGENT'
 }
 
 export enum TicketStatus {
-  Archived = 'ARCHIVED',
-  Backlog = 'BACKLOG',
-  Blocked = 'BLOCKED',
-  Done = 'DONE',
-  InProgress = 'IN_PROGRESS',
-  Review = 'REVIEW',
-  ToDo = 'TO_DO'
+  ARCHIVED = 'ARCHIVED',
+  BACKLOG = 'BACKLOG',
+  BLOCKED = 'BLOCKED',
+  DONE = 'DONE',
+  IN_PROGRESS = 'IN_PROGRESS',
+  REVIEW = 'REVIEW',
+  TO_DO = 'TO_DO'
 }
 
 export enum TicketType {
-  Bug = 'BUG',
-  Epic = 'EPIC',
-  Story = 'STORY',
-  Task = 'TASK'
+  BUG = 'BUG',
+  EPIC = 'EPIC',
+  STORY = 'STORY',
+  TASK = 'TASK'
 }
 
 export type TicketUpdateInput = {

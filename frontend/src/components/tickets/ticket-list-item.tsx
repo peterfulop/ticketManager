@@ -56,6 +56,7 @@ export const TicketListItem: FC<ITicketItem> = ({
   projectName,
 }) => {
   const { id, title, priority, type, storyPoints, sequenceId } = ticketItem;
+
   const ticketHref = `${currentPath}/${id}`;
   const navigate = useNavigate();
 
@@ -68,8 +69,8 @@ export const TicketListItem: FC<ITicketItem> = ({
       <p>{title}</p>
       <TicketItemContent>
         <div className='ticket-item-footer__left'>
-          {<PriorityIcon priority={priority} size={20} />}
-          {<TicketTypeIcon type={type} size={20} />}
+          <PriorityIcon priority={priority} size={20} />
+          <TicketTypeIcon type={type} size={20} />
           <p className='story-points-window'>{storyPoints}</p>
         </div>
         <p>{sequenceId}</p>

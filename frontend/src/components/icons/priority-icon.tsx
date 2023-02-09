@@ -11,24 +11,24 @@ export const PriorityIcon = (props: {
 }) => {
   let icon: JSX.Element;
   switch (props.priority) {
-    case TicketPriority.Urgent:
+    case TicketPriority.URGENT:
       icon = (
-        <BsChevronDoubleUp size={props.size} title={TicketPriority.Urgent} />
+        <BsChevronDoubleUp size={props.size} title={TicketPriority.URGENT} />
       );
       break;
-    case TicketPriority.Hight:
+    case TicketPriority.HIGHT:
       icon = (
-        <BsChevronCompactUp size={props.size} title={TicketPriority.Hight} />
+        <BsChevronCompactUp size={props.size} title={TicketPriority.HIGHT} />
       );
       break;
-    case TicketPriority.Medium:
+    case TicketPriority.MEDIUM:
       icon = (
-        <RxHamburgerMenu size={props.size} title={TicketPriority.Medium} />
+        <RxHamburgerMenu size={props.size} title={TicketPriority.MEDIUM} />
       );
       break;
-    case TicketPriority.Low:
+    case TicketPriority.LOW:
       icon = (
-        <BsChevronDoubleDown size={props.size} title={TicketPriority.Low} />
+        <BsChevronDoubleDown size={props.size} title={TicketPriority.LOW} />
       );
       break;
   }

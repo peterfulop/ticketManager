@@ -24,13 +24,13 @@ export const TicketsPage = () => {
   const TICKET_INITIAL_INPUT: TicketCreateInput = {
     comment: '',
     description: '',
-    priority: TicketPriority.Medium,
+    priority: TicketPriority.MEDIUM,
     projectId: projectId || '',
     references: [],
-    status: TicketStatus.ToDo,
+    status: TicketStatus.TO_DO,
     storyPoints: 1,
     title: '',
-    type: TicketType.Story,
+    type: TicketType.STORY,
   };
 
   const { isOpen, toggle } = useModal();
@@ -49,6 +49,9 @@ export const TicketsPage = () => {
   });
 
   const { data: projectData } = useGetMyProjectQuery({
+    variables: {
+      id: projectId as string,
+    },
     fetchPolicy: 'no-cache',
   });
 

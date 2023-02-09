@@ -2,7 +2,7 @@ import { TicketStatus } from '../apollo/graphql-generated/types';
 
 export type EnabledTicketStatuses = Exclude<
   TicketStatus,
-  TicketStatus.Archived | TicketStatus.Backlog
+  TicketStatus.ARCHIVED | TicketStatus.BACKLOG
 >;
 
 export type TicketStatusOptions = {
@@ -14,12 +14,12 @@ export const ticketStatusObjects: Record<
   EnabledTicketStatuses,
   TicketStatusOptions
 > = {
-  [TicketStatus.ToDo]: {
+  [TicketStatus.TO_DO]: {
     sequence: 1,
     title: 'Todo',
   },
-  [TicketStatus.InProgress]: { sequence: 2, title: 'In progress' },
-  [TicketStatus.Blocked]: { sequence: 3, title: 'Blocked' },
-  [TicketStatus.Review]: { sequence: 4, title: 'Review' },
-  [TicketStatus.Done]: { sequence: 5, title: 'Done' },
+  [TicketStatus.IN_PROGRESS]: { sequence: 2, title: 'In progress' },
+  [TicketStatus.BLOCKED]: { sequence: 3, title: 'Blocked' },
+  [TicketStatus.REVIEW]: { sequence: 4, title: 'Review' },
+  [TicketStatus.DONE]: { sequence: 5, title: 'Done' },
 };

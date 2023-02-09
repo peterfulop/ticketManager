@@ -4,32 +4,32 @@ import { TicketType } from '../../apollo/graphql-generated/types';
 export const TicketTypeIcon = (props: { type: TicketType; size: number }) => {
   let icon: JSX.Element;
   switch (props.type) {
-    case TicketType.Bug:
+    case TicketType.BUG:
       icon = (
-        <BiBug size={props.size} title={TicketType.Bug} color={'tomato'} />
+        <BiBug size={props.size} title={TicketType.BUG} color={'tomato'} />
       );
       break;
-    case TicketType.Epic:
+    case TicketType.EPIC:
       icon = (
         <RiShieldFlashLine
           size={props.size}
-          title={TicketType.Epic}
+          title={TicketType.EPIC}
           color={'orange'}
         />
       );
       break;
-    case TicketType.Story:
+    case TicketType.STORY:
       icon = (
         <BiBookmark
           size={props.size}
-          title={TicketType.Story}
+          title={TicketType.STORY}
           color={'green'}
         />
       );
       break;
-    case TicketType.Task:
+    case TicketType.TASK:
       icon = (
-        <BiTask size={props.size} title={TicketType.Task} color={'blue'} />
+        <BiTask size={props.size} title={TicketType.TASK} color={'blue'} />
       );
       break;
   }
