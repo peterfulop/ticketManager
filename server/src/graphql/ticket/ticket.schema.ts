@@ -99,7 +99,7 @@ export const ticketTypeDefs = `#graphql
 
   type TicketDeletePayload {
     userErrors: [UserError!]!
-    ticketTitle: String
+    success: Boolean
   }
 
 `;

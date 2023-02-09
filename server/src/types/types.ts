@@ -243,7 +243,7 @@ export type TicketCreateInput = {
 
 export type TicketDeletePayload = {
   __typename?: 'TicketDeletePayload';
-  ticketTitle?: Maybe<Scalars['String']>;
+  success?: Maybe<Scalars['Boolean']>;
   userErrors: Array<UserError>;
 };
 

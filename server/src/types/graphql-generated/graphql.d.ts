@@ -245,7 +245,7 @@ export type TicketCreateInput = {
 
 export type TicketDeletePayload = {
   __typename?: 'TicketDeletePayload';
-  ticketTitle: Maybe<Scalars['String']>;
+  success: Maybe<Scalars['Boolean']>;
   userErrors: Array<UserError>;
 };
 
@@ -562,7 +562,7 @@ export type TicketResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type TicketDeletePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketDeletePayload'] = ResolversParentTypes['TicketDeletePayload']> = {
-  ticketTitle: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

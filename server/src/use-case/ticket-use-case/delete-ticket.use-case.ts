@@ -22,7 +22,7 @@ export const deleteTicketUseCase = async (
 
   const ticketPayload: TicketDeletePayload = {
     userErrors: [],
-    ticketTitle: null,
+    success: false,
   };
 
   const ticket = await prisma.ticket.findUnique({ where: { id } });
@@ -52,7 +52,7 @@ export const deleteTicketUseCase = async (
     await prisma.ticket.delete({ where: { id } });
     return {
       ...ticketPayload,
-      ticketTitle: ticket.title,
+      success: true,
     };
   } catch (error) {
     const { userErrors } = prismaRequestErrorHandler(error);

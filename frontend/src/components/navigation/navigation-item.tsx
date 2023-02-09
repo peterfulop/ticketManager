@@ -18,6 +18,7 @@ export const NavigationItem: FC<INavigationItem> = (props) => {
         justifyContent: 'center',
         gap: 10,
       }}
+      end
     >
       {props.children}
     </NavLink>

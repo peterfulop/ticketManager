@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Exact,
-  ProjectCreateInput,
+  TicketCreateInput,
 } from '../../../apollo/graphql-generated/types';
 import {
-  GetMyProjectsQuery,
   useProjectCreateMutation,
   useProjectDeleteMutation,
   useProjectUpdateMutation,
 } from '../../../apollo/graphql/project/project.generated';
+import { GetMyTicketsQuery } from '../../../apollo/graphql/tickets/ticket.generated';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
@@ -33,8 +33,8 @@ const FormDiv = styled.div({
   },
 });
 
-interface IProjectForm {
-  initialValues: ProjectCreateInput;
+interface ITicketForm {
+  initialValues: TicketCreateInput;
   selectedId: string;
   action: MutationTypes;
   toggle: () => void;
@@ -46,15 +46,15 @@ interface IProjectForm {
           }>
         >
       | undefined
-  ) => Promise<ApolloQueryResult<GetMyProjectsQuery>>;
+  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
-export const ProjectForm: FC<IProjectForm> = ({
+export const TicketForm: FC<ITicketForm> = ({
   toggle,
   refetch,
   action,
   selectedId,
-  initialValues,
+  initialValues: projectInitialInputs,
 }) => {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
@@ -116,7 +116,7 @@ export const ProjectForm: FC<IProjectForm> = ({
 
   const { onChange, onSubmit, values } = useForm({
     callback: selectMutation,
-    initialState: initialValues,
+    initialState: projectInitialInputs,
   });
 
   return (

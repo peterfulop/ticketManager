@@ -1,4 +1,35 @@
-import { Text } from './translate.scema';
+import { ETicketInputs } from '../../types/enums/common.enum';
+import { Content, Text } from './translate.scema';
+
+const ticketFormLabels: Record<ETicketInputs, Content> = {
+  name: {
+    ENG: 'ticket name:',
+  },
+  comment: {
+    ENG: 'comment:',
+  },
+  description: {
+    ENG: 'description:',
+  },
+  priority: {
+    ENG: 'priority:',
+  },
+  references: {
+    ENG: 'references:',
+  },
+  status: {
+    ENG: 'status:',
+  },
+  storyPoints: {
+    ENG: 'estimated story points:',
+  },
+  title: {
+    ENG: 'title:',
+  },
+  type: {
+    ENG: 'type:',
+  },
+};
 
 export const TEXT: Text = {
   pages: {
@@ -24,6 +55,12 @@ export const TEXT: Text = {
         tickets: { ENG: 'Tickets:' },
         createdAt: { ENG: 'Created at:' },
         updatedAt: { ENG: 'Updated at:' },
+      },
+    },
+    tickets: {
+      name: { ENG: 'Tickets' },
+      labels: {
+        noTickets: { ENG: 'No tickets yet!' },
       },
     },
     notFound: {
@@ -133,6 +170,44 @@ export const TEXT: Text = {
         alerts: {
           successful: {
             ENG: 'You successfully deleted the project, and the connected tickets!',
+          },
+        },
+      },
+    },
+    ticketForms: {
+      CREATE: {
+        title: { ENG: 'Create new ticket' },
+        labels: ticketFormLabels,
+        buttons: {
+          submitBtn: { ENG: 'create ticket' },
+        },
+        alerts: {
+          successful: {
+            ENG: 'You successfully created the ticket!',
+          },
+        },
+      },
+      UPDATE: {
+        title: { ENG: 'Update ticket' },
+        labels: ticketFormLabels,
+        buttons: {
+          submitBtn: { ENG: 'update ticket' },
+        },
+        alerts: {
+          successful: {
+            ENG: 'You successfully updated the ticket!',
+          },
+        },
+      },
+      DELETE: {
+        title: { ENG: 'Delete ticket' },
+        labels: ticketFormLabels,
+        buttons: {
+          submitBtn: { ENG: 'delete ticket' },
+        },
+        alerts: {
+          successful: {
+            ENG: 'You successfully deleted the ticket!',
           },
         },
       },

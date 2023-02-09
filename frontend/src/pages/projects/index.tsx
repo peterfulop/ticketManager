@@ -7,13 +7,17 @@ import { useGetMyProjectsQuery } from '../../apollo/graphql/project/project.gene
 import { MainContainer } from '../../components/main-content/main-content';
 
 import { useNavigate } from 'react-router-dom';
+import { CreateNewButton } from '../../components/create-new-button/create-new-button';
 import { ProjectForm } from '../../components/projects/forms/project-form';
-import { NewProjectButton } from '../../components/projects/new-project-button';
 import { ProjectDetails } from '../../components/projects/project-details';
 import { ProjectList } from '../../components/projects/project-list';
+import { translate } from '../../helpers/translate/translate';
+import { TEXT } from '../../helpers/translate/translate-objects';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
+
+const PROJECT_INITIAL_VALUES: ProjectCreateInput = { name: '' };
 
 export const ProjectsPage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -22,15 +26,14 @@ export const ProjectsPage = () => {
   );
   const [selectedId, setSelectedId] = useState<string>('');
 
-  const [projectInitialInputs, setProjectInitialInputs] =
-    useState<ProjectCreateInput>({ name: '' });
+  const [projectInitialValues, setProjectInitialValues] =
+    useState<ProjectCreateInput>(PROJECT_INITIAL_VALUES);
 
   const { data, loading, refetch } = useGetMyProjectsQuery({
     fetchPolicy: 'no-cache',
   });
 
   const { isOpen, toggle } = useModal();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,22 +56,25 @@ export const ProjectsPage = () => {
           refetch={refetch}
           action={actionType}
           selectedId={selectedId}
-          projectInitialInputs={projectInitialInputs}
+          initialValues={projectInitialValues}
         />
       )}
       {isOpen && actionType === EActionTypes.READ && (
         <ProjectDetails toggle={toggle} projectId={selectedId} />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <NewProjectButton
+        <CreateNewButton
+          label={translate(TEXT.forms.projectForms.CREATE.buttons.submitBtn)}
           toggle={toggle}
-          setActionType={setActionType}
-          setProjectInitialInputs={setProjectInitialInputs}
+          handleClick={() => {
+            setActionType(EActionTypes.CREATE);
+            setProjectInitialValues(PROJECT_INITIAL_VALUES);
+          }}
         />
         {loading && <p>loading...</p>}
         {!loading && (
           <ProjectList
-            setProjectInitialInputs={setProjectInitialInputs}
+            setProjectInitialInputs={setProjectInitialValues}
             setActionType={setActionType}
             setSelectedId={setSelectedId}
             toggle={toggle}
