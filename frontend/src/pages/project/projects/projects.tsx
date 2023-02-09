@@ -5,10 +5,11 @@ import {
 } from '../../../apollo/graphql-generated/types';
 import { useGetMyProjectsQuery } from '../../../apollo/graphql/project/project.generated';
 import { MainContainer } from '../../../components/main-content/main-content';
-import { ProjectForm } from '../../../components/project/forms/project-form';
-import { NewProjectButton } from '../../../components/project/new-project-button';
-import { ProjectDetails } from '../../../components/project/project-details';
-import { ProjectList } from '../../../components/project/project-list';
+
+import { ProjectForm } from '../../../components/projects/forms/project-form';
+import { NewProjectButton } from '../../../components/projects/new-project-button';
+import { ProjectDetails } from '../../../components/projects/project-details';
+import { ProjectList } from '../../../components/projects/project-list';
 import { useModal } from '../../../hooks/use-modal.hook';
 import { EActionTypes } from '../../../types/enums/common.enum';
 
