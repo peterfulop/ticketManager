@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { BiEdit, BiInfoSquare } from 'react-icons/bi';
 import { MdDeleteOutline } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Project,
@@ -8,6 +9,7 @@ import {
 } from '../../apollo/graphql-generated/types';
 import { breakPoints, theme } from '../../assets/theme';
 import { EActionTypes } from '../../types/enums/common.enum';
+import { ERoutePath } from '../../types/enums/routes.enum';
 import { IReact, MutationProps } from '../../types/interfaces/common.interface';
 
 const ListItem = styled.div({
@@ -27,6 +29,7 @@ const ListItem = styled.div({
     margin: 0,
   },
   ':hover': {
+    cursor: 'pointer',
     boxShadow: '0 5px 10px 0 rgba(9, 30, 66, 0.25)',
     transform: 'scale(1.025)',
   },
@@ -81,10 +84,12 @@ export const ProjectListItem: FC<IProjectListItem> = ({
   setActionType,
   setProjectInitialInputs,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <ListItem
       onClick={() => {
-        console.log('most');
+        navigate(ERoutePath.TICKETS.replace(':projectId', project.id));
       }}
     >
       <h5>{project.name}</h5>
