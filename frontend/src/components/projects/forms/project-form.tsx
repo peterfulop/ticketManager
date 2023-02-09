@@ -2,6 +2,7 @@ import { ApolloQueryResult } from '@apollo/client';
 import { FC, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Exact,
@@ -20,6 +21,7 @@ import { createProjectMutation } from '../../../modules/project-modules/create-p
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
 import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
+import { ERoutePath } from '../../../types/enums/routes.enum';
 import { Modal } from '../../modal/modal';
 import { MyAlert } from '../../my-alert/my-alert';
 
@@ -58,6 +60,8 @@ export const ProjectForm: FC<IProjectForm> = ({
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
 
   const [success, setSuccess] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const [createProject, { loading: createLoading, data: createData }] =
     useProjectCreateMutation();
@@ -152,7 +156,10 @@ export const ProjectForm: FC<IProjectForm> = ({
                 variant={'secondary'}
                 className='w-100'
                 disabled={loading}
-                onClick={toggle}
+                onClick={() => {
+                  navigate(ERoutePath.PROJECTS);
+                  toggle();
+                }}
               >
                 {translate(TEXT.buttons.cancelBtn)}
               </Button>

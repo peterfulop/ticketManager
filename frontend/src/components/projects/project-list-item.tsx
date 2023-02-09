@@ -101,6 +101,9 @@ export const ProjectListItem: FC<IProjectListItem> = ({
         <BiInfoSquare
           size={22}
           onClick={(e) => {
+            navigate(
+              ERoutePath.PROJECTS_DETAILS.replace(':projectId', project.id)
+            );
             e.stopPropagation();
             setSelectedId(project.id);
             setActionType(EActionTypes.READ);
@@ -110,6 +113,9 @@ export const ProjectListItem: FC<IProjectListItem> = ({
         <BiEdit
           size={22}
           onClick={(e) => {
+            navigate(
+              ERoutePath.PROJECTS_DETAILS.replace(':projectId', project.id)
+            );
             e.stopPropagation();
             setSelectedId(project.id);
             setProjectInitialInputs({ name: project.name });
@@ -120,6 +126,9 @@ export const ProjectListItem: FC<IProjectListItem> = ({
         <MdDeleteOutline
           size={22}
           onClick={(e) => {
+            navigate(
+              ERoutePath.PROJECTS_DETAILS.replace(':projectId', project.id)
+            );
             e.stopPropagation();
             setSelectedId(project.id);
             setProjectInitialInputs({ name: project.name });

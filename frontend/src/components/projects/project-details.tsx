@@ -13,12 +13,6 @@ const Details = styled.div({
     marginLeft: '5px',
     fontWeight: 'lighter',
   },
-  // [`@media screen and (max-width: ${breakPoints.sm})`]: {
-  //   p: {
-  //     display: 'none',
-  //   },
-  //   maxWidth: 100,
-  // },
 });
 
 interface IProjectDetails {

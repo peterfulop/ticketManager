@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { ERoutePath } from '../../types/enums/routes.enum';
 
-export const ConfirmUser: FC = () => {
+export const ConfirmUser = () => {
   const [alertMessage, setAlertMessage] = useState<null | string>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
 

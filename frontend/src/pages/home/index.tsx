@@ -1,8 +1,5 @@
-import { FC } from 'react';
 import { MainContainer } from '../../components/main-content/main-content';
 
-interface IHomePage {}
-
-export const HomePage: FC<IHomePage> = () => {
+export const HomePage = () => {
   return <MainContainer>Home</MainContainer>;
 };

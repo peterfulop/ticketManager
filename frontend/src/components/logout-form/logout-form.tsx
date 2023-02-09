@@ -32,14 +32,14 @@ export const LogoutForm: FC<ILogout> = ({ toggle }) => {
   };
 
   return (
-    <Modal toggle={toggle} closeOnBackdrop={false} title='Logging out'>
+    <Modal toggle={() => toggle()} closeOnBackdrop={false} title='Logging out'>
       <Div>
         <div>
           <Button
             type='button'
             variant='secondary'
             style={{ width: '50%' }}
-            onClick={toggle}
+            onClick={() => toggle()}
           >
             {translate(TEXT.buttons.cancelBtn)}
           </Button>

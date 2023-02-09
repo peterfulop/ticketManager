@@ -1,21 +1,21 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Project,
   ProjectCreateInput,
-} from '../../../apollo/graphql-generated/types';
-import { useGetMyProjectsQuery } from '../../../apollo/graphql/project/project.generated';
-import { MainContainer } from '../../../components/main-content/main-content';
+} from '../../apollo/graphql-generated/types';
+import { useGetMyProjectsQuery } from '../../apollo/graphql/project/project.generated';
+import { MainContainer } from '../../components/main-content/main-content';
 
-import { ProjectForm } from '../../../components/projects/forms/project-form';
-import { NewProjectButton } from '../../../components/projects/new-project-button';
-import { ProjectDetails } from '../../../components/projects/project-details';
-import { ProjectList } from '../../../components/projects/project-list';
-import { useModal } from '../../../hooks/use-modal.hook';
-import { EActionTypes } from '../../../types/enums/common.enum';
+import { useNavigate } from 'react-router-dom';
+import { ProjectForm } from '../../components/projects/forms/project-form';
+import { NewProjectButton } from '../../components/projects/new-project-button';
+import { ProjectDetails } from '../../components/projects/project-details';
+import { ProjectList } from '../../components/projects/project-list';
+import { useModal } from '../../hooks/use-modal.hook';
+import { EActionTypes } from '../../types/enums/common.enum';
+import { ERoutePath } from '../../types/enums/routes.enum';
 
-interface IProjectsPage {}
-
-export const ProjectsPage: FC<IProjectsPage> = () => {
+export const ProjectsPage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [actionType, setActionType] = useState<EActionTypes>(
     EActionTypes.CREATE
@@ -31,11 +31,19 @@ export const ProjectsPage: FC<IProjectsPage> = () => {
 
   const { isOpen, toggle } = useModal();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (data?.getMyProjects.projects) {
       setProjects(data?.getMyProjects.projects as Project[]);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      navigate(ERoutePath.PROJECTS);
+    }
+  }, [isOpen]);
 
   return (
     <>

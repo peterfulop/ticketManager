@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ const FormContainer = styled.div({
   },
 });
 
-export const SignupPage: FC = () => {
+export const SignupPage = () => {
   const navigate = useNavigate();
 
   const signupInitialInputs = {

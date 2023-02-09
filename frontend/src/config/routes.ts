@@ -1,13 +1,12 @@
-import { NotFound } from '../pages/404/not-found';
-import { ConfirmUser } from '../pages/confirm-user/confirm-user';
-import { HomePage } from '../pages/home/home';
-import { LoginPage } from '../pages/login/login';
-import { ProfilePage } from '../pages/profile/profile';
-import { ProjectDetailsPage } from '../pages/project/project-details/project-details';
-import { ProjectsPage } from '../pages/project/projects/projects';
-import { SignupPage } from '../pages/signup/signup';
-import { TicketsDetailsPage } from '../pages/ticket/ticket-details/ticket-details';
-import { TicketsPage } from '../pages/ticket/tickets/tickets';
+import { NotFound } from '../pages/404';
+import { ConfirmUser } from '../pages/confirm-user';
+import { HomePage } from '../pages/home';
+import { LoginPage } from '../pages/login';
+import { ProfilePage } from '../pages/profile';
+import { ProjectsPage } from '../pages/projects';
+import { SignupPage } from '../pages/signup';
+import { TicketsPage } from '../pages/tickets';
+
 import { ERoutePath } from '../types/enums/routes.enum';
 import IRoute from '../types/interfaces/route.iterface';
 
@@ -67,10 +66,10 @@ const projectRoutes: IRoute[] = [
     name: 'Projects page',
   },
   {
-    path: ERoutePath.PROJECT_DETAILS,
+    path: ERoutePath.PROJECTS_DETAILS,
     auth: true,
-    component: ProjectDetailsPage,
-    name: 'Project details page',
+    component: ProjectsPage,
+    name: 'Projects page',
   },
 ];
 
@@ -80,12 +79,6 @@ const ticketRoutes: IRoute[] = [
     auth: true,
     component: TicketsPage,
     name: 'Tickets page',
-  },
-  {
-    path: ERoutePath.TICKET_DETAILS,
-    auth: true,
-    component: TicketsDetailsPage,
-    name: 'Ticket details page',
   },
 ];
 
