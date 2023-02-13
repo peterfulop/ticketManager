@@ -9,7 +9,9 @@ export const useForm = (props: IUseForm) => {
   const [values, setValues] = useState(props.initialState);
 
   const onChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };

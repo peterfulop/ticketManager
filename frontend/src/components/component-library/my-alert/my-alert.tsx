@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { Variant } from 'react-bootstrap/esm/types';
-import { IReact } from '../../types/interfaces/common.interface';
+import { IReact } from '../../../types/interfaces/common.interface';
 
 interface IAlertBlock extends IReact {
   variant?: Variant;
@@ -10,12 +10,7 @@ interface IAlertBlock extends IReact {
   dismissible?: boolean;
 }
 
-export const MyAlert: FC<IAlertBlock> = ({
-  variant,
-  heading,
-  content,
-  dismissible,
-}) => {
+export const MyAlert: FC<IAlertBlock> = ({ variant, heading, content }) => {
   const [show, setShow] = useState(true);
 
   return show ? (

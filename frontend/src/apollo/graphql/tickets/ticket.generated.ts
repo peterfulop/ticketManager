@@ -4,17 +4,19 @@ import * as Types from '../../graphql-generated/types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
-export type GetMyTicketsQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type GetMyTicketsQueryVariables = Types.Exact<{
+  input?: Types.InputMaybe<Types.SearchTicketInput>;
+}>;
 
 
-export type GetMyTicketsQuery = { __typename?: 'Query', getMyTickets: { __typename?: 'TicketsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, tickets?: Array<{ __typename?: 'Ticket', id: string, projectId: string, title: string, comment?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null }> | null } };
+export type GetMyTicketsQuery = { __typename?: 'Query', getMyTickets: { __typename?: 'TicketsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, tickets?: Array<{ __typename?: 'Ticket', id: string, projectId: string, title: string, comment?: string | null, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null }> | null } };
 
 export type GetTicketQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
 }>;
 
 
-export type GetTicketQuery = { __typename?: 'Query', getTicket: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, title: string, description?: string | null, comment?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type GetTicketQuery = { __typename?: 'Query', getTicket: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, title: string, comment?: string | null, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type TicketCreateMutationVariables = Types.Exact<{
   input: Types.TicketCreateInput;
@@ -39,8 +41,8 @@ export type TicketUpdateMutation = { __typename?: 'Mutation', ticketUpdate: { __
 
 
 export const GetMyTicketsDocument = gql`
-    query GetMyTickets {
-  getMyTickets {
+    query GetMyTickets($input: SearchTicketInput) {
+  getMyTickets(input: $input) {
     userErrors {
       message
       values
@@ -51,8 +53,12 @@ export const GetMyTicketsDocument = gql`
       title
       comment
       priority
+      storyPoints
+      type
+      description
       status
       references
+      sequenceId
       createdAt
       updatedAt
     }
@@ -72,6 +78,7 @@ export const GetMyTicketsDocument = gql`
  * @example
  * const { data, loading, error } = useGetMyTicketsQuery({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -97,11 +104,14 @@ export const GetTicketDocument = gql`
       id
       projectId
       title
-      description
       comment
       priority
+      storyPoints
+      type
+      description
       status
       references
+      sequenceId
       createdAt
       updatedAt
     }

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import UserContext, { initialUserState } from '../../context/user';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { Modal } from '../modal/modal';
+import { Modal } from '../component-library/modal/modal';
 
 const Div = styled.div({
   display: 'flex',
@@ -32,14 +32,14 @@ export const LogoutForm: FC<ILogout> = ({ toggle }) => {
   };
 
   return (
-    <Modal toggle={() => toggle()} closeOnBackdrop={false} title='Logging out'>
+    <Modal toggle={toggle} closeOnBackdrop={false} title='Logging out'>
       <Div>
         <div>
           <Button
             type='button'
             variant='secondary'
             style={{ width: '50%' }}
-            onClick={() => toggle()}
+            onClick={toggle}
           >
             {translate(TEXT.buttons.cancelBtn)}
           </Button>

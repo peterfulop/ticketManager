@@ -10,7 +10,7 @@ export const Main = styled.main({
 export const Content = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
-  maxWidth: '1024px',
+  maxWidth: '2048px',
   width: '100%',
 });
 

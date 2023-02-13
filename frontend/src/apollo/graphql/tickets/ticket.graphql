@@ -1,5 +1,5 @@
-query GetMyTickets {
-  getMyTickets {
+query GetMyTickets($input: SearchTicketInput) {
+  getMyTickets(input: $input) {
     userErrors {
       message
       values
@@ -10,8 +10,12 @@ query GetMyTickets {
       title
       comment
       priority
+      storyPoints
+      type
+      description
       status
       references
+      sequenceId
       createdAt
       updatedAt
     }
@@ -28,11 +32,14 @@ query GetTicket($id: ID!) {
       id
       projectId
       title
-      description
       comment
       priority
+      storyPoints
+      type
+      description
       status
       references
+      sequenceId
       createdAt
       updatedAt
     }

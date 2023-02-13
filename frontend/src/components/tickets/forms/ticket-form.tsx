@@ -9,21 +9,18 @@ import {
   TicketCreateInput,
 } from '../../../apollo/graphql-generated/types';
 import {
-  useProjectCreateMutation,
-  useProjectDeleteMutation,
-  useProjectUpdateMutation,
-} from '../../../apollo/graphql/project/project.generated';
-import { GetMyTicketsQuery } from '../../../apollo/graphql/tickets/ticket.generated';
+  GetMyTicketsQuery,
+  useTicketCreateMutation,
+  useTicketDeleteMutation,
+  useTicketUpdateMutation,
+} from '../../../apollo/graphql/tickets/ticket.generated';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
-import { createProjectMutation } from '../../../modules/project-modules/create-project';
-import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
-import { updateProjectMutation } from '../../../modules/project-modules/update-project';
+import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
 import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
-import { ERoutePath } from '../../../types/enums/routes.enum';
-import { Modal } from '../../modal/modal';
-import { MyAlert } from '../../my-alert/my-alert';
+import { Modal } from '../../component-library/modal/modal';
+import { MyAlert } from '../../component-library/my-alert/my-alert';
 
 const FormDiv = styled.div({
   form: {
@@ -54,7 +51,7 @@ export const TicketForm: FC<ITicketForm> = ({
   refetch,
   action,
   selectedId,
-  initialValues: projectInitialInputs,
+  initialValues,
 }) => {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
@@ -63,12 +60,12 @@ export const TicketForm: FC<ITicketForm> = ({
 
   const navigate = useNavigate();
 
-  const [createProject, { loading: createLoading, data: createData }] =
-    useProjectCreateMutation();
-  const [updateProject, { loading: updateLoading, data: updateData }] =
-    useProjectUpdateMutation();
-  const [deleteProject, { loading: deleteLoading, data: deleteData }] =
-    useProjectDeleteMutation();
+  const [createTicket, { loading: createLoading, data: createData }] =
+    useTicketCreateMutation();
+  const [updateTicket, { loading: updateLoading, data: updateData }] =
+    useTicketUpdateMutation();
+  const [deleteTicket, { loading: deleteLoading, data: deleteData }] =
+    useTicketDeleteMutation();
 
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;
@@ -87,43 +84,43 @@ export const TicketForm: FC<ITicketForm> = ({
   const selectMutation = async () => {
     switch (action) {
       case EActionTypes.CREATE:
-        return await createProjectMutation({
+        return await createTicketMutation({
           values,
           setSuccess,
-          createProject,
+          createTicket,
           setAlertMessage,
           setAlertMessageColor,
         });
       case EActionTypes.UPDATE:
-        return await updateProjectMutation({
-          projectId: selectedId,
-          values,
-          setSuccess,
-          updateProject,
-          setAlertMessage,
-          setAlertMessageColor,
-        });
+      // return await updateProjectMutation({
+      //   projectId: selectedId,
+      //   values,
+      //   setSuccess,
+      //   updateTicket,
+      //   setAlertMessage,
+      //   setAlertMessageColor,
+      // });
       case EActionTypes.DELETE:
-        return await deleteProjectMutation({
-          projectId: selectedId,
-          setSuccess,
-          deleteProject,
-          setAlertMessage,
-          setAlertMessageColor,
-        });
+      // return await deleteProjectMutation({
+      //   projectId: selectedId,
+      //   setSuccess,
+      //   deleteProject: deleteTicket,
+      //   setAlertMessage,
+      //   setAlertMessageColor,
+      // });
     }
   };
 
   const { onChange, onSubmit, values } = useForm({
     callback: selectMutation,
-    initialState: projectInitialInputs,
+    initialState: initialValues,
   });
 
   return (
     <Modal
       toggle={toggle}
       closeOnBackdrop={true}
-      title={translate(TEXT.forms.projectForms[action].title)}
+      title={translate(TEXT.forms.ticketForms[action].title)}
     >
       <FormDiv>
         <Form
@@ -136,11 +133,49 @@ export const TicketForm: FC<ITicketForm> = ({
         >
           <Form.Group className='mb-3'>
             <Form.Label>
-              {translate(TEXT.forms.projectForms[action].labels.name)}
+              {translate(TEXT.forms.ticketForms[action].labels.name)}
             </Form.Label>
             <Form.Control
               name='name'
               type='text'
+              onChange={onChange}
+              disabled={loading || action === EActionTypes.DELETE}
+              value={values.name}
+            />
+          </Form.Group>
+          <Form.Group className='mb-3'>
+            <Form.Label>
+              {translate(TEXT.forms.ticketForms[action].labels.description)}
+            </Form.Label>
+            <textarea
+              name='description'
+              className='form-control'
+              rows={3}
+              onChange={onChange}
+              disabled={loading || action === EActionTypes.DELETE}
+              value={values.name}
+            />
+          </Form.Group>
+          <Form.Group className='mb-3'>
+            <Form.Label>
+              {translate(TEXT.forms.ticketForms[action].labels.storyPoints)}
+            </Form.Label>
+            <Form.Control
+              name='storyPoints'
+              type='number'
+              defaultValue={1}
+              min={0}
+              onChange={onChange}
+              disabled={loading || action === EActionTypes.DELETE}
+              value={values.name}
+            />
+          </Form.Group>
+          <Form.Group className='mb-3'>
+            <Form.Label>
+              {translate(TEXT.forms.ticketForms[action].labels.storyPoints)}
+            </Form.Label>
+            <Form.Select
+              name='storyPoints'
               onChange={onChange}
               disabled={loading || action === EActionTypes.DELETE}
               value={values.name}
@@ -157,7 +192,6 @@ export const TicketForm: FC<ITicketForm> = ({
                 className='w-100'
                 disabled={loading}
                 onClick={() => {
-                  navigate(ERoutePath.PROJECTS);
                   toggle();
                 }}
               >
@@ -175,7 +209,7 @@ export const TicketForm: FC<ITicketForm> = ({
                 className='w-100'
                 disabled={loading}
               >
-                {translate(TEXT.forms.projectForms[action].buttons.submitBtn)}
+                {translate(TEXT.forms.ticketForms[action].buttons.submitBtn)}
               </Button>
             </div>
           )}

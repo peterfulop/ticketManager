@@ -6,8 +6,9 @@ import {
 import { useGetMyProjectsQuery } from '../../apollo/graphql/project/project.generated';
 import { MainContainer } from '../../components/main-content/main-content';
 
+import { GrAdd } from 'react-icons/gr';
 import { useNavigate } from 'react-router-dom';
-import { CreateNewButton } from '../../components/create-new-button/create-new-button';
+import { MainButton } from '../../components/component-library/main-button/main-button';
 import { ProjectForm } from '../../components/projects/forms/project-form';
 import { ProjectDetails } from '../../components/projects/project-details';
 import { ProjectList } from '../../components/projects/project-list';
@@ -63,14 +64,16 @@ export const ProjectsPage = () => {
         <ProjectDetails toggle={toggle} projectId={selectedId} />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <CreateNewButton
+        <MainButton
           label={translate(TEXT.forms.projectForms.CREATE.buttons.submitBtn)}
           toggle={toggle}
           handleClick={() => {
             setActionType(EActionTypes.CREATE);
             setProjectInitialValues(PROJECT_INITIAL_VALUES);
           }}
-        />
+        >
+          <GrAdd />
+        </MainButton>
         {loading && <p>loading...</p>}
         {!loading && (
           <ProjectList

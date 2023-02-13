@@ -7,8 +7,8 @@ import {
   useConfirmResendMutation,
   useSigninMutation,
 } from '../../apollo/graphql/auth/auth.generated';
+import { MyAlert } from '../../components/component-library/my-alert/my-alert';
 import { MainContainer } from '../../components/main-content/main-content';
-import { MyAlert } from '../../components/my-alert/my-alert';
 import UserContext from '../../context/user';
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';

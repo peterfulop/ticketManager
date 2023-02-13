@@ -1,14 +1,15 @@
 import { FC } from 'react';
-import { GrAdd } from 'react-icons/gr';
 import styled from 'styled-components';
-import { breakPoints } from '../../assets/theme';
+import { breakPoints } from '../../../assets/theme';
+import { IReact } from '../../../types/interfaces/common.interface';
 
-const CreateNew = styled.div({
+const MainBtn = styled.button({
+  background: 'none',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   gap: '.5rem',
-  padding: '.5rem',
+  padding: '.5rem 1rem',
   cursor: 'pointer',
   border: `1px solid lightgray`,
   borderRadius: '5px',
@@ -24,26 +25,27 @@ const CreateNew = styled.div({
   },
 });
 
-interface ICreateNewButton {
+interface ICreateNewButton extends IReact {
   label: string;
-  toggle: () => void;
+  toggle?: () => void;
   handleClick: () => void;
 }
 
-export const CreateNewButton: FC<ICreateNewButton> = ({
+export const MainButton: FC<ICreateNewButton> = ({
   label,
+  children,
   toggle,
   handleClick,
 }) => {
   return (
-    <CreateNew
+    <MainBtn
       onClick={() => {
         handleClick();
-        toggle();
+        if (toggle) toggle();
       }}
     >
-      <GrAdd size={20} />
+      {children}
       <p>{label}</p>
-    </CreateNew>
+    </MainBtn>
   );
 };

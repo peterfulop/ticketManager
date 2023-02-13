@@ -2,7 +2,7 @@ import { FC } from 'react';
 import ReactDOM from 'react-dom';
 import { GrClose } from 'react-icons/gr';
 import styled from 'styled-components';
-import { IReact } from '../../types/interfaces/common.interface';
+import { IReact } from '../../../types/interfaces/common.interface';
 
 const BackdropDiv = styled.div({
   position: 'fixed',
