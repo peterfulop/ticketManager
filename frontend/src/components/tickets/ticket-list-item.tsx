@@ -1,18 +1,11 @@
-import { ApolloQueryResult } from '@apollo/client';
 import { FC } from 'react';
 import styled from 'styled-components';
-import {
-  Exact,
-  Ticket,
-  TicketStatus,
-} from '../../apollo/graphql-generated/types';
-import {
-  GetMyTicketsQuery,
-  useTicketStatusUpdateMutation,
-} from '../../apollo/graphql/tickets/ticket.generated';
+import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
+import { useTicketStatusUpdateMutation } from '../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../assets/theme';
 import { ticketStatuses } from '../../helpers/ticket-statuses';
 import { MainSelectOption } from '../../types';
+import { ITicket } from '../../types/interfaces/ticket.interface';
 import { PriorityIcon } from '../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../component-library/icons/ticket-type-icon';
 import { MainSelect } from '../component-library/main-select/main-select';
@@ -83,17 +76,8 @@ const TicketItemContent = styled.div({
   },
 });
 
-interface ITicketItem {
+interface ITicketItem extends ITicket {
   ticketItem: Ticket;
-  refetch: (
-    variables?:
-      | Partial<
-          Exact<{
-            [key: string]: never;
-          }>
-        >
-      | undefined
-  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
 export const TicketListItem: FC<ITicketItem> = ({ ticketItem, refetch }) => {

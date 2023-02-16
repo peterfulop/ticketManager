@@ -1,12 +1,7 @@
-import { ApolloQueryResult } from '@apollo/client';
 import { FC } from 'react';
 import styled from 'styled-components';
-import {
-  Exact,
-  Ticket,
-  TicketStatus,
-} from '../../apollo/graphql-generated/types';
-import { GetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
+import { ITicket } from '../../types/interfaces/ticket.interface';
 import { TicketListItem } from './ticket-list-item';
 
 const TicketColumnSection = styled.div({
@@ -27,19 +22,10 @@ const TicketItems = styled.div({
   padding: '0.25rem 0',
 });
 
-interface ITicketColumn {
+interface ITicketColumn extends ITicket {
   tickets: Ticket[];
   columnName: string;
   status: TicketStatus;
-  refetch: (
-    variables?:
-      | Partial<
-          Exact<{
-            [key: string]: never;
-          }>
-        >
-      | undefined
-  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
 export const TicketColumn: FC<ITicketColumn> = ({

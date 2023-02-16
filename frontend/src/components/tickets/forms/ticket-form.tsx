@@ -1,18 +1,15 @@
-import { ApolloQueryResult } from '@apollo/client';
 import { FC, useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
-  Exact,
   TicketCreateInput,
   TicketPriority,
   TicketStatus,
   TicketType,
 } from '../../../apollo/graphql-generated/types';
 import {
-  GetMyTicketsQuery,
   useTicketCreateMutation,
   useTicketDeleteMutation,
   useTicketUpdateMutation,
@@ -25,6 +22,7 @@ import { useForm } from '../../../hooks/use-form.hook';
 import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
 import { MainSelectOption } from '../../../types';
 import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
+import { ITicket } from '../../../types/interfaces/ticket.interface';
 import { stringPrettier } from '../../../utils/string-prettier';
 import { PriorityIcon } from '../../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../../component-library/icons/ticket-type-icon';
@@ -43,19 +41,10 @@ const FormDiv = styled.div({
   },
 });
 
-interface ITicketForm {
+interface ITicketForm extends ITicket {
   initialValues: TicketCreateInput;
   action: MutationTypes;
   toggle: () => void;
-  refetch: (
-    variables?:
-      | Partial<
-          Exact<{
-            [key: string]: never;
-          }>
-        >
-      | undefined
-  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
 export const TicketForm: FC<ITicketForm> = ({

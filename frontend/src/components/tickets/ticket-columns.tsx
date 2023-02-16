@@ -1,14 +1,9 @@
-import { ApolloQueryResult } from '@apollo/client';
 import { FC } from 'react';
 import styled from 'styled-components';
-import {
-  Exact,
-  Ticket,
-  TicketStatus,
-} from '../../apollo/graphql-generated/types';
-import { GetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
 import { breakPoints } from '../../assets/theme';
 import { ticketStatuses } from '../../helpers/ticket-statuses';
+import { ITicket } from '../../types/interfaces/ticket.interface';
 import { TicketColumn } from './ticket-column';
 
 const TicketColumnsContainer = styled.div({
@@ -21,17 +16,8 @@ const TicketColumnsContainer = styled.div({
   },
 });
 
-interface ITicketColumns {
+interface ITicketColumns extends ITicket {
   tickets: Ticket[];
-  refetch: (
-    variables?:
-      | Partial<
-          Exact<{
-            [key: string]: never;
-          }>
-        >
-      | undefined
-  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
 export const TicketColumns: FC<ITicketColumns> = ({ tickets, refetch }) => {
