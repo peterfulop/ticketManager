@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --G100: #141414;
+  --G90: #191919;
+  --G80: #1e1e1e;
+  --G70: #232323;
+  --G60: #282828;
+  --G50: #2d2d2d;
+  --G40: #323232;
+  --G30: #373737;
+  --G20: #3c3c3c;
+  --G10: #414141;
+  --G00: '#19191900';
+
+  --primary: white;
+  --secondary: #ffffff8f;
+  --disabled: #ffffff52;
+  --error: rgb(210, 55, 27);
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}

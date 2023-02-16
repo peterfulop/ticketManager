@@ -1,0 +1,78 @@
+query GetMyProjects {
+  getMyProjects {
+    userErrors {
+      message
+      values
+    }
+    projects {
+      id
+      name
+      createdAt
+      updatedAt
+      tickets {
+        id
+        status
+      }
+    }
+  }
+}
+
+query GetMyProject($id: ID!) {
+  getMyProject(id: $id) {
+    userErrors {
+      message
+      values
+    }
+    project {
+      id
+      name
+      sequence
+      createdAt
+      updatedAt
+      tickets {
+        id
+        status
+      }
+    }
+  }
+}
+
+mutation ProjectCreate($input: ProjectCreateInput!) {
+  projectCreate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    project {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation ProjectUpdate($input: ProjectUpdateInput!) {
+  projectUpdate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    project {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation ProjectDelete($id: ID!) {
+  projectDelete(id: $id) {
+    userErrors {
+      message
+      values
+    }
+    success
+  }
+}

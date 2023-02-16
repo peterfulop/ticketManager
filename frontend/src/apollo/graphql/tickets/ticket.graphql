@@ -1,0 +1,123 @@
+query GetMyTickets($input: SearchTicketInput) {
+  getMyTickets(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    tickets {
+      id
+      projectId
+      title
+      comment
+      priority
+      storyPoints
+      type
+      description
+      status
+      references
+      sequenceId
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query GetTicket($id: ID!) {
+  getTicket(id: $id) {
+    userErrors {
+      message
+      values
+    }
+    ticket {
+      id
+      projectId
+      title
+      comment
+      priority
+      storyPoints
+      type
+      description
+      status
+      references
+      sequenceId
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation TicketCreate($input: TicketCreateInput!) {
+  ticketCreate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    ticket {
+      id
+      projectId
+      title
+      description
+      comment
+      priority
+      type
+      storyPoints
+      status
+      sequenceId
+      references
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation TicketDelete($id: ID!) {
+  ticketDelete(id: $id) {
+    userErrors {
+      message
+      values
+    }
+    success
+  }
+}
+
+mutation TicketUpdate($input: TicketUpdateInput!) {
+  ticketUpdate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    ticket {
+      id
+      projectId
+      title
+      description
+      comment
+      priority
+      status
+      references
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation TicketStatusUpdate($input: TicketStatusUpdateInput!) {
+  ticketStatusUpdate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    ticket {
+      id
+      projectId
+      title
+      description
+      comment
+      priority
+      status
+      references
+      createdAt
+      updatedAt
+    }
+  }
+}

@@ -1,0 +1,27 @@
+overwrite: true
+schema:
+  - 'http://localhost:1338/graphql':
+      headers:
+        Authorization: Bearer ${CODEGEN_AUTH_TOKEN}
+documents: 'src/**/*.graphql'
+generates:
+  src/apollo/graphql-generated/types.ts:
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+    config:
+      namingConvention:
+        enumValues: keep
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: ./apollo/graphql-generated/types.ts
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      withHooks: true
