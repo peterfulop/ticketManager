@@ -13,6 +13,7 @@ import { MutationAlerts } from '../../types/interfaces/common.interface';
 
 interface ICreateTicket extends MutationAlerts {
   values: TicketCreateInput;
+  projectId: string;
   createTicket(
     options?:
       | MutationFunctionOptions<
@@ -28,6 +29,7 @@ interface ICreateTicket extends MutationAlerts {
 export const createTicketMutation = async (props: ICreateTicket) => {
   const {
     values,
+    projectId,
     setAlertMessage,
     setAlertMessageColor,
     setSuccess,
@@ -40,6 +42,8 @@ export const createTicketMutation = async (props: ICreateTicket) => {
       variables: {
         input: {
           ...values,
+          projectId,
+          storyPoints: Number(values.storyPoints),
         },
       },
     });

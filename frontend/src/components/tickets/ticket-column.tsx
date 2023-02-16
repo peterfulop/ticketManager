@@ -1,6 +1,12 @@
+import { ApolloQueryResult } from '@apollo/client';
 import { FC } from 'react';
 import styled from 'styled-components';
-import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
+import {
+  Exact,
+  Ticket,
+  TicketStatus,
+} from '../../apollo/graphql-generated/types';
+import { GetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
 import { TicketListItem } from './ticket-list-item';
 
 const TicketColumnSection = styled.div({
@@ -27,14 +33,22 @@ interface ITicketColumn {
   status: TicketStatus;
   currentPath: string;
   projectName: string;
+  refetch: (
+    variables?:
+      | Partial<
+          Exact<{
+            [key: string]: never;
+          }>
+        >
+      | undefined
+  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
 export const TicketColumn: FC<ITicketColumn> = ({
   tickets,
   columnName,
   status,
-  currentPath,
-  projectName,
+  refetch,
 }) => {
   return (
     <TicketColumnSection>
@@ -46,8 +60,7 @@ export const TicketColumn: FC<ITicketColumn> = ({
               <TicketListItem
                 key={index}
                 ticketItem={ticket}
-                currentPath={currentPath}
-                projectName={projectName}
+                refetch={refetch}
               />
             )
           );

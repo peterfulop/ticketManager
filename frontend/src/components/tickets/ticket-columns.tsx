@@ -1,7 +1,14 @@
+import { ApolloQueryResult } from '@apollo/client';
 import { FC } from 'react';
 import styled from 'styled-components';
-import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
-import { ticketStatusObjects } from '../../helpers/ticket-status-settings';
+import {
+  Exact,
+  Ticket,
+  TicketStatus,
+} from '../../apollo/graphql-generated/types';
+import { GetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import { breakPoints } from '../../assets/theme';
+import { ticketStatuses } from '../../helpers/ticket-statuses';
 import { TicketColumn } from './ticket-column';
 
 const TicketColumnsContainer = styled.div({
@@ -9,22 +16,35 @@ const TicketColumnsContainer = styled.div({
   flexDirection: 'row',
   gap: '10px',
   marginTop: '2rem',
+  [`@media screen and (max-width: ${breakPoints.lg})`]: {
+    flexDirection: 'column',
+  },
 });
 
 interface ITicketColumns {
   tickets: Ticket[];
   currentPath: string;
   projectName: string;
+  refetch: (
+    variables?:
+      | Partial<
+          Exact<{
+            [key: string]: never;
+          }>
+        >
+      | undefined
+  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
 export const TicketColumns: FC<ITicketColumns> = ({
   tickets,
+  refetch,
   currentPath,
   projectName,
 }) => {
   return (
     <TicketColumnsContainer>
-      {Object.entries(ticketStatusObjects).map((status, index) => {
+      {Object.entries(ticketStatuses).map((status, index) => {
         return (
           <TicketColumn
             key={index}
@@ -33,6 +53,7 @@ export const TicketColumns: FC<ITicketColumns> = ({
             status={status[0] as TicketStatus}
             columnName={status[1].title.toUpperCase()}
             projectName={projectName}
+            refetch={refetch}
           />
         );
       })}

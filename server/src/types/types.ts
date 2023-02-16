@@ -41,6 +41,7 @@ export type Mutation = {
   signup: AuthPayload;
   ticketCreate: TicketPayload;
   ticketDelete: TicketDeletePayload;
+  ticketStatusUpdate: TicketPayload;
   ticketUpdate: TicketPayload;
 };
 
@@ -87,6 +88,11 @@ export type MutationTicketCreateArgs = {
 
 export type MutationTicketDeleteArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationTicketStatusUpdateArgs = {
+  input: TicketStatusUpdateInput;
 };
 
 
@@ -269,6 +275,11 @@ export enum TicketStatus {
   REVIEW = 'REVIEW',
   TO_DO = 'TO_DO'
 }
+
+export type TicketStatusUpdateInput = {
+  status: TicketStatus;
+  ticketId: Scalars['ID'];
+};
 
 export enum TicketType {
   BUG = 'BUG',

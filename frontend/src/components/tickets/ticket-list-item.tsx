@@ -1,9 +1,21 @@
+import { ApolloQueryResult } from '@apollo/client';
 import { FC } from 'react';
 import styled from 'styled-components';
-import { Ticket } from '../../apollo/graphql-generated/types';
+import {
+  Exact,
+  Ticket,
+  TicketStatus,
+} from '../../apollo/graphql-generated/types';
+import {
+  GetMyTicketsQuery,
+  useTicketStatusUpdateMutation,
+} from '../../apollo/graphql/tickets/ticket.generated';
+import { breakPoints } from '../../assets/theme';
+import { ticketStatuses } from '../../helpers/ticket-statuses';
+import { MainSelectOption } from '../../types';
 import { PriorityIcon } from '../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../component-library/icons/ticket-type-icon';
-import { TicketStatusSelect } from '../ticket-status-select/ticket-status-select';
+import { MainSelect } from '../component-library/main-select/main-select';
 
 const TicketItem = styled.div({
   display: 'flex',
@@ -31,12 +43,19 @@ const TicketItemHeading = styled.div({
   height: '50px',
   justifyContent: 'space-between',
   alignItems: 'flex-start',
+  padding: '5px',
   overflow: 'hidden',
   p: {
     margin: '0 10px 10px 0',
   },
   select: {
     display: 'none',
+    width: '135px',
+    textTransform: 'lowercase',
+  },
+  [`@media screen and (max-width: ${breakPoints.xl})`]: {
+    display: 'block',
+    height: '80px',
   },
 });
 
@@ -46,6 +65,7 @@ const TicketItemContent = styled.div({
   justifyContent: 'space-between',
   alignItems: 'center',
   marginTop: '1rem',
+  padding: '5px',
   '.ticket-item-footer__left': {
     display: 'flex',
     alignItems: 'center',
@@ -65,30 +85,59 @@ const TicketItemContent = styled.div({
 
 interface ITicketItem {
   ticketItem: Ticket;
-  currentPath: string;
-  projectName: string;
+  refetch: (
+    variables?:
+      | Partial<
+          Exact<{
+            [key: string]: never;
+          }>
+        >
+      | undefined
+  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
-export const TicketListItem: FC<ITicketItem> = ({
-  ticketItem,
-  currentPath,
-  projectName,
-}) => {
+export const TicketListItem: FC<ITicketItem> = ({ ticketItem, refetch }) => {
   const { id, title, status, priority, type, storyPoints, sequenceId } =
     ticketItem;
 
-  // const ticketHref = `${currentPath}/${id}`;
-  // const navigate = useNavigate();
+  const handleClick = () => {};
 
-  const handleClick = () => {
-    // navigate(ticketHref);
+  const ticketStatusOptions: MainSelectOption[] = Object.entries(
+    ticketStatuses
+  ).map((obj) => {
+    const status = obj[0];
+    const values = obj[1];
+    return {
+      value: status,
+      content: values.title,
+    };
+  });
+
+  const [updataStatus] = useTicketStatusUpdateMutation();
+
+  const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    await updataStatus({
+      variables: {
+        input: {
+          ticketId: id,
+          status: e.target.value as TicketStatus,
+        },
+      },
+    });
+    await refetch();
   };
 
   return (
     <TicketItem key={id} id={id} onClick={handleClick}>
       <TicketItemHeading>
         <p title={title}>{title}</p>
-        <TicketStatusSelect id={id} currentStatus={status} />
+        <MainSelect
+          id={id}
+          name='ticket-status'
+          value={status}
+          options={ticketStatusOptions}
+          onChange={handleChange}
+        />
       </TicketItemHeading>
       <TicketItemContent>
         <div className='ticket-item-footer__left'>

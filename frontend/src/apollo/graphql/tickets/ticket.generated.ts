@@ -39,6 +39,13 @@ export type TicketUpdateMutationVariables = Types.Exact<{
 
 export type TicketUpdateMutation = { __typename?: 'Mutation', ticketUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, title: string, description?: string | null, comment?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
 
+export type TicketStatusUpdateMutationVariables = Types.Exact<{
+  input: Types.TicketStatusUpdateInput;
+}>;
+
+
+export type TicketStatusUpdateMutation = { __typename?: 'Mutation', ticketStatusUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, title: string, description?: string | null, comment?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
+
 
 export const GetMyTicketsDocument = gql`
     query GetMyTickets($input: SearchTicketInput) {
@@ -282,3 +289,51 @@ export function useTicketUpdateMutation(baseOptions?: Apollo.MutationHookOptions
 export type TicketUpdateMutationHookResult = ReturnType<typeof useTicketUpdateMutation>;
 export type TicketUpdateMutationResult = Apollo.MutationResult<TicketUpdateMutation>;
 export type TicketUpdateMutationOptions = Apollo.BaseMutationOptions<TicketUpdateMutation, TicketUpdateMutationVariables>;
+export const TicketStatusUpdateDocument = gql`
+    mutation TicketStatusUpdate($input: TicketStatusUpdateInput!) {
+  ticketStatusUpdate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    ticket {
+      id
+      projectId
+      title
+      description
+      comment
+      priority
+      status
+      references
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export type TicketStatusUpdateMutationFn = Apollo.MutationFunction<TicketStatusUpdateMutation, TicketStatusUpdateMutationVariables>;
+
+/**
+ * __useTicketStatusUpdateMutation__
+ *
+ * To run a mutation, you first call `useTicketStatusUpdateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTicketStatusUpdateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [ticketStatusUpdateMutation, { data, loading, error }] = useTicketStatusUpdateMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useTicketStatusUpdateMutation(baseOptions?: Apollo.MutationHookOptions<TicketStatusUpdateMutation, TicketStatusUpdateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<TicketStatusUpdateMutation, TicketStatusUpdateMutationVariables>(TicketStatusUpdateDocument, options);
+      }
+export type TicketStatusUpdateMutationHookResult = ReturnType<typeof useTicketStatusUpdateMutation>;
+export type TicketStatusUpdateMutationResult = Apollo.MutationResult<TicketStatusUpdateMutation>;
+export type TicketStatusUpdateMutationOptions = Apollo.BaseMutationOptions<TicketStatusUpdateMutation, TicketStatusUpdateMutationVariables>;

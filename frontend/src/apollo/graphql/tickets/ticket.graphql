@@ -100,3 +100,24 @@ mutation TicketUpdate($input: TicketUpdateInput!) {
     }
   }
 }
+
+mutation TicketStatusUpdate($input: TicketStatusUpdateInput!) {
+  ticketStatusUpdate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    ticket {
+      id
+      projectId
+      title
+      description
+      comment
+      priority
+      status
+      references
+      createdAt
+      updatedAt
+    }
+  }
+}

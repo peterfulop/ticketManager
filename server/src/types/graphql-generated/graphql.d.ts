@@ -43,6 +43,7 @@ export type Mutation = {
   signup: AuthPayload;
   ticketCreate: TicketPayload;
   ticketDelete: TicketDeletePayload;
+  ticketStatusUpdate: TicketPayload;
   ticketUpdate: TicketPayload;
 };
 
@@ -89,6 +90,11 @@ export type MutationTicketCreateArgs = {
 
 export type MutationTicketDeleteArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationTicketStatusUpdateArgs = {
+  input: TicketStatusUpdateInput;
 };
 
 
@@ -272,6 +278,11 @@ export enum TicketStatus {
   TO_DO = 'TO_DO'
 }
 
+export type TicketStatusUpdateInput = {
+  status: TicketStatus;
+  ticketId: Scalars['ID'];
+};
+
 export enum TicketType {
   BUG = 'BUG',
   EPIC = 'EPIC',
@@ -417,6 +428,7 @@ export type ResolversTypes = {
   TicketPayload: ResolverTypeWrapper<TicketPayload>;
   TicketPriority: TicketPriority;
   TicketStatus: TicketStatus;
+  TicketStatusUpdateInput: TicketStatusUpdateInput;
   TicketType: TicketType;
   TicketUpdateInput: TicketUpdateInput;
   TicketsPayload: ResolverTypeWrapper<TicketsPayload>;
@@ -451,6 +463,7 @@ export type ResolversParentTypes = {
   TicketCreateInput: TicketCreateInput;
   TicketDeletePayload: TicketDeletePayload;
   TicketPayload: TicketPayload;
+  TicketStatusUpdateInput: TicketStatusUpdateInput;
   TicketUpdateInput: TicketUpdateInput;
   TicketsPayload: TicketsPayload;
   User: User;
@@ -481,6 +494,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   signup: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'input'>>;
   ticketCreate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketCreateArgs, 'input'>>;
   ticketDelete: Resolver<ResolversTypes['TicketDeletePayload'], ParentType, ContextType, RequireFields<MutationTicketDeleteArgs, 'id'>>;
+  ticketStatusUpdate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketStatusUpdateArgs, 'input'>>;
   ticketUpdate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketUpdateArgs, 'input'>>;
 };
 

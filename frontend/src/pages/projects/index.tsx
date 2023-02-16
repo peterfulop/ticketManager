@@ -64,6 +64,7 @@ export const ProjectsPage = () => {
         <ProjectDetails toggle={toggle} projectId={selectedId} />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
+        <h3 className='mb-3'>{translate(TEXT.pages.projects.name)}</h3>
         <MainButton
           label={translate(TEXT.forms.projectForms.CREATE.buttons.submitBtn)}
           toggle={toggle}

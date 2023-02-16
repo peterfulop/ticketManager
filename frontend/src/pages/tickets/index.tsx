@@ -72,7 +72,7 @@ export const TicketsPage = () => {
   }, [data]);
 
   const currentPATH = window.location.pathname;
-  const projectName = projectData?.getMyProject.project?.name as string;
+  const projectName = projectData?.getMyProject.project?.name;
 
   return (
     <>
@@ -86,6 +86,7 @@ export const TicketsPage = () => {
         />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
+        <h3 className='mb-3'>{projectName}</h3>
         <div className='d-flex justify-content-start gap-2'>
           <MainButton
             label='back'
@@ -108,7 +109,8 @@ export const TicketsPage = () => {
         <TicketColumns
           tickets={tickets as Ticket[]}
           currentPath={currentPATH}
-          projectName={projectName}
+          projectName={projectName as string}
+          refetch={refetch}
         />
       </MainContainer>
     </>

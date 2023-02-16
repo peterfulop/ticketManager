@@ -8,6 +8,7 @@ export const ticketTypeDefs = `#graphql
     ticketCreate(input: TicketCreateInput!): TicketPayload!
     ticketUpdate(input: TicketUpdateInput!): TicketPayload!
     ticketDelete(id: ID!): TicketDeletePayload!
+    ticketStatusUpdate(input:TicketStatusUpdateInput!):TicketPayload!
   }
 
   input SearchTicketInput {
@@ -68,6 +69,11 @@ export const ticketTypeDefs = `#graphql
     description: String
     comment: String
     references: [String]
+  }
+
+  input TicketStatusUpdateInput {
+    ticketId: ID!
+    status: TicketStatus!
   }
 
   type Ticket {

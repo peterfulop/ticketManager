@@ -2,6 +2,7 @@ import { ApolloContext } from '../../apollo';
 import {
   MutationTicketCreateArgs,
   MutationTicketDeleteArgs,
+  MutationTicketStatusUpdateArgs,
   MutationTicketUpdateArgs,
   QueryGetMyTicketsArgs,
   QueryGetTicketArgs,
@@ -14,6 +15,7 @@ import { createTicketUseCase } from '../../use-case/ticket-use-case/create-ticke
 import { deleteTicketUseCase } from '../../use-case/ticket-use-case/delete-ticket.use-case';
 import { getMyTicketUseCase } from '../../use-case/ticket-use-case/get-my-ticket.use-case';
 import { getMyTicketsUseCase } from '../../use-case/ticket-use-case/get-my-tickets.use-case';
+import { updateTicketStatusUseCase } from '../../use-case/ticket-use-case/update-ticket-status.use-case';
 import { updateTicketUseCase } from '../../use-case/ticket-use-case/update-ticket.use-case';
 
 export const ticketGQLResolvers = {
@@ -48,6 +50,13 @@ export const ticketGQLResolvers = {
     ): Promise<TicketPayload> => {
       return await updateTicketUseCase({ args, context });
     },
+    ticketStatusUpdate: async (
+      _parent: any,
+      args: MutationTicketStatusUpdateArgs,
+      context: ApolloContext
+    ): Promise<TicketPayload> => {
+      return await updateTicketStatusUseCase({ args, context });
+    },
     ticketDelete: async (
       _parent: any,
       args: MutationTicketDeleteArgs,
@@ -56,13 +65,4 @@ export const ticketGQLResolvers = {
       return await deleteTicketUseCase({ args, context });
     },
   },
-  // Project: {
-  //   tickets: async (
-  //     parent: ResolversParentTypes['Project'],
-  //     _args: any,
-  //     context: ApolloContext
-  //   ): Promise<Project> => {
-  //     return await getProjectWithTicketsUseCase({ parent, context });
-  //   },
-  // },
 };

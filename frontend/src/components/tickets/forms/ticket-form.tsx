@@ -1,12 +1,15 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { FC, useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Exact,
   TicketCreateInput,
+  TicketPriority,
+  TicketStatus,
+  TicketType,
 } from '../../../apollo/graphql-generated/types';
 import {
   GetMyTicketsQuery,
@@ -14,11 +17,18 @@ import {
   useTicketDeleteMutation,
   useTicketUpdateMutation,
 } from '../../../apollo/graphql/tickets/ticket.generated';
+import { ticketPriorities } from '../../../helpers/ticket-priorities';
+import { ticketTypes } from '../../../helpers/ticket-types';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
 import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
+import { MainSelectOption } from '../../../types';
 import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
+import { stringPrettier } from '../../../utils/string-prettier';
+import { PriorityIcon } from '../../component-library/icons/priority-icon';
+import { TicketTypeIcon } from '../../component-library/icons/ticket-type-icon';
+import { MainSelect } from '../../component-library/main-select/main-select';
 import { Modal } from '../../component-library/modal/modal';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
 
@@ -27,6 +37,9 @@ const FormDiv = styled.div({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    textarea: {
+      gridRow: 10,
+    },
   },
 });
 
@@ -59,6 +72,7 @@ export const TicketForm: FC<ITicketForm> = ({
   const [success, setSuccess] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const { projectId } = useParams();
 
   const [createTicket, { loading: createLoading, data: createData }] =
     useTicketCreateMutation();
@@ -86,6 +100,7 @@ export const TicketForm: FC<ITicketForm> = ({
       case EActionTypes.CREATE:
         return await createTicketMutation({
           values,
+          projectId: projectId as string,
           setSuccess,
           createTicket,
           setAlertMessage,
@@ -116,11 +131,46 @@ export const TicketForm: FC<ITicketForm> = ({
     initialState: initialValues,
   });
 
+  const [priority, setPriority] = useState<TicketPriority>(values.priority);
+  const [type, setType] = useState<TicketType>(values.type);
+
+  const ticketStatusOptions: MainSelectOption[] = [
+    {
+      value: TicketStatus.TO_DO,
+      content: stringPrettier(TicketStatus.TO_DO),
+    },
+    {
+      value: TicketStatus.BACKLOG,
+      content: stringPrettier(TicketStatus.BACKLOG),
+    },
+  ];
+  const ticketPriorityOptions: MainSelectOption[] = Object.entries(
+    ticketPriorities
+  ).map((obj) => {
+    const priority = obj[0];
+    const values = obj[1];
+    return {
+      value: priority,
+      content: values.title,
+    };
+  });
+  const ticketTypeOptions: MainSelectOption[] = Object.entries(ticketTypes).map(
+    (obj) => {
+      const type = obj[0];
+      const values = obj[1];
+      return {
+        value: type,
+        content: values.title,
+      };
+    }
+  );
+
   return (
     <Modal
       toggle={toggle}
       closeOnBackdrop={true}
       title={translate(TEXT.forms.ticketForms[action].title)}
+      maxWidth={'800px'}
     >
       <FormDiv>
         <Form
@@ -133,54 +183,85 @@ export const TicketForm: FC<ITicketForm> = ({
         >
           <Form.Group className='mb-3'>
             <Form.Label>
-              {translate(TEXT.forms.ticketForms[action].labels.name)}
+              {translate(TEXT.forms.ticketForms[action].labels.title)}
             </Form.Label>
             <Form.Control
-              name='name'
+              name='title'
               type='text'
               onChange={onChange}
               disabled={loading || action === EActionTypes.DELETE}
-              value={values.name}
+              value={values.title}
             />
           </Form.Group>
-          <Form.Group className='mb-3'>
-            <Form.Label>
-              {translate(TEXT.forms.ticketForms[action].labels.description)}
-            </Form.Label>
-            <textarea
-              name='description'
-              className='form-control'
-              rows={3}
-              onChange={onChange}
-              disabled={loading || action === EActionTypes.DELETE}
-              value={values.name}
-            />
-          </Form.Group>
-          <Form.Group className='mb-3'>
-            <Form.Label>
-              {translate(TEXT.forms.ticketForms[action].labels.storyPoints)}
-            </Form.Label>
-            <Form.Control
-              name='storyPoints'
-              type='number'
-              defaultValue={1}
-              min={0}
-              onChange={onChange}
-              disabled={loading || action === EActionTypes.DELETE}
-              value={values.name}
-            />
-          </Form.Group>
-          <Form.Group className='mb-3'>
-            <Form.Label>
-              {translate(TEXT.forms.ticketForms[action].labels.storyPoints)}
-            </Form.Label>
-            <Form.Select
-              name='storyPoints'
-              onChange={onChange}
-              disabled={loading || action === EActionTypes.DELETE}
-              value={values.name}
-            />
-          </Form.Group>
+          <Row className='d-flex justify-content-center mb-5'>
+            <Col className='col-8'>
+              <Form.Group className='mb-3 w-100'>
+                <Form.Label>
+                  {translate(TEXT.forms.ticketForms[action].labels.description)}
+                </Form.Label>
+                <textarea
+                  name='description'
+                  className='form-control'
+                  rows={8}
+                  onChange={onChange}
+                  disabled={loading || action === EActionTypes.DELETE}
+                  value={values.description}
+                />
+              </Form.Group>
+            </Col>
+            <Col className='col-4 mt-4'>
+              <Form.Group className='mb-3'>
+                <MainSelect
+                  name='status'
+                  value={values.status}
+                  options={ticketStatusOptions}
+                  onChange={onChange}
+                />
+              </Form.Group>
+              <Form.Group className='mb-3 w-100'>
+                <div className='d-flex align-items-center gap-2'>
+                  <TicketTypeIcon type={type} size={25} />
+                  <MainSelect
+                    name='type'
+                    value={values.type}
+                    options={ticketTypeOptions}
+                    onChange={(e) => {
+                      onChange(e);
+                      setType(e.target.value as TicketType);
+                    }}
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group className='mb-3'>
+                <div className='d-flex align-items-center gap-2'>
+                  <PriorityIcon priority={priority} size={25} />
+                  <MainSelect
+                    name='priority'
+                    value={values.priority}
+                    options={ticketPriorityOptions}
+                    onChange={(e) => {
+                      onChange(e);
+                      setPriority(e.target.value as TicketPriority);
+                    }}
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group className='mb-3'>
+                <Form.Label>
+                  {translate(TEXT.forms.ticketForms[action].labels.storyPoints)}
+                </Form.Label>
+                <Form.Control
+                  name='storyPoints'
+                  type='number'
+                  min={0}
+                  onChange={onChange}
+                  disabled={loading || action === EActionTypes.DELETE}
+                  value={Number(values.storyPoints)}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
           {alertMessage && (
             <MyAlert variant={alertMessageColor} content={alertMessage} />
           )}

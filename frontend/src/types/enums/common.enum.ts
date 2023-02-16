@@ -12,7 +12,6 @@ export enum EProjectInputs {
 }
 
 export enum ETicketInputs {
-  NAME = 'name',
   COMMENT = 'comment',
   DESCRIPTION = 'description',
   PRIORITY = 'priority',

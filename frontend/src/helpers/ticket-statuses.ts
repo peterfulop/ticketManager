@@ -1,19 +1,12 @@
 import { TicketStatus } from '../apollo/graphql-generated/types';
+import { Option } from '../types';
 
 export type EnabledTicketStatuses = Exclude<
   TicketStatus,
   TicketStatus.ARCHIVED | TicketStatus.BACKLOG
 >;
 
-export type TicketStatusOptions = {
-  sequence: number;
-  title: string;
-};
-
-export const ticketStatusObjects: Record<
-  EnabledTicketStatuses,
-  TicketStatusOptions
-> = {
+export const ticketStatuses: Record<EnabledTicketStatuses, Option> = {
   [TicketStatus.TO_DO]: {
     sequence: 1,
     title: 'Todo',

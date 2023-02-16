@@ -97,6 +97,7 @@ interface IModal extends IReact {
   children: React.ReactNode;
   closeOnBackdrop: boolean;
   title?: string;
+  maxWidth?: string;
 }
 
 export const Modal: FC<IModal> = ({
@@ -104,6 +105,7 @@ export const Modal: FC<IModal> = ({
   children,
   closeOnBackdrop,
   title,
+  maxWidth,
 }) => {
   return (
     <>
@@ -113,7 +115,7 @@ export const Modal: FC<IModal> = ({
       )}
       {ReactDOM.createPortal(
         <ModalContainer>
-          <ModalBox id='modal-box'>
+          <ModalBox id='modal-box' style={{ maxWidth }}>
             <ModalHeading>
               <h4>{title}</h4>
               <CloseButton onClick={toggle} title='close window'>
