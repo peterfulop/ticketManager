@@ -31,8 +31,6 @@ interface ITicketColumn {
   tickets: Ticket[];
   columnName: string;
   status: TicketStatus;
-  currentPath: string;
-  projectName: string;
   refetch: (
     variables?:
       | Partial<

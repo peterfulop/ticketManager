@@ -38,8 +38,6 @@ export const TicketsPage = () => {
 
   const navigate = useNavigate();
   const { isOpen, toggle } = useModal();
-  const [selectedId, setSelectedId] = useState<string>('');
-
   const [actionType, setActionType] = useState<EActionTypes>(
     EActionTypes.CREATE
   );
@@ -71,9 +69,6 @@ export const TicketsPage = () => {
     }
   }, [data]);
 
-  const currentPATH = window.location.pathname;
-  const projectName = projectData?.getMyProject.project?.name;
-
   return (
     <>
       {isOpen && actionType !== EActionTypes.READ && (
@@ -81,12 +76,11 @@ export const TicketsPage = () => {
           toggle={toggle}
           refetch={refetch}
           action={actionType}
-          selectedId={selectedId}
           initialValues={ticketInitialValues}
         />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <h3 className='mb-3'>{projectName}</h3>
+        <h3 className='mb-3'>{projectData?.getMyProject.project?.name}</h3>
         <div className='d-flex justify-content-start gap-2'>
           <MainButton
             label='back'
@@ -105,13 +99,8 @@ export const TicketsPage = () => {
             <GrAdd />
           </MainButton>
         </div>
-        {loading && <p>loading...</p>}
-        <TicketColumns
-          tickets={tickets as Ticket[]}
-          currentPath={currentPATH}
-          projectName={projectName as string}
-          refetch={refetch}
-        />
+        {loading && <p>{translate(TEXT.general.loading)}</p>}
+        <TicketColumns tickets={tickets as Ticket[]} refetch={refetch} />
       </MainContainer>
     </>
   );

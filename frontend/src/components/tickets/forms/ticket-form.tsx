@@ -45,7 +45,6 @@ const FormDiv = styled.div({
 
 interface ITicketForm {
   initialValues: TicketCreateInput;
-  selectedId: string;
   action: MutationTypes;
   toggle: () => void;
   refetch: (
@@ -63,7 +62,6 @@ export const TicketForm: FC<ITicketForm> = ({
   toggle,
   refetch,
   action,
-  selectedId,
   initialValues,
 }) => {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -144,6 +142,7 @@ export const TicketForm: FC<ITicketForm> = ({
       content: stringPrettier(TicketStatus.BACKLOG),
     },
   ];
+
   const ticketPriorityOptions: MainSelectOption[] = Object.entries(
     ticketPriorities
   ).map((obj) => {
@@ -154,6 +153,7 @@ export const TicketForm: FC<ITicketForm> = ({
       content: values.title,
     };
   });
+
   const ticketTypeOptions: MainSelectOption[] = Object.entries(ticketTypes).map(
     (obj) => {
       const type = obj[0];

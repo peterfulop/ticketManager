@@ -23,8 +23,6 @@ const TicketColumnsContainer = styled.div({
 
 interface ITicketColumns {
   tickets: Ticket[];
-  currentPath: string;
-  projectName: string;
   refetch: (
     variables?:
       | Partial<
@@ -36,12 +34,7 @@ interface ITicketColumns {
   ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
 }
 
-export const TicketColumns: FC<ITicketColumns> = ({
-  tickets,
-  refetch,
-  currentPath,
-  projectName,
-}) => {
+export const TicketColumns: FC<ITicketColumns> = ({ tickets, refetch }) => {
   return (
     <TicketColumnsContainer>
       {Object.entries(ticketStatuses).map((status, index) => {
@@ -49,10 +42,8 @@ export const TicketColumns: FC<ITicketColumns> = ({
           <TicketColumn
             key={index}
             tickets={tickets}
-            currentPath={currentPath}
             status={status[0] as TicketStatus}
             columnName={status[1].title.toUpperCase()}
-            projectName={projectName}
             refetch={refetch}
           />
         );
