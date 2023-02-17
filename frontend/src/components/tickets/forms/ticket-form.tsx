@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
-import { useNavigate, useParams } from 'react-router-dom';
+import { MdOutlineArrowBackIos } from 'react-icons/md';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Ticket,
@@ -23,6 +25,7 @@ import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
 import { useTicketReferences } from '../../../hooks/use-ticket-references.hook';
 import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
+import { deleteTicketMutation } from '../../../modules/ticket-modules/delete-ticket';
 import { MainSelectOption } from '../../../types';
 import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
 import { ITicket } from '../../../types/interfaces/ticket.interface';
@@ -56,7 +59,6 @@ const FormDiv = styled.div({
 interface ITicketForm extends ITicket {
   tickets: Ticket[];
   projectName: string;
-  selectedId: string;
   initialValues: TicketCreateInput;
   action: MutationTypes;
   toggle: () => void;
@@ -69,14 +71,15 @@ export const TicketForm: FC<ITicketForm> = ({
   projectName,
   initialValues,
   toggle,
-  refetch,
+  refetchMyTickets,
   toggleCallBackFn,
 }) => {
-  const navigate = useNavigate();
-  const { projectId } = useParams();
+  const { projectId, ticketId } = useParams();
   const [success, setSuccess] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
+  const [mutationType, setMutationType] = useState<MutationTypes>(action);
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
 
   const [createTicket, { loading: createLoading, data: createData }] =
     useTicketCreateMutation();
@@ -90,7 +93,7 @@ export const TicketForm: FC<ITicketForm> = ({
 
   useEffect(() => {
     if (data) {
-      refetch();
+      refetchMyTickets();
     }
   }, [data]);
 
@@ -100,7 +103,7 @@ export const TicketForm: FC<ITicketForm> = ({
   };
 
   const selectMutation = async () => {
-    switch (action) {
+    switch (mutationType) {
       case EActionTypes.CREATE:
         return await createTicketMutation({
           values: {
@@ -123,13 +126,13 @@ export const TicketForm: FC<ITicketForm> = ({
       //   setAlertMessageColor,
       // });
       case EActionTypes.DELETE:
-      // return await deleteProjectMutation({
-      //   projectId: selectedId,
-      //   setSuccess,
-      //   deleteProject: deleteTicket,
-      //   setAlertMessage,
-      //   setAlertMessageColor,
-      // });
+        return await deleteTicketMutation({
+          ticketId: ticketId as string,
+          setSuccess,
+          deleteTicket,
+          setAlertMessage,
+          setAlertMessageColor,
+        });
     }
   };
 
@@ -141,6 +144,11 @@ export const TicketForm: FC<ITicketForm> = ({
     callback: selectMutation,
     initialState: initialValues,
   });
+
+  const onDelete = async () => {
+    setMutationType(EActionTypes.DELETE);
+    await selectMutation();
+  };
 
   const [priority, setPriority] = useState<TicketPriority>(values.priority);
   const [type, setType] = useState<TicketType>(values.type);
@@ -228,6 +236,7 @@ export const TicketForm: FC<ITicketForm> = ({
                 referenceOptions={tickets}
                 onChange={handleChange}
                 activeReferences={initialValues.references as string[]}
+                toggle={toggle}
               />
             </Col>
             <Col className='col-4 mt-4'>
@@ -287,34 +296,93 @@ export const TicketForm: FC<ITicketForm> = ({
           )}
           {!success && (
             <div className='d-flex gap-3 justify-content-between'>
-              <Button
-                type='button'
-                variant={'secondary'}
-                className='w-100'
-                disabled={loading}
-                onClick={() => {
-                  toggle();
-                  toggleCallBackFn();
-                }}
-              >
-                {translate(TEXT.buttons.cancelBtn)}
-              </Button>
-              <Button
-                type='submit'
-                variant='danger'
-                className='w-100'
-                disabled={loading}
-              >
-                {translate(TEXT.forms.ticketForms.DELETE.buttons.submitBtn)}
-              </Button>
-              <Button
-                type='submit'
-                variant='warning'
-                className='w-100'
-                disabled={loading}
-              >
-                {translate(TEXT.forms.ticketForms.UPDATE.buttons.submitBtn)}
-              </Button>
+              {!confirmDelete && (
+                <Button
+                  type='button'
+                  variant={'secondary'}
+                  className='w-100'
+                  disabled={loading}
+                  onClick={() => {
+                    toggle();
+                    toggleCallBackFn();
+                  }}
+                >
+                  {translate(TEXT.buttons.cancelBtn)}
+                </Button>
+              )}
+              {!confirmDelete && mutationType === EActionTypes.UPDATE && (
+                <Button
+                  type='button'
+                  variant='danger'
+                  className='w-100'
+                  disabled={loading}
+                  onClick={() => {
+                    setConfirmDelete(true);
+                    setAlertMessage(translate(TEXT.general.confirmDelete));
+                  }}
+                >
+                  {translate(TEXT.forms.ticketForms.DELETE.buttons.submitBtn)}
+                </Button>
+              )}
+              {confirmDelete && (
+                <Col>
+                  <div className='d-flex gap-3 justify-content-between w-100'>
+                    <Button
+                      type='button'
+                      variant='secondary'
+                      className='w-100'
+                      disabled={loading}
+                      onClick={() => {
+                        setConfirmDelete(false);
+                        setAlertMessage('');
+                        setMutationType(EActionTypes.UPDATE);
+                      }}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        color: 'white',
+                      }}
+                    >
+                      <MdOutlineArrowBackIos />
+                      {translate(TEXT.buttons.backBtn)}
+                    </Button>
+                    <Button
+                      type='button'
+                      variant='danger'
+                      className='w-100'
+                      disabled={loading}
+                      onClick={onDelete}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '1rem',
+                      }}
+                    >
+                      <RiDeleteBin6Line size={20} />
+                      {translate(
+                        TEXT.forms.ticketForms.DELETE.buttons.submitBtn
+                      )}
+                    </Button>
+                  </div>
+                </Col>
+              )}
+              {!confirmDelete && (
+                <Button
+                  type='submit'
+                  variant={
+                    mutationType === EActionTypes.CREATE ? 'primary' : 'warning'
+                  }
+                  className='w-100'
+                  disabled={loading}
+                >
+                  {translate(
+                    TEXT.forms.ticketForms[mutationType].buttons.submitBtn
+                  )}
+                </Button>
+              )}
             </div>
           )}
         </Form>

@@ -218,6 +218,7 @@ export const TEXT: Text = {
     removeBtn: { ENG: 'remove' },
     doneBtn: { ENG: 'done' },
     cancelBtn: { ENG: 'cancel' },
+    backBtn: { ENG: 'back' },
     createBtn: { ENG: 'create' },
     homePageButton: { ENG: 'home' },
     logOutBtn: { ENG: 'log out' },
@@ -226,6 +227,7 @@ export const TEXT: Text = {
     loading: { ENG: 'loading...' },
     fetchingData: { ENG: 'fetching data...' },
     serverError: { ENG: 'Server Error. Something went wrong! :( ' },
+    confirmDelete: { ENG: 'Dou you really want to delete this item?' },
   },
   ERRORS: {
     MISSING_TITLE_AND_CONTENT: {

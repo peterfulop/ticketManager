@@ -50,6 +50,29 @@ export const deleteTicketUseCase = async (
 
   try {
     await prisma.ticket.delete({ where: { id } });
+
+    const references = await prisma.ticket.findMany({
+      where: {
+        references: {
+          has: id,
+        },
+      },
+    });
+
+    await Promise.all(
+      references.map(async (ticket) => {
+        const updatedRefs = ticket.references.filter((ref) => ref !== id);
+        await prisma.ticket.update({
+          where: {
+            id: ticket.id,
+          },
+          data: {
+            references: updatedRefs,
+          },
+        });
+      })
+    );
+
     return {
       ...ticketPayload,
       success: true,

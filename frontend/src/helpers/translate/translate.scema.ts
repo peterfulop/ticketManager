@@ -131,6 +131,7 @@ export type Text = {
     removeBtn: Content;
     doneBtn: Content;
     cancelBtn: Content;
+    backBtn: Content;
     createBtn: Content;
     homePageButton: Content;
     logOutBtn: Content;
@@ -139,6 +140,7 @@ export type Text = {
     fetchingData: Content;
     loading: Content;
     serverError: Content;
+    confirmDelete: Content;
   };
   ERRORS: ServerSideErrorObject;
 };

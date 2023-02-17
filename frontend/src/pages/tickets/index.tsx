@@ -21,7 +21,7 @@ import { TicketColumns } from '../../components/tickets/ticket-columns';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useModal } from '../../hooks/use-modal.hook';
-import { EActionTypes } from '../../types/enums/common.enum';
+import { EActionTypes, MutationTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 
 export const TicketsPage = () => {
@@ -41,17 +41,20 @@ export const TicketsPage = () => {
 
   const navigate = useNavigate();
   const { isOpen, toggle } = useModal();
-  const [actionType, setActionType] = useState<EActionTypes>(
+  const [actionType, setActionType] = useState<MutationTypes>(
     EActionTypes.CREATE
   );
-  const [selectedId, setSelectedId] = useState<string>(ticketId || '');
 
   const [ticketInitialValues, setTicketInitialValues] =
     useState<TicketCreateInput>(TICKET_INITIAL_INPUT);
 
   const [tickets, setTickets] = useState<Ticket[]>([]);
 
-  const { data, loading, refetch } = useGetMyTicketsQuery({
+  const {
+    data: myTickets,
+    loading,
+    refetch: refetchMyTickets,
+  } = useGetMyTicketsQuery({
     fetchPolicy: 'no-cache',
     variables: {
       input: {
@@ -77,25 +80,25 @@ export const TicketsPage = () => {
   });
 
   const toggleCallBackFn = () => {
-    console.log('toggleCallBackFn');
     setActionType(EActionTypes.CREATE);
     setTicketInitialValues(TICKET_INITIAL_INPUT);
-    setSelectedId('');
     navigate(ERoutePath.TICKETS.replace(':projectId', projectId as string));
   };
 
   useEffect(() => {
-    if (data?.getMyTickets.tickets) {
-      setTickets(data?.getMyTickets.tickets as Ticket[]);
+    if (myTickets?.getMyTickets.tickets) {
+      setTickets(myTickets?.getMyTickets.tickets as Ticket[]);
     }
-  }, [data]);
+  }, [myTickets?.getMyTickets.tickets]);
 
   useEffect(() => {
     if (ticketId) {
       if (ticketData?.getTicket.ticket) {
         setActionType(EActionTypes.UPDATE);
         setTicketInitialValues(ticketData.getTicket.ticket);
-        if (!isOpen) toggle();
+        if (!isOpen) {
+          toggle();
+        }
       }
     }
   }, [ticketData?.getTicket.ticket]);
@@ -104,14 +107,13 @@ export const TicketsPage = () => {
 
   return (
     <>
-      {isOpen && actionType !== EActionTypes.READ && (
+      {isOpen && (
         <TicketForm
           tickets={tickets}
           action={actionType}
-          selectedId={selectedId}
           projectName={projectName}
           initialValues={ticketInitialValues}
-          refetch={refetch}
+          refetchMyTickets={refetchMyTickets}
           toggle={toggle}
           toggleCallBackFn={toggleCallBackFn}
         />
@@ -140,8 +142,8 @@ export const TicketsPage = () => {
         </div>
         {loading && <p>{translate(TEXT.general.loading)}</p>}
         <TicketColumns
-          tickets={tickets as Ticket[]}
-          refetch={refetch}
+          tickets={tickets}
+          refetchMyTickets={refetchMyTickets}
           toggle={toggle}
         />
       </MainContainer>

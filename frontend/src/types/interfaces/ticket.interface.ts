@@ -1,18 +1,11 @@
-import {
-  ApolloQueryResult,
-  QueryHookOptions,
-  QueryResult,
-} from '@apollo/client';
+import { ApolloQueryResult } from '@apollo/client';
 import { Exact, TicketCreateInput } from '../../apollo/graphql-generated/types';
-import {
-  GetMyTicketsQuery,
-  GetTicketQuery,
-} from '../../apollo/graphql/tickets/ticket.generated';
+import { GetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
 import { IMutationProps } from './common.interface';
 
 export interface ITicket {
   toggle?: () => void;
-  refetch: (
+  refetchMyTickets: (
     variables?:
       | Partial<
           Exact<{
@@ -21,19 +14,6 @@ export interface ITicket {
         >
       | undefined
   ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
-  getTicket?: (
-    baseOptions: QueryHookOptions<
-      GetTicketQuery,
-      Exact<{
-        id: string;
-      }>
-    >
-  ) => QueryResult<
-    GetTicketQuery,
-    Exact<{
-      id: string;
-    }>
-  >;
 }
 
 export interface ITicketMutation extends IMutationProps {

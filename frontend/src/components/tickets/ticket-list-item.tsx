@@ -83,22 +83,16 @@ interface ITicketItem extends ITicket {
   ticketId: string;
 }
 
-export const TicketListItem: FC<ITicketItem> = ({ ticketItem, refetch }) => {
+export const TicketListItem: FC<ITicketItem> = ({
+  ticketItem,
+  refetchMyTickets,
+}) => {
   const { id, title, status, priority, type, storyPoints, sequenceId } =
     ticketItem;
 
   const navigate = useNavigate();
   const { projectId } = useParams();
   const [updataStatus] = useTicketStatusUpdateMutation();
-
-  const handleClick = () => {
-    navigate(
-      ERoutePath.TICKET_DETAILS.replace(
-        ':projectId',
-        projectId as string
-      ).replace(':ticketId', id)
-    );
-  };
 
   const ticketStatusOptions: MainSelectOption[] = Object.entries(
     ticketStatuses
@@ -120,7 +114,16 @@ export const TicketListItem: FC<ITicketItem> = ({ ticketItem, refetch }) => {
         },
       },
     });
-    await refetch();
+    await refetchMyTickets();
+  };
+
+  const handleClick = () => {
+    navigate(
+      ERoutePath.TICKET_DETAILS.replace(
+        ':projectId',
+        projectId as string
+      ).replace(':ticketId', id)
+    );
   };
 
   return (

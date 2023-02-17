@@ -35,7 +35,6 @@ const ModalBox = styled.div({
   backgroundColor: 'white',
   borderRadius: '8px',
   zIndex: '30',
-  transition: 'transform 0.25s ease',
 });
 
 const ModalHeading = styled.div({

@@ -32,7 +32,7 @@ export const TicketColumn: FC<ITicketColumn> = ({
   tickets,
   columnName,
   status,
-  refetch,
+  refetchMyTickets,
   toggle,
 }) => {
   return (
@@ -45,7 +45,7 @@ export const TicketColumn: FC<ITicketColumn> = ({
               <TicketListItem
                 key={index}
                 ticketItem={ticket}
-                refetch={refetch}
+                refetchMyTickets={refetchMyTickets}
                 toggle={toggle}
                 ticketId={ticket.id}
               />
