@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useGetMyProjectQuery } from '../../apollo/graphql/project/project.generated';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { Modal } from '../component-library/modal/modal';
+import { Modal } from '../modal/modal';
 
 const Details = styled.div({
   p: {

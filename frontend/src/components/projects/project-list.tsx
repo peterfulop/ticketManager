@@ -7,7 +7,10 @@ import {
 import { breakPoints } from '../../assets/theme';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { IReact, MutationProps } from '../../types/interfaces/common.interface';
+import {
+  IMutationProps,
+  IReact,
+} from '../../types/interfaces/common.interface';
 import { ProjectListItem } from './project-list-item';
 
 const Projects = styled.div({
@@ -24,7 +27,7 @@ const Projects = styled.div({
   },
 });
 
-interface IProjectList extends IReact, MutationProps {
+interface IProjectList extends IReact, IMutationProps {
   projects: Project[];
   toggle: () => void;
   setProjectInitialInputs: React.Dispatch<

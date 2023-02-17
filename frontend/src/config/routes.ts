@@ -80,6 +80,12 @@ const ticketRoutes: IRoute[] = [
     component: TicketsPage,
     name: 'Tickets page',
   },
+  {
+    path: ERoutePath.TICKET_DETAILS,
+    auth: true,
+    component: TicketsPage,
+    name: 'Tickets page',
+  },
 ];
 
 const routes: IRoute[] = [

@@ -18,7 +18,13 @@ export const MainSelect: FC<IMainSelect> = ({
   onChange,
 }) => {
   return (
-    <Form.Select name={name} id={id} defaultValue={value} onChange={onChange}>
+    <Form.Select
+      name={name}
+      id={id}
+      defaultValue={value}
+      onChange={onChange}
+      onClick={(e) => e.stopPropagation()}
+    >
       {options.map((value, key) => (
         <option key={key} value={value.value}>
           {value.content}

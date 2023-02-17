@@ -9,7 +9,7 @@ const MainBtn = styled.button({
   justifyContent: 'center',
   alignItems: 'center',
   gap: '.5rem',
-  padding: '.5rem 1rem',
+  padding: '.375rem 1rem',
   cursor: 'pointer',
   border: `1px solid lightgray`,
   borderRadius: '5px',
@@ -29,16 +29,22 @@ interface ICreateNewButton extends IReact {
   label: string;
   toggle?: () => void;
   handleClick: () => void;
+  disabled?: boolean;
+  type?: 'button' | 'reset' | 'submit';
 }
 
 export const MainButton: FC<ICreateNewButton> = ({
   label,
   children,
+  disabled,
+  type,
   toggle,
   handleClick,
 }) => {
   return (
     <MainBtn
+      type={type}
+      disabled={disabled}
       onClick={() => {
         handleClick();
         if (toggle) toggle();

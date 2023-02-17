@@ -22,8 +22,8 @@ import { deleteProjectMutation } from '../../../modules/project-modules/delete-p
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
 import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
 import { ERoutePath } from '../../../types/enums/routes.enum';
-import { Modal } from '../../component-library/modal/modal';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
+import { Modal } from '../../modal/modal';
 
 const FormDiv = styled.div({
   form: {

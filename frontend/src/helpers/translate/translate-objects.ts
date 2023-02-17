@@ -2,8 +2,8 @@ import { ETicketInputs } from '../../types/enums/common.enum';
 import { Content, Text } from './translate.scema';
 
 const ticketFormLabels: Record<ETicketInputs, Content> = {
-  name: {
-    ENG: 'ticket name:',
+  title: {
+    ENG: 'ticket title:',
   },
   comment: {
     ENG: 'comment:',
@@ -23,9 +23,7 @@ const ticketFormLabels: Record<ETicketInputs, Content> = {
   storyPoints: {
     ENG: 'estimated story points:',
   },
-  title: {
-    ENG: 'title:',
-  },
+
   type: {
     ENG: 'type:',
   },
@@ -214,6 +212,7 @@ export const TEXT: Text = {
     },
   },
   buttons: {
+    addBtn: { ENG: 'add' },
     addNewBtn: { ENG: 'add new' },
     editBtn: { ENG: 'edit' },
     removeBtn: { ENG: 'remove' },

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import UserContext, { initialUserState } from '../../context/user';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { Modal } from '../component-library/modal/modal';
+import { Modal } from '../modal/modal';
 
 const Div = styled.div({
   display: 'flex',

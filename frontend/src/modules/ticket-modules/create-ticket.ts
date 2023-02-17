@@ -9,9 +9,9 @@ import { TicketCreateMutation } from '../../apollo/graphql/tickets/ticket.genera
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { EServerSideError } from '../../types/enums/db-errors.enum';
-import { MutationAlerts } from '../../types/interfaces/common.interface';
+import { IMutationAlerts } from '../../types/interfaces/common.interface';
 
-interface ICreateTicket extends MutationAlerts {
+interface ICreateTicket extends IMutationAlerts {
   values: TicketCreateInput;
   projectId: string;
   createTicket(

@@ -4,6 +4,7 @@ import { Variant } from 'react-bootstrap/esm/types';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
+  Ticket,
   TicketCreateInput,
   TicketPriority,
   TicketStatus,
@@ -14,11 +15,13 @@ import {
   useTicketDeleteMutation,
   useTicketUpdateMutation,
 } from '../../../apollo/graphql/tickets/ticket.generated';
+import { breakPoints } from '../../../assets/theme';
 import { ticketPriorities } from '../../../helpers/ticket-priorities';
 import { ticketTypes } from '../../../helpers/ticket-types';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
+import { useTicketReferences } from '../../../hooks/use-ticket-references.hook';
 import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
 import { MainSelectOption } from '../../../types';
 import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
@@ -27,8 +30,9 @@ import { stringPrettier } from '../../../utils/string-prettier';
 import { PriorityIcon } from '../../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../../component-library/icons/ticket-type-icon';
 import { MainSelect } from '../../component-library/main-select/main-select';
-import { Modal } from '../../component-library/modal/modal';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
+import { Modal } from '../../modal/modal';
+import { TicketReferences } from '../ticket-references/ticket-references';
 
 const FormDiv = styled.div({
   form: {
@@ -39,27 +43,40 @@ const FormDiv = styled.div({
       gridRow: 10,
     },
   },
+  [`@media screen and (max-width: ${breakPoints.lg})`]: {
+    '#ticket-form-row': {
+      flexDirection: 'column',
+      div: {
+        width: '100%',
+      },
+    },
+  },
 });
 
 interface ITicketForm extends ITicket {
+  tickets: Ticket[];
+  projectName: string;
+  selectedId: string;
   initialValues: TicketCreateInput;
   action: MutationTypes;
   toggle: () => void;
+  toggleCallBackFn: () => void;
 }
 
 export const TicketForm: FC<ITicketForm> = ({
+  action,
+  tickets,
+  projectName,
+  initialValues,
   toggle,
   refetch,
-  action,
-  initialValues,
+  toggleCallBackFn,
 }) => {
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
-
-  const [success, setSuccess] = useState<boolean>(false);
-
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const [success, setSuccess] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
 
   const [createTicket, { loading: createLoading, data: createData }] =
     useTicketCreateMutation();
@@ -86,7 +103,10 @@ export const TicketForm: FC<ITicketForm> = ({
     switch (action) {
       case EActionTypes.CREATE:
         return await createTicketMutation({
-          values,
+          values: {
+            ...values,
+            references,
+          },
           projectId: projectId as string,
           setSuccess,
           createTicket,
@@ -112,6 +132,10 @@ export const TicketForm: FC<ITicketForm> = ({
       // });
     }
   };
+
+  const { handleChange, references } = useTicketReferences({
+    initialState: initialValues.references as string[],
+  });
 
   const { onChange, onSubmit, values } = useForm({
     callback: selectMutation,
@@ -158,8 +182,11 @@ export const TicketForm: FC<ITicketForm> = ({
     <Modal
       toggle={toggle}
       closeOnBackdrop={true}
-      title={translate(TEXT.forms.ticketForms[action].title)}
+      title={`${projectName} - ${translate(
+        TEXT.forms.ticketForms[action].title
+      )}`}
       maxWidth={'800px'}
+      callBackFn={toggleCallBackFn}
     >
       <FormDiv>
         <Form
@@ -182,7 +209,7 @@ export const TicketForm: FC<ITicketForm> = ({
               value={values.title}
             />
           </Form.Group>
-          <Row className='d-flex justify-content-center mb-5'>
+          <Row id='ticket-form-row' className='justify-content-center mb-5'>
             <Col className='col-8'>
               <Form.Group className='mb-3 w-100'>
                 <Form.Label>
@@ -194,9 +221,14 @@ export const TicketForm: FC<ITicketForm> = ({
                   rows={8}
                   onChange={onChange}
                   disabled={loading || action === EActionTypes.DELETE}
-                  value={values.description}
+                  value={values.description || ''}
                 />
               </Form.Group>
+              <TicketReferences
+                referenceOptions={tickets}
+                onChange={handleChange}
+                activeReferences={initialValues.references as string[]}
+              />
             </Col>
             <Col className='col-4 mt-4'>
               <Form.Group className='mb-3'>
@@ -250,7 +282,6 @@ export const TicketForm: FC<ITicketForm> = ({
               </Form.Group>
             </Col>
           </Row>
-
           {alertMessage && (
             <MyAlert variant={alertMessageColor} content={alertMessage} />
           )}
@@ -263,23 +294,26 @@ export const TicketForm: FC<ITicketForm> = ({
                 disabled={loading}
                 onClick={() => {
                   toggle();
+                  toggleCallBackFn();
                 }}
               >
                 {translate(TEXT.buttons.cancelBtn)}
               </Button>
               <Button
                 type='submit'
-                variant={
-                  action === EActionTypes.DELETE
-                    ? 'danger'
-                    : action === EActionTypes.UPDATE
-                    ? 'warning'
-                    : 'primary'
-                }
+                variant='danger'
                 className='w-100'
                 disabled={loading}
               >
-                {translate(TEXT.forms.ticketForms[action].buttons.submitBtn)}
+                {translate(TEXT.forms.ticketForms.DELETE.buttons.submitBtn)}
+              </Button>
+              <Button
+                type='submit'
+                variant='warning'
+                className='w-100'
+                disabled={loading}
+              >
+                {translate(TEXT.forms.ticketForms.UPDATE.buttons.submitBtn)}
               </Button>
             </div>
           )}

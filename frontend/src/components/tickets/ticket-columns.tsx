@@ -20,7 +20,11 @@ interface ITicketColumns extends ITicket {
   tickets: Ticket[];
 }
 
-export const TicketColumns: FC<ITicketColumns> = ({ tickets, refetch }) => {
+export const TicketColumns: FC<ITicketColumns> = ({
+  tickets,
+  toggle,
+  refetch,
+}) => {
   return (
     <TicketColumnsContainer>
       {Object.entries(ticketStatuses).map((status, index) => {
@@ -31,6 +35,7 @@ export const TicketColumns: FC<ITicketColumns> = ({ tickets, refetch }) => {
             status={status[0] as TicketStatus}
             columnName={status[1].title.toUpperCase()}
             refetch={refetch}
+            toggle={toggle}
           />
         );
       })}

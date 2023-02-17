@@ -10,7 +10,10 @@ import {
 import { breakPoints, theme } from '../../assets/theme';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
-import { IReact, MutationProps } from '../../types/interfaces/common.interface';
+import {
+  IMutationProps,
+  IReact,
+} from '../../types/interfaces/common.interface';
 
 const ListItem = styled.div({
   display: 'flex',
@@ -75,7 +78,7 @@ const ProjectActions = styled.div({
   borderBottomRightRadius: '5px',
 });
 
-interface IProjectListItem extends IReact, MutationProps {
+interface IProjectListItem extends IReact, IMutationProps {
   project: Project;
   toggle: () => void;
   setProjectInitialInputs: React.Dispatch<

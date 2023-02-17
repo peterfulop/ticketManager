@@ -9,9 +9,9 @@ import { ProjectDeleteMutation } from '../../apollo/graphql/project/project.gene
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { EServerSideError } from '../../types/enums/db-errors.enum';
-import { MutationAlerts } from '../../types/interfaces/common.interface';
+import { IMutationAlerts } from '../../types/interfaces/common.interface';
 
-interface IDeleteProject extends MutationAlerts {
+interface IDeleteProject extends IMutationAlerts {
   projectId: string;
   deleteProject(
     options?:

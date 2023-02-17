@@ -1,10 +1,12 @@
 import { FC } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
 import { useTicketStatusUpdateMutation } from '../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../assets/theme';
 import { ticketStatuses } from '../../helpers/ticket-statuses';
 import { MainSelectOption } from '../../types';
+import { ERoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
 import { PriorityIcon } from '../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../component-library/icons/ticket-type-icon';
@@ -78,13 +80,25 @@ const TicketItemContent = styled.div({
 
 interface ITicketItem extends ITicket {
   ticketItem: Ticket;
+  ticketId: string;
 }
 
 export const TicketListItem: FC<ITicketItem> = ({ ticketItem, refetch }) => {
   const { id, title, status, priority, type, storyPoints, sequenceId } =
     ticketItem;
 
-  const handleClick = () => {};
+  const navigate = useNavigate();
+  const { projectId } = useParams();
+  const [updataStatus] = useTicketStatusUpdateMutation();
+
+  const handleClick = () => {
+    navigate(
+      ERoutePath.TICKET_DETAILS.replace(
+        ':projectId',
+        projectId as string
+      ).replace(':ticketId', id)
+    );
+  };
 
   const ticketStatusOptions: MainSelectOption[] = Object.entries(
     ticketStatuses
@@ -96,8 +110,6 @@ export const TicketListItem: FC<ITicketItem> = ({ ticketItem, refetch }) => {
       content: values.title,
     };
   });
-
-  const [updataStatus] = useTicketStatusUpdateMutation();
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     await updataStatus({
@@ -112,7 +124,12 @@ export const TicketListItem: FC<ITicketItem> = ({ ticketItem, refetch }) => {
   };
 
   return (
-    <TicketItem key={id} id={id} onClick={handleClick}>
+    <TicketItem
+      key={id}
+      onClick={() => {
+        handleClick();
+      }}
+    >
       <TicketItemHeading>
         <p title={title}>{title}</p>
         <MainSelect

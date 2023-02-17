@@ -2,7 +2,7 @@ import { FC } from 'react';
 import ReactDOM from 'react-dom';
 import { GrClose } from 'react-icons/gr';
 import styled from 'styled-components';
-import { IReact } from '../../../types/interfaces/common.interface';
+import { IReact } from '../../types/interfaces/common.interface';
 
 const BackdropDiv = styled.div({
   position: 'fixed',
@@ -67,13 +67,15 @@ const CloseButton = styled.button({
 interface IBackdrop {
   toggle: () => void;
   closeOnBackdrop: boolean;
+  callBackFn?: () => void;
 }
 
-const Backdrop: FC<IBackdrop> = ({ toggle, closeOnBackdrop }) => {
+const Backdrop: FC<IBackdrop> = ({ toggle, callBackFn, closeOnBackdrop }) => {
   return (
     <BackdropDiv
       onClick={(event) => {
         if (closeOnBackdrop) {
+          callBackFn && callBackFn();
           toggle();
         } else {
           const modalBox = document.getElementById('modal-box');
@@ -98,6 +100,7 @@ interface IModal extends IReact {
   closeOnBackdrop: boolean;
   title?: string;
   maxWidth?: string;
+  callBackFn?: () => void;
 }
 
 export const Modal: FC<IModal> = ({
@@ -106,11 +109,16 @@ export const Modal: FC<IModal> = ({
   closeOnBackdrop,
   title,
   maxWidth,
+  callBackFn,
 }) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <Backdrop closeOnBackdrop={closeOnBackdrop} toggle={toggle} />,
+        <Backdrop
+          closeOnBackdrop={closeOnBackdrop}
+          toggle={toggle}
+          callBackFn={callBackFn}
+        />,
         portalElement
       )}
       {ReactDOM.createPortal(
@@ -118,7 +126,13 @@ export const Modal: FC<IModal> = ({
           <ModalBox id='modal-box' style={{ maxWidth }}>
             <ModalHeading>
               <h4>{title}</h4>
-              <CloseButton onClick={toggle} title='close window'>
+              <CloseButton
+                onClick={() => {
+                  callBackFn && callBackFn();
+                  toggle();
+                }}
+                title='close window'
+              >
                 <GrClose />
               </CloseButton>
             </ModalHeading>

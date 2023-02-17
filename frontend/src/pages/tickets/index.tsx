@@ -10,7 +10,10 @@ import {
   TicketType,
 } from '../../apollo/graphql-generated/types';
 import { useGetMyProjectQuery } from '../../apollo/graphql/project/project.generated';
-import { useGetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import {
+  useGetMyTicketsQuery,
+  useGetTicketQuery,
+} from '../../apollo/graphql/tickets/ticket.generated';
 import { MainButton } from '../../components/component-library/main-button/main-button';
 import { MainContainer } from '../../components/main-content/main-content';
 import { TicketForm } from '../../components/tickets/forms/ticket-form';
@@ -22,7 +25,7 @@ import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 
 export const TicketsPage = () => {
-  const { projectId } = useParams();
+  const { projectId, ticketId } = useParams();
 
   const TICKET_INITIAL_INPUT: TicketCreateInput = {
     comment: '',
@@ -41,6 +44,8 @@ export const TicketsPage = () => {
   const [actionType, setActionType] = useState<EActionTypes>(
     EActionTypes.CREATE
   );
+  const [selectedId, setSelectedId] = useState<string>(ticketId || '');
+
   const [ticketInitialValues, setTicketInitialValues] =
     useState<TicketCreateInput>(TICKET_INITIAL_INPUT);
 
@@ -57,11 +62,27 @@ export const TicketsPage = () => {
   });
 
   const { data: projectData } = useGetMyProjectQuery({
+    fetchPolicy: 'no-cache',
     variables: {
       id: projectId as string,
     },
-    fetchPolicy: 'no-cache',
   });
+
+  const { data: ticketData } = useGetTicketQuery({
+    fetchPolicy: 'no-cache',
+    variables: {
+      id: ticketId as string,
+    },
+    skip: !ticketId,
+  });
+
+  const toggleCallBackFn = () => {
+    console.log('toggleCallBackFn');
+    setActionType(EActionTypes.CREATE);
+    setTicketInitialValues(TICKET_INITIAL_INPUT);
+    setSelectedId('');
+    navigate(ERoutePath.TICKETS.replace(':projectId', projectId as string));
+  };
 
   useEffect(() => {
     if (data?.getMyTickets.tickets) {
@@ -69,22 +90,40 @@ export const TicketsPage = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (ticketId) {
+      if (ticketData?.getTicket.ticket) {
+        setActionType(EActionTypes.UPDATE);
+        setTicketInitialValues(ticketData.getTicket.ticket);
+        if (!isOpen) toggle();
+      }
+    }
+  }, [ticketData?.getTicket.ticket]);
+
+  const projectName = projectData?.getMyProject.project?.name as string;
+
   return (
     <>
       {isOpen && actionType !== EActionTypes.READ && (
         <TicketForm
-          toggle={toggle}
-          refetch={refetch}
+          tickets={tickets}
           action={actionType}
+          selectedId={selectedId}
+          projectName={projectName}
           initialValues={ticketInitialValues}
+          refetch={refetch}
+          toggle={toggle}
+          toggleCallBackFn={toggleCallBackFn}
         />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <h3 className='mb-3'>{projectData?.getMyProject.project?.name}</h3>
+        <h3 className='mb-3'>{projectName}</h3>
         <div className='d-flex justify-content-start gap-2'>
           <MainButton
             label='back'
-            handleClick={() => navigate(ERoutePath.PROJECTS)}
+            handleClick={() => {
+              navigate(ERoutePath.PROJECTS);
+            }}
           >
             <MdOutlineArrowBackIos />
           </MainButton>
@@ -100,7 +139,11 @@ export const TicketsPage = () => {
           </MainButton>
         </div>
         {loading && <p>{translate(TEXT.general.loading)}</p>}
-        <TicketColumns tickets={tickets as Ticket[]} refetch={refetch} />
+        <TicketColumns
+          tickets={tickets as Ticket[]}
+          refetch={refetch}
+          toggle={toggle}
+        />
       </MainContainer>
     </>
   );

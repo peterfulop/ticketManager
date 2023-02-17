@@ -126,6 +126,7 @@ export type Text = {
   };
   buttons: {
     addNewBtn: Content;
+    addBtn: Content;
     editBtn: Content;
     removeBtn: Content;
     doneBtn: Content;
