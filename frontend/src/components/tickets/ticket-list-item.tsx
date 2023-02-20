@@ -92,7 +92,7 @@ export const TicketListItem: FC<ITicketItem> = ({
 
   const navigate = useNavigate();
   const { projectId } = useParams();
-  const [updataStatus] = useTicketStatusUpdateMutation();
+  const [updateStatus] = useTicketStatusUpdateMutation();
 
   const ticketStatusOptions: MainSelectOption[] = Object.entries(
     ticketStatuses
@@ -106,7 +106,7 @@ export const TicketListItem: FC<ITicketItem> = ({
   });
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    await updataStatus({
+    await updateStatus({
       variables: {
         input: {
           ticketId: id,
@@ -127,12 +127,7 @@ export const TicketListItem: FC<ITicketItem> = ({
   };
 
   return (
-    <TicketItem
-      key={id}
-      onClick={() => {
-        handleClick();
-      }}
-    >
+    <TicketItem key={id} onClick={handleClick}>
       <TicketItemHeading>
         <p title={title}>{title}</p>
         <MainSelect

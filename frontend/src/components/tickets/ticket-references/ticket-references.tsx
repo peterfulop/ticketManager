@@ -49,8 +49,6 @@ export const TicketReferences: FC<ITicketReferences> = ({
   const { projectId } = useParams();
   const navigate = useNavigate();
 
-  console.log(activeReferences);
-
   return (
     <ReferencesDiv>
       <p>{translate(TEXT.forms.ticketForms.CREATE.labels.references)}</p>

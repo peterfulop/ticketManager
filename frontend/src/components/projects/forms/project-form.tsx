@@ -1,8 +1,8 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { FC, useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Exact,
@@ -20,8 +20,8 @@ import { useForm } from '../../../hooks/use-form.hook';
 import { createProjectMutation } from '../../../modules/project-modules/create-project';
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
-import { EActionTypes, MutationTypes } from '../../../types/enums/common.enum';
-import { ERoutePath } from '../../../types/enums/routes.enum';
+import { EActionTypes } from '../../../types/enums/common.enum';
+import { FormActions } from '../../component-library/form-actions/form-actions';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
 import { Modal } from '../../modal/modal';
 
@@ -33,10 +33,20 @@ const FormDiv = styled.div({
   },
 });
 
+const Details = styled.div({
+  marginBottom: '1rem',
+  p: {
+    fontWeight: 'bold',
+  },
+  span: {
+    marginLeft: '5px',
+    fontWeight: 'lighter',
+  },
+});
+
 interface IProjectForm {
   initialValues: ProjectCreateInput;
-  selectedId: string;
-  action: MutationTypes;
+  action: EActionTypes;
   toggle: () => void;
   refetch: (
     variables?:
@@ -47,21 +57,22 @@ interface IProjectForm {
         >
       | undefined
   ) => Promise<ApolloQueryResult<GetMyProjectsQuery>>;
+  toggleCallBackFn: () => void;
 }
 
 export const ProjectForm: FC<IProjectForm> = ({
+  action,
+  initialValues,
   toggle,
   refetch,
-  action,
-  selectedId,
-  initialValues,
+  toggleCallBackFn,
 }) => {
+  const { projectId } = useParams();
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
+  const [actionType, setActionType] = useState<EActionTypes>(action);
 
   const [success, setSuccess] = useState<boolean>(false);
-
-  const navigate = useNavigate();
 
   const [createProject, { loading: createLoading, data: createData }] =
     useProjectCreateMutation();
@@ -72,6 +83,10 @@ export const ProjectForm: FC<IProjectForm> = ({
 
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;
+
+  const DateFormat = (date: string) => {
+    return new Date(date).toLocaleString();
+  };
 
   useEffect(() => {
     if (data) {
@@ -85,7 +100,7 @@ export const ProjectForm: FC<IProjectForm> = ({
   };
 
   const selectMutation = async () => {
-    switch (action) {
+    switch (actionType) {
       case EActionTypes.CREATE:
         return await createProjectMutation({
           values,
@@ -96,7 +111,7 @@ export const ProjectForm: FC<IProjectForm> = ({
         });
       case EActionTypes.UPDATE:
         return await updateProjectMutation({
-          projectId: selectedId,
+          projectId: projectId as string,
           values,
           setSuccess,
           updateProject,
@@ -105,7 +120,7 @@ export const ProjectForm: FC<IProjectForm> = ({
         });
       case EActionTypes.DELETE:
         return await deleteProjectMutation({
-          projectId: selectedId,
+          projectId: projectId as string,
           setSuccess,
           deleteProject,
           setAlertMessage,
@@ -123,11 +138,14 @@ export const ProjectForm: FC<IProjectForm> = ({
     <Modal
       toggle={toggle}
       closeOnBackdrop={true}
-      title={translate(TEXT.forms.projectForms[action].title)}
+      title={translate(TEXT.forms.projectForms[actionType].title)}
+      callBackFn={toggleCallBackFn}
     >
       <FormDiv>
         <Form
-          onSubmit={(e) => onSubmit(e)}
+          onSubmit={(e) => {
+            onSubmit(e);
+          }}
           onChange={() => {
             if (alertMessage) {
               resetForm();
@@ -136,49 +154,53 @@ export const ProjectForm: FC<IProjectForm> = ({
         >
           <Form.Group className='mb-3'>
             <Form.Label>
-              {translate(TEXT.forms.projectForms[action].labels.name)}
+              {translate(TEXT.forms.projectForms[actionType].labels.name)}
             </Form.Label>
             <Form.Control
               name='name'
               type='text'
               onChange={onChange}
-              disabled={loading || action === EActionTypes.DELETE}
+              disabled={loading || actionType === EActionTypes.DELETE}
               value={values.name}
+              autoFocus={true}
             />
           </Form.Group>
+          {(actionType === EActionTypes.UPDATE ||
+            actionType === EActionTypes.DELETE) && (
+            <Details>
+              <p>
+                {translate(TEXT.pages.projects.labels.sequence)}
+                <span>{values.sequence}</span>
+              </p>
+              <p>
+                {translate(TEXT.pages.projects.labels.tickets)}
+                <span>{values.tickets.length}</span>
+              </p>
+              <p>
+                {translate(TEXT.pages.projects.labels.createdAt)}
+                <span>{DateFormat(values.createdAt || '')}</span>
+              </p>
+              <p>
+                {translate(TEXT.pages.projects.labels.updatedAt)}
+                <span>{DateFormat(values.createdAt || '')}</span>
+              </p>
+            </Details>
+          )}
           {alertMessage && (
             <MyAlert variant={alertMessageColor} content={alertMessage} />
           )}
-          {!success && (
-            <div className='d-flex gap-3 justify-content-between'>
-              <Button
-                type='button'
-                variant={'secondary'}
-                className='w-100'
-                disabled={loading}
-                onClick={() => {
-                  navigate(ERoutePath.PROJECTS);
-                  toggle();
-                }}
-              >
-                {translate(TEXT.buttons.cancelBtn)}
-              </Button>
-              <Button
-                type='submit'
-                variant={
-                  action === EActionTypes.DELETE
-                    ? 'danger'
-                    : action === EActionTypes.UPDATE
-                    ? 'warning'
-                    : 'primary'
-                }
-                className='w-100'
-                disabled={loading}
-              >
-                {translate(TEXT.forms.projectForms[action].buttons.submitBtn)}
-              </Button>
-            </div>
-          )}
+          <FormActions
+            loading={loading}
+            form={'projectForms'}
+            actionType={actionType}
+            onCancel={() => {
+              toggle();
+              toggleCallBackFn();
+            }}
+            setAlertMessage={setAlertMessage}
+            setActionType={setActionType}
+            success={success}
+          />
         </Form>
       </FormDiv>
     </Modal>

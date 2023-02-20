@@ -21,7 +21,6 @@ import { TicketColumns } from '../../components/tickets/ticket-columns';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useModal } from '../../hooks/use-modal.hook';
-import { EActionTypes, MutationTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 
 export const TicketsPage = () => {
@@ -41,9 +40,9 @@ export const TicketsPage = () => {
 
   const navigate = useNavigate();
   const { isOpen, toggle } = useModal();
-  const [actionType, setActionType] = useState<MutationTypes>(
-    EActionTypes.CREATE
-  );
+  // const [actionType, setActionType] = useState<MutationTypes>(
+  //   EActionTypes.CREATE
+  // );
 
   const [ticketInitialValues, setTicketInitialValues] =
     useState<TicketCreateInput>(TICKET_INITIAL_INPUT);
@@ -80,7 +79,7 @@ export const TicketsPage = () => {
   });
 
   const toggleCallBackFn = () => {
-    setActionType(EActionTypes.CREATE);
+    // setActionType(EActionTypes.CREATE);
     setTicketInitialValues(TICKET_INITIAL_INPUT);
     navigate(ERoutePath.TICKETS.replace(':projectId', projectId as string));
   };
@@ -94,7 +93,7 @@ export const TicketsPage = () => {
   useEffect(() => {
     if (ticketId) {
       if (ticketData?.getTicket.ticket) {
-        setActionType(EActionTypes.UPDATE);
+        // setActionType(EActionTypes.UPDATE);
         setTicketInitialValues(ticketData.getTicket.ticket);
         if (!isOpen) {
           toggle();
@@ -110,7 +109,7 @@ export const TicketsPage = () => {
       {isOpen && (
         <TicketForm
           tickets={tickets}
-          action={actionType}
+          // action={actionType}
           projectName={projectName}
           initialValues={ticketInitialValues}
           refetchMyTickets={refetchMyTickets}
@@ -133,7 +132,7 @@ export const TicketsPage = () => {
             label={translate(TEXT.forms.ticketForms.CREATE.buttons.submitBtn)}
             toggle={toggle}
             handleClick={() => {
-              setActionType(EActionTypes.CREATE);
+              // setActionType(EActionTypes.CREATE);
               setTicketInitialValues(TICKET_INITIAL_INPUT);
             }}
           >

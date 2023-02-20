@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { GrClose } from 'react-icons/gr';
 import styled from 'styled-components';
@@ -94,6 +94,7 @@ const Backdrop: FC<IBackdrop> = ({ toggle, callBackFn, closeOnBackdrop }) => {
 const portalElement = document.getElementById('overlays') as HTMLElement;
 
 interface IModal extends IReact {
+  isOpen?: boolean;
   toggle: () => void;
   children: React.ReactNode;
   closeOnBackdrop: boolean;
@@ -110,6 +111,21 @@ export const Modal: FC<IModal> = ({
   maxWidth,
   callBackFn,
 }) => {
+  const keyDownHandler = (event: any) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      if (callBackFn) {
+        callBackFn();
+      }
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('keydown', keyDownHandler);
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+    };
+  }, []);
+
   return (
     <>
       {ReactDOM.createPortal(

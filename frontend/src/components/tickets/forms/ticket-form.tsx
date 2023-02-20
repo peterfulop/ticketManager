@@ -60,13 +60,13 @@ interface ITicketForm extends ITicket {
   tickets: Ticket[];
   projectName: string;
   initialValues: TicketCreateInput;
-  action: MutationTypes;
+  // action: MutationTypes;
   toggle: () => void;
   toggleCallBackFn: () => void;
 }
 
 export const TicketForm: FC<ITicketForm> = ({
-  action,
+  // action,
   tickets,
   projectName,
   initialValues,
@@ -78,7 +78,9 @@ export const TicketForm: FC<ITicketForm> = ({
   const [success, setSuccess] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
-  const [mutationType, setMutationType] = useState<MutationTypes>(action);
+  const [mutationType, setMutationType] = useState<MutationTypes>(
+    EActionTypes.CREATE
+  );
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
 
   const [createTicket, { loading: createLoading, data: createData }] =
@@ -191,7 +193,7 @@ export const TicketForm: FC<ITicketForm> = ({
       toggle={toggle}
       closeOnBackdrop={true}
       title={`${projectName} - ${translate(
-        TEXT.forms.ticketForms[action].title
+        TEXT.forms.ticketForms[mutationType].title
       )}`}
       maxWidth={'800px'}
       callBackFn={toggleCallBackFn}
@@ -207,13 +209,13 @@ export const TicketForm: FC<ITicketForm> = ({
         >
           <Form.Group className='mb-3'>
             <Form.Label>
-              {translate(TEXT.forms.ticketForms[action].labels.title)}
+              {translate(TEXT.forms.ticketForms[mutationType].labels.title)}
             </Form.Label>
             <Form.Control
               name='title'
               type='text'
               onChange={onChange}
-              disabled={loading || action === EActionTypes.DELETE}
+              disabled={loading || mutationType === EActionTypes.DELETE}
               value={values.title}
             />
           </Form.Group>
@@ -221,14 +223,16 @@ export const TicketForm: FC<ITicketForm> = ({
             <Col className='col-8'>
               <Form.Group className='mb-3 w-100'>
                 <Form.Label>
-                  {translate(TEXT.forms.ticketForms[action].labels.description)}
+                  {translate(
+                    TEXT.forms.ticketForms[mutationType].labels.description
+                  )}
                 </Form.Label>
                 <textarea
                   name='description'
                   className='form-control'
                   rows={8}
                   onChange={onChange}
-                  disabled={loading || action === EActionTypes.DELETE}
+                  disabled={loading || mutationType === EActionTypes.DELETE}
                   value={values.description || ''}
                 />
               </Form.Group>
@@ -278,14 +282,16 @@ export const TicketForm: FC<ITicketForm> = ({
               </Form.Group>
               <Form.Group className='mb-3'>
                 <Form.Label>
-                  {translate(TEXT.forms.ticketForms[action].labels.storyPoints)}
+                  {translate(
+                    TEXT.forms.ticketForms[mutationType].labels.storyPoints
+                  )}
                 </Form.Label>
                 <Form.Control
                   name='storyPoints'
                   type='number'
                   min={0}
                   onChange={onChange}
-                  disabled={loading || action === EActionTypes.DELETE}
+                  disabled={loading || mutationType === EActionTypes.DELETE}
                   value={Number(values.storyPoints)}
                 />
               </Form.Group>

@@ -23,18 +23,23 @@ type Form = {
 };
 
 type ProjectForms = Record<
-  Exclude<EActionTypes, EActionTypes.READ>,
+  EActionTypes,
   Form & {
     labels: Record<EProjectInputs, Content>;
   }
 >;
 
 type TicketForms = Record<
-  Exclude<EActionTypes, EActionTypes.READ>,
+  EActionTypes,
   Form & {
     labels: Record<ETicketInputs, Content>;
   }
 >;
+
+export type MyForms = {
+  projectForms: ProjectForms;
+  ticketForms: TicketForms;
+};
 
 export type Text = {
   pages: {

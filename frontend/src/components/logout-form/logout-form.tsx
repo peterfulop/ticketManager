@@ -31,8 +31,17 @@ export const LogoutForm: FC<ILogout> = ({ toggle }) => {
     toggle();
   };
 
+  const callBackFn = () => {
+    toggle();
+  };
+
   return (
-    <Modal toggle={toggle} closeOnBackdrop={false} title='Logging out'>
+    <Modal
+      toggle={toggle}
+      callBackFn={callBackFn}
+      closeOnBackdrop={false}
+      title='Logging out'
+    >
       <Div>
         <div>
           <Button

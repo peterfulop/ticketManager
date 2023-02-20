@@ -3,14 +3,16 @@ import {
   Project,
   ProjectCreateInput,
 } from '../../apollo/graphql-generated/types';
-import { useGetMyProjectsQuery } from '../../apollo/graphql/project/project.generated';
+import {
+  useGetMyProjectQuery,
+  useGetMyProjectsQuery,
+} from '../../apollo/graphql/project/project.generated';
 import { MainContainer } from '../../components/main-content/main-content';
 
 import { GrAdd } from 'react-icons/gr';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MainButton } from '../../components/component-library/main-button/main-button';
 import { ProjectForm } from '../../components/projects/forms/project-form';
-import { ProjectDetails } from '../../components/projects/project-details';
 import { ProjectList } from '../../components/projects/project-list';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
@@ -21,6 +23,9 @@ import { ERoutePath } from '../../types/enums/routes.enum';
 const PROJECT_INITIAL_VALUES: ProjectCreateInput = { name: '' };
 
 export const ProjectsPage = () => {
+  const navigate = useNavigate();
+  const { projectId } = useParams();
+  const { isOpen, toggle } = useModal();
   const [projects, setProjects] = useState<Project[]>([]);
   const [actionType, setActionType] = useState<EActionTypes>(
     EActionTypes.CREATE
@@ -34,34 +39,48 @@ export const ProjectsPage = () => {
     fetchPolicy: 'no-cache',
   });
 
-  const { isOpen, toggle } = useModal();
-  const navigate = useNavigate();
+  const { data: projectData } = useGetMyProjectQuery({
+    fetchPolicy: 'no-cache',
+    variables: {
+      id: projectId as string,
+    },
+    skip: !projectId,
+  });
+
+  const toggleCallBackFn = () => {
+    setActionType(EActionTypes.CREATE);
+    setProjectInitialValues(PROJECT_INITIAL_VALUES);
+    navigate(ERoutePath.PROJECTS);
+  };
 
   useEffect(() => {
     if (data?.getMyProjects.projects) {
       setProjects(data?.getMyProjects.projects as Project[]);
     }
-  }, [data]);
+  }, [data?.getMyProjects.projects]);
 
   useEffect(() => {
-    if (!isOpen) {
-      navigate(ERoutePath.PROJECTS);
+    if (projectId) {
+      if (projectData?.getMyProject.project) {
+        setActionType(EActionTypes.UPDATE);
+        setProjectInitialValues(projectData.getMyProject.project);
+        if (!isOpen) {
+          toggle();
+        }
+      }
     }
-  }, [isOpen]);
+  }, [projectData?.getMyProject.project]);
 
   return (
     <>
-      {isOpen && actionType !== EActionTypes.READ && (
+      {isOpen && (
         <ProjectForm
           toggle={toggle}
           refetch={refetch}
           action={actionType}
-          selectedId={selectedId}
           initialValues={projectInitialValues}
+          toggleCallBackFn={toggleCallBackFn}
         />
-      )}
-      {isOpen && actionType === EActionTypes.READ && (
-        <ProjectDetails toggle={toggle} projectId={selectedId} />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
         <h3 className='mb-3'>{translate(TEXT.pages.projects.name)}</h3>
@@ -75,7 +94,7 @@ export const ProjectsPage = () => {
         >
           <GrAdd />
         </MainButton>
-        {loading && <p>loading...</p>}
+        {loading && <p>{translate(TEXT.general.loading)}</p>}
         {!loading && (
           <ProjectList
             setProjectInitialInputs={setProjectInitialValues}
