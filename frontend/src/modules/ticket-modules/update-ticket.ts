@@ -38,8 +38,6 @@ export const updateTicketMutation = async (props: IUpdateTicket) => {
 
   setAlertMessage(null);
   try {
-    console.log(values);
-
     const res = await updateTicket({
       variables: {
         input: {
