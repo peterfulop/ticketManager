@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { FaRegClipboard } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
@@ -8,6 +9,8 @@ import { ticketStatuses } from '../../helpers/ticket-statuses';
 import { MainSelectOption } from '../../types';
 import { ERoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
+import { textToClipboard } from '../../utils/text-to-clipboard';
+import { uniformBranchNameGenerator } from '../../utils/uniform-branch-name-generator';
 import { PriorityIcon } from '../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../component-library/icons/ticket-type-icon';
 import { MainSelect } from '../component-library/main-select/main-select';
@@ -75,6 +78,22 @@ const TicketItemContent = styled.div({
     width: '25px',
     height: '25px',
     borderRadius: '12.5px',
+  },
+  small: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 5,
+    svg: {
+      display: 'none',
+      transition: 'transform 0.25s ease',
+    },
+    ':hover svg': {
+      display: 'block',
+    },
+  },
+  '.copied svg': {
+    transform: 'scale(1.25)',
   },
 });
 
@@ -144,7 +163,21 @@ export const TicketListItem: FC<ITicketItem> = ({
           <TicketTypeIcon type={type} size={20} />
           <p className='story-points-window'>{storyPoints}</p>
         </div>
-        <small>{sequenceId}</small>
+        <small
+          onClick={async (e) => {
+            const icon = e.currentTarget;
+            e.stopPropagation();
+            const text = uniformBranchNameGenerator({ sequenceId, title });
+            await textToClipboard(text);
+            icon.classList.add('copied');
+            setTimeout(() => {
+              icon.classList.remove('copied');
+            }, 250);
+          }}
+        >
+          <FaRegClipboard />
+          {sequenceId}
+        </small>
       </TicketItemContent>
     </TicketItem>
   );
