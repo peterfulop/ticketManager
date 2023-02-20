@@ -4,50 +4,60 @@ import {
   FetchResult,
   MutationFunctionOptions,
 } from '@apollo/client';
-import { Exact, TicketCreateInput } from '../../apollo/graphql-generated/types';
-import { TicketCreateMutation } from '../../apollo/graphql/tickets/ticket.generated';
+import { Exact, TicketUpdateInput } from '../../apollo/graphql-generated/types';
+import { TicketUpdateMutation } from '../../apollo/graphql/tickets/ticket.generated';
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { EServerSideError } from '../../types/enums/db-errors.enum';
 import { IMutationAlerts } from '../../types/interfaces/common.interface';
 
-interface ICreateTicket extends IMutationAlerts {
-  values: TicketCreateInput;
-  createTicket(
+interface IUpdateTicket extends IMutationAlerts {
+  values: TicketUpdateInput;
+  ticketId: string;
+  updateTicket(
     options?:
       | MutationFunctionOptions<
-          TicketCreateMutation,
-          Exact<{ input: TicketCreateInput }>,
+          TicketUpdateMutation,
+          Exact<{ input: TicketUpdateInput }>,
           DefaultContext,
           ApolloCache<any>
         >
       | undefined
-  ): Promise<FetchResult<TicketCreateMutation>>;
+  ): Promise<FetchResult<TicketUpdateMutation>>;
 }
 
-export const createTicketMutation = async (props: ICreateTicket) => {
+export const updateTicketMutation = async (props: IUpdateTicket) => {
   const {
     values,
+    ticketId,
+    setSuccess,
+    updateTicket,
     setAlertMessage,
     setAlertMessageColor,
-    setSuccess,
-    createTicket,
   } = props;
 
   setAlertMessage(null);
   try {
-    const res = await createTicket({
+    console.log(values);
+
+    const res = await updateTicket({
       variables: {
         input: {
-          ...values,
+          ticketId,
+          title: values.title,
+          description: values.description,
+          status: values.status,
           storyPoints: Number(values.storyPoints),
+          type: values.type,
+          priority: values.priority,
+          references: values.references,
         },
       },
     });
-    if (res.data?.ticketCreate.userErrors.length) {
+    if (res.data?.ticketUpdate.userErrors.length) {
       setAlertMessageColor('danger');
-      const errorMessage = res.data.ticketCreate.userErrors[0].message;
-      const errorValues = res.data.ticketCreate.userErrors[0].values;
+      const errorMessage = res.data.ticketUpdate.userErrors[0].message;
+      const errorValues = res.data.ticketUpdate.userErrors[0].values;
       const translatedError = translateERR(errorMessage);
 
       if (errorMessage === EServerSideError.MISSING_FIELDS) {
@@ -59,11 +69,11 @@ export const createTicketMutation = async (props: ICreateTicket) => {
         return setAlertMessage(translatedError);
       }
     }
-    if (res.data?.ticketCreate.ticket) {
+    if (res.data?.ticketUpdate.ticket) {
       setSuccess(true);
       setAlertMessageColor('success');
       setAlertMessage(
-        translate(TEXT.forms.projectForms.CREATE.alerts.successful)
+        translate(TEXT.forms.ticketForms.UPDATE.alerts.successful)
       );
     }
   } catch (error) {

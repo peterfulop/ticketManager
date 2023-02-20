@@ -68,11 +68,10 @@ export const ProjectForm: FC<IProjectForm> = ({
   toggleCallBackFn,
 }) => {
   const { projectId } = useParams();
+  const [success, setSuccess] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
   const [actionType, setActionType] = useState<EActionTypes>(action);
-
-  const [success, setSuccess] = useState<boolean>(false);
 
   const [createProject, { loading: createLoading, data: createData }] =
     useProjectCreateMutation();

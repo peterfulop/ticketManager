@@ -36,6 +36,7 @@ const ReferencesAction = styled.div({
 interface ITicketReferences {
   referenceOptions: Ticket[];
   activeReferences: string[];
+  disabled?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   toggle?: () => void;
 }
@@ -43,10 +44,11 @@ interface ITicketReferences {
 export const TicketReferences: FC<ITicketReferences> = ({
   referenceOptions,
   activeReferences,
+  disabled,
   onChange,
   toggle,
 }) => {
-  const { projectId } = useParams();
+  const { ticketId, projectId } = useParams();
   const navigate = useNavigate();
 
   return (
@@ -68,6 +70,7 @@ export const TicketReferences: FC<ITicketReferences> = ({
                   toggle && toggle();
                 }}
                 title={refTicketPath}
+                aria-disabled={disabled}
               >{`${option.sequenceId} - ${option.title}`}</RefLink>
             )
           );
@@ -87,6 +90,7 @@ export const TicketReferences: FC<ITicketReferences> = ({
               type={'checkbox'}
               onChange={onChange}
               defaultChecked={isExists}
+              disabled={disabled || ticketId === option.id}
             />
           );
         })}

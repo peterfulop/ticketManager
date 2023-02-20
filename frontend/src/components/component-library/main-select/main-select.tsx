@@ -3,10 +3,11 @@ import { Form } from 'react-bootstrap';
 import { MainSelectOption } from '../../../types';
 
 interface IMainSelect {
+  options: MainSelectOption[];
   id?: string;
   name?: string;
-  options: MainSelectOption[];
   value?: string | number | readonly string[];
+  disabled?: boolean;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
 }
 
@@ -15,6 +16,7 @@ export const MainSelect: FC<IMainSelect> = ({
   name,
   options,
   value,
+  disabled,
   onChange,
 }) => {
   return (
@@ -24,6 +26,7 @@ export const MainSelect: FC<IMainSelect> = ({
       defaultValue={value}
       onChange={onChange}
       onClick={(e) => e.stopPropagation()}
+      disabled={disabled}
     >
       {options.map((value, key) => (
         <option key={key} value={value.value}>

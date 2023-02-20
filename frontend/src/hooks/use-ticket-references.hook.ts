@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 interface IUseTicketReferences {
   initialState: string[] | [];
 }
 
 export const useTicketReferences = (props: IUseTicketReferences) => {
+  const { ticketId } = useParams();
   const [references, setReferences] = useState<string[]>(props.initialState);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
