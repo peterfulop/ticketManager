@@ -50,7 +50,7 @@ export const TicketsPage = () => {
 
   const {
     data: myTickets,
-    loading,
+    loading: loadingMyTickets,
     refetch: refetchMyTickets,
   } = useGetMyTicketsQuery({
     fetchPolicy: 'no-cache',
@@ -69,7 +69,7 @@ export const TicketsPage = () => {
     },
   });
 
-  const { data: ticketData } = useGetTicketQuery({
+  const { data: ticketData, loading: loadingGetTicket } = useGetTicketQuery({
     fetchPolicy: 'no-cache',
     variables: {
       id: ticketId as string,
@@ -84,16 +84,16 @@ export const TicketsPage = () => {
   };
 
   useEffect(() => {
-    if (myTickets?.getMyTickets.tickets) {
+    if (myTickets?.getMyTickets.tickets && !loadingMyTickets) {
       setTickets(myTickets?.getMyTickets.tickets as Ticket[]);
     }
   }, [myTickets?.getMyTickets.tickets]);
 
   useEffect(() => {
     if (projectId) {
-      if (ticketData?.getTicket.ticket) {
-        setActionType(EActionTypes.UPDATE);
+      if (ticketData?.getTicket.ticket && !loadingGetTicket) {
         setTicketInitialValues(ticketData?.getTicket.ticket);
+        setActionType(EActionTypes.UPDATE);
         if (!isOpen) {
           toggle();
         }
@@ -138,7 +138,7 @@ export const TicketsPage = () => {
             <GrAdd />
           </MainButton>
         </div>
-        {loading && <p>{translate(TEXT.general.loading)}</p>}
+        {loadingMyTickets && <p>{translate(TEXT.general.loading)}</p>}
         <TicketColumns
           tickets={tickets}
           refetchMyTickets={refetchMyTickets}

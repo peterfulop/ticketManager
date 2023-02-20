@@ -90,7 +90,6 @@ export const updateTicketUseCase = async (
     priority,
     type,
     projectId,
-    description,
     comment,
     references,
   });
@@ -102,6 +101,7 @@ export const updateTicketUseCase = async (
       },
       data: {
         ...reducedInputs,
+        description,
         updatedAt: new Date(Date.now()),
       },
     });

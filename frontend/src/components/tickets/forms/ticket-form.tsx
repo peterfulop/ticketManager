@@ -74,7 +74,7 @@ export const TicketForm: FC<ITicketForm> = ({
   refetchMyTickets,
   toggleCallBackFn,
 }) => {
-  const { projectId, ticketId } = useParams();
+  const { ticketId } = useParams();
   const [success, setSuccess] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
