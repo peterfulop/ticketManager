@@ -12,12 +12,12 @@ export const getMyProjectsUseCase = async (
 ): Promise<ProjectsPayload> => {
   const { prisma, user } = input.context;
 
-  if (!user?.userId) {
+  if (!user) {
     return {
+      projects: [],
       userErrors: [
         { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
       ],
-      projects: [],
     };
   }
 

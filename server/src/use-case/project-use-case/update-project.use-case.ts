@@ -26,6 +26,15 @@ export const updateProjectUseCase = async (
     project: null,
   };
 
+  if (!user) {
+    return {
+      project: null,
+      userErrors: [
+        { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
+      ],
+    };
+  }
+
   const ProjectToUpdate = await prisma.project.findUnique({
     where: { id: projectId },
   });

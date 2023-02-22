@@ -25,6 +25,15 @@ export const deleteProjectUseCase = async (
     userErrors: [],
   };
 
+  if (!user) {
+    return {
+      ...projectDeletePayload,
+      userErrors: [
+        { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
+      ],
+    };
+  }
+
   const projectToDelete = await prisma.project.findUnique({ where: { id } });
 
   if (!projectToDelete) {
