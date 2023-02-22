@@ -17,6 +17,7 @@ import { ProjectList } from '../../components/projects/project-list';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useModal } from '../../hooks/use-modal.hook';
+import { useTokenValidation } from '../../hooks/use-token-validation';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 
@@ -70,6 +71,8 @@ export const ProjectsPage = () => {
       }
     }
   }, [projectData?.getMyProject.project]);
+
+  useTokenValidation();
 
   return (
     <>

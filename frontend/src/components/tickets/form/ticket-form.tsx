@@ -24,18 +24,16 @@ import { deleteTicketMutation } from '../../../modules/ticket-modules/delete-tic
 import { updateTicketMutation } from '../../../modules/ticket-modules/update-ticket';
 import { EActionTypes } from '../../../types/enums/common.enum';
 import { ITicket } from '../../../types/interfaces/ticket.interface';
+import { setSelectOptions } from '../../../utils/set-select-options';
 import { FormActions } from '../../component-library/form-actions/form-actions';
 import { PriorityIcon } from '../../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../../component-library/icons/ticket-type-icon';
 import { MainSelect } from '../../component-library/main-select/main-select';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
 import { Modal } from '../../modal/modal';
+import { SequneceId } from '../sequnce-id/sequence-id';
 import { TicketReferences } from '../ticket-references/ticket-references';
-import {
-  ticketPriorityOptions,
-  ticketStatusOptions,
-  ticketTypeOptions,
-} from './form-options';
+import { ticketPriorities, ticketStatuses, ticketTypes } from './form-options';
 
 const FormDiv = styled.div({
   form: {
@@ -81,7 +79,6 @@ export const TicketForm: FC<ITicketForm> = ({
   const [success, setSuccess] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
-
   const [actionType, setActionType] = useState<EActionTypes>(action);
 
   const [createTicket, { loading: createLoading, data: createData }] =
@@ -141,13 +138,13 @@ export const TicketForm: FC<ITicketForm> = ({
     }
   };
 
-  const { handleChange, references } = useTicketReferences({
-    initialState: initialValues.references as string[],
-  });
-
   const { onChange, onSubmit, values } = useForm({
     callback: selectMutation,
     initialState: initialValues,
+  });
+
+  const { handleChange, references } = useTicketReferences({
+    initialState: values.references,
   });
 
   const [priority, setPriority] = useState<TicketPriority>(values.priority);
@@ -160,7 +157,7 @@ export const TicketForm: FC<ITicketForm> = ({
       title={`${projectName} - ${translate(
         TEXT.forms.ticketForms[actionType].title
       )}`}
-      maxWidth={'800px'}
+      maxWidth={'850px'}
       callBackFn={toggleCallBackFn}
     >
       <FormDiv>
@@ -173,7 +170,7 @@ export const TicketForm: FC<ITicketForm> = ({
           }}
           className='mt-2'
         >
-          <Form.Group className='mb-3'>
+          <Form.Group className='mb-1'>
             <Form.Label>
               {translate(TEXT.forms.ticketForms[actionType].labels.title)}
             </Form.Label>
@@ -185,6 +182,7 @@ export const TicketForm: FC<ITicketForm> = ({
               value={values.title}
             />
           </Form.Group>
+          <SequneceId sequenceId={values.sequenceId} title={values.title} />
           <Row id='ticket-form-row' className='justify-content-center mb-5'>
             <Col className='col-8'>
               <Form.Group className='mb-3 w-100'>
@@ -196,15 +194,17 @@ export const TicketForm: FC<ITicketForm> = ({
                 <textarea
                   name='description'
                   className='form-control'
-                  rows={7}
+                  rows={8}
                   onChange={onChange}
                   disabled={loading || actionType === EActionTypes.DELETE}
                   value={values.description || ''}
                 />
               </Form.Group>
               <TicketReferences
+                actionType={actionType}
                 referenceOptions={tickets}
                 onChange={handleChange}
+                currentReferencies={references}
                 activeReferences={initialValues.references as string[]}
                 toggle={toggle}
                 disabled={loading || actionType === EActionTypes.DELETE}
@@ -221,7 +221,7 @@ export const TicketForm: FC<ITicketForm> = ({
                   <MainSelect
                     name='status'
                     value={values.status}
-                    options={ticketStatusOptions}
+                    options={setSelectOptions(ticketStatuses)}
                     onChange={onChange}
                     disabled={loading || actionType === EActionTypes.DELETE}
                   />
@@ -237,7 +237,7 @@ export const TicketForm: FC<ITicketForm> = ({
                   <MainSelect
                     name='type'
                     value={values.type}
-                    options={ticketTypeOptions}
+                    options={setSelectOptions(ticketTypes)}
                     onChange={(e) => {
                       onChange(e);
                       setType(e.target.value as TicketType);
@@ -252,7 +252,7 @@ export const TicketForm: FC<ITicketForm> = ({
                   <MainSelect
                     name='priority'
                     value={values.priority}
-                    options={ticketPriorityOptions}
+                    options={setSelectOptions(ticketPriorities)}
                     onChange={(e) => {
                       onChange(e);
                       setPriority(e.target.value as TicketPriority);
@@ -261,8 +261,8 @@ export const TicketForm: FC<ITicketForm> = ({
                   />
                 </div>
               </Form.Group>
-              <Form.Group className='mb-3'>
-                <Form.Label>
+              <Form.Group className='mb-3 d-flex align-items-center justify-content-between gap-2'>
+                <Form.Label className='m-0 p-0'>
                   {translate(
                     TEXT.forms.ticketForms[actionType].labels.storyPoints
                   )}
@@ -274,20 +274,9 @@ export const TicketForm: FC<ITicketForm> = ({
                   onChange={onChange}
                   disabled={loading || actionType === EActionTypes.DELETE}
                   value={Number(values.storyPoints)}
+                  className='text-left w-25'
                 />
               </Form.Group>
-              {/* <Form.Group className='mb-3'>
-                <Form.Label>
-                  {translate(TEXT.forms.ticketForms[actionType].labels.status)}
-                </Form.Label>
-                <MainSelect
-                  id={'id'}
-                  name='ticket-status'
-                  value={values.status}
-                  options={ticketStatusOptions}
-                  onChange={onChange}
-                />
-              </Form.Group> */}
             </Col>
           </Row>
           {alertMessage && (

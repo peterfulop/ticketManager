@@ -9,6 +9,7 @@ export interface IAuthRouteProps extends IReact {}
 export const AuthRoute: FC<IAuthRouteProps> = (props) => {
   const { children } = props;
   const { user } = useContext(UserContext).userState;
+
   if (!user) {
     return <Navigate to={ERoutePath.LOGIN} />;
   } else {

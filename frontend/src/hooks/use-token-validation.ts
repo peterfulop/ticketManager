@@ -1,14 +1,16 @@
 import { useEffect, useReducer, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { initialUserState, userReducer } from '../context/user';
 import { Validate } from '../modules/validate';
 
 export const useTokenValidation = () => {
+  const location = useLocation();
   const [userState, userDispatch] = useReducer(userReducer, initialUserState);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     CheckLocalStorageForCredentials();
-  }, []);
+  }, [location]);
 
   const CheckLocalStorageForCredentials = async () => {
     const token = localStorage.getItem('token');

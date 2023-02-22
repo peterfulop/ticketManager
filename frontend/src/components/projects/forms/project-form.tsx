@@ -2,7 +2,7 @@ import { ApolloQueryResult } from '@apollo/client';
 import { FC, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Exact,
@@ -67,6 +67,7 @@ export const ProjectForm: FC<IProjectForm> = ({
   refetch,
   toggleCallBackFn,
 }) => {
+  const navigate = useNavigate();
   const { projectId } = useParams();
   const [success, setSuccess] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);

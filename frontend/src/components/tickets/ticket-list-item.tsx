@@ -1,19 +1,17 @@
 import { FC } from 'react';
-import { FaRegClipboard } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
 import { useTicketStatusUpdateMutation } from '../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../assets/theme';
-import { ticketStatuses } from '../../helpers/ticket-statuses';
-import { MainSelectOption } from '../../types';
 import { ERoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
-import { textToClipboard } from '../../utils/text-to-clipboard';
-import { uniformBranchNameGenerator } from '../../utils/uniform-branch-name-generator';
+import { setSelectOptions } from '../../utils/set-select-options';
 import { PriorityIcon } from '../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../component-library/icons/ticket-type-icon';
 import { MainSelect } from '../component-library/main-select/main-select';
+import { ticketStatuses } from './form/form-options';
+import { SequneceId } from './sequnce-id/sequence-id';
 
 const TicketItem = styled.div({
   display: 'flex',
@@ -57,6 +55,23 @@ const TicketItemHeading = styled.div({
   },
 });
 
+const Symbols = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1rem',
+});
+
+const StoryPoints = styled.p({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontSize: '13px',
+  backgroundColor: 'rgb(225, 225, 225)',
+  width: '25px',
+  height: '25px',
+  borderRadius: '12.5px',
+});
+
 const TicketItemContent = styled.div({
   width: '100%',
   display: 'flex',
@@ -64,37 +79,6 @@ const TicketItemContent = styled.div({
   alignItems: 'center',
   marginTop: '1rem',
   padding: '5px',
-  '.ticket-item-footer__left': {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-  },
-  '.story-points-window': {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '13px',
-    backgroundColor: 'rgb(225, 225, 225)',
-    width: '25px',
-    height: '25px',
-    borderRadius: '12.5px',
-  },
-  small: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 5,
-    svg: {
-      display: 'none',
-      transition: 'transform 0.25s ease',
-    },
-    ':hover svg': {
-      display: 'block',
-    },
-  },
-  '.copied svg': {
-    transform: 'scale(1.25)',
-  },
 });
 
 interface ITicketItem extends ITicket {
@@ -112,17 +96,6 @@ export const TicketListItem: FC<ITicketItem> = ({
   const navigate = useNavigate();
   const { projectId } = useParams();
   const [updateStatus] = useTicketStatusUpdateMutation();
-
-  const ticketStatusOptions: MainSelectOption[] = Object.entries(
-    ticketStatuses
-  ).map((obj) => {
-    const status = obj[0];
-    const values = obj[1];
-    return {
-      value: status,
-      content: values.title,
-    };
-  });
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     await updateStatus({
@@ -153,31 +126,17 @@ export const TicketListItem: FC<ITicketItem> = ({
           id={id}
           name='ticket-status'
           value={status}
-          options={ticketStatusOptions}
+          options={setSelectOptions(ticketStatuses)}
           onChange={handleChange}
         />
       </TicketItemHeading>
       <TicketItemContent>
-        <div className='ticket-item-footer__left'>
+        <Symbols>
           <PriorityIcon priority={priority} size={20} />
           <TicketTypeIcon type={type} size={20} />
-          <p className='story-points-window'>{storyPoints}</p>
-        </div>
-        <small
-          onClick={async (e) => {
-            const icon = e.currentTarget;
-            e.stopPropagation();
-            const text = uniformBranchNameGenerator({ sequenceId, title });
-            await textToClipboard(text);
-            icon.classList.add('copied');
-            setTimeout(() => {
-              icon.classList.remove('copied');
-            }, 250);
-          }}
-        >
-          <FaRegClipboard />
-          {sequenceId}
-        </small>
+          <StoryPoints>{storyPoints}</StoryPoints>
+        </Symbols>
+        <SequneceId sequenceId={sequenceId} title={title} />
       </TicketItemContent>
     </TicketItem>
   );

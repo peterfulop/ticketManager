@@ -5,12 +5,22 @@ import styled from 'styled-components';
 import { Ticket } from '../../../apollo/graphql-generated/types';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
+import { EActionTypes } from '../../../types/enums/common.enum';
 import { ERoutePath } from '../../../types/enums/routes.enum';
 
-const ReferencesDiv = styled.div({});
+const ReferencesDiv = styled.div({
+  small: {
+    display: 'block',
+    color: 'tomato',
+    fontStyle: 'italic',
+    marginBottom: '1rem',
+  },
+});
 
-const ReferencesList = styled.div({
+const CurrentReferences = styled.div({
   marginBottom: '1rem',
+  maxHeight: '100px',
+  overflow: 'auto',
 });
 
 const RefLink = styled.p({
@@ -19,7 +29,7 @@ const RefLink = styled.p({
   cursor: 'pointer',
 });
 
-const ReferencesAction = styled.div({
+const AvailableReferences = styled.div({
   width: '100%',
   height: '100px',
   overflow: 'auto',
@@ -37,7 +47,9 @@ const ReferencesAction = styled.div({
 
 interface ITicketReferences {
   referenceOptions: Ticket[];
+  currentReferencies: string[];
   activeReferences: string[];
+  actionType: EActionTypes;
   disabled?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   toggle?: () => void;
@@ -46,7 +58,9 @@ interface ITicketReferences {
 export const TicketReferences: FC<ITicketReferences> = ({
   referenceOptions,
   activeReferences,
+  currentReferencies,
   disabled,
+  actionType,
   onChange,
   toggle,
 }) => {
@@ -56,32 +70,40 @@ export const TicketReferences: FC<ITicketReferences> = ({
   return (
     <ReferencesDiv>
       <p>{translate(TEXT.forms.ticketForms.CREATE.labels.references)}</p>
-      <ReferencesList>
-        {referenceOptions.map((option, key) => {
-          const refTicketPath = ERoutePath.TICKET_DETAILS.replace(
-            ':projectId',
-            projectId as string
-          ).replace(':ticketId', option.id);
-          const isExists = activeReferences.includes(option.id);
-          return (
-            isExists && (
-              <RefLink
-                key={key}
-                onClick={() => {
-                  navigate(refTicketPath);
-                  toggle && toggle();
-                }}
-                title={refTicketPath}
-                aria-disabled={disabled}
-              >{`${option.sequenceId} - ${option.title}`}</RefLink>
-            )
-          );
-        })}
-      </ReferencesList>
+      {actionType !== EActionTypes.CREATE && currentReferencies.length > 0 ? (
+        <>
+          <CurrentReferences>
+            {referenceOptions.map((option, key) => {
+              const refTicketPath = ERoutePath.TICKET_DETAILS.replace(
+                ':projectId',
+                projectId as string
+              ).replace(':ticketId', option.id);
+              const isExists = currentReferencies.includes(option.id);
+              return (
+                isExists && (
+                  <RefLink
+                    key={key}
+                    onClick={() => {
+                      navigate(refTicketPath);
+                      toggle && toggle();
+                    }}
+                    title={refTicketPath}
+                    aria-disabled={disabled}
+                  >{`${option.sequenceId} - ${option.title}`}</RefLink>
+                )
+              );
+            })}
+          </CurrentReferences>
+        </>
+      ) : (
+        <small>
+          {translate(TEXT.forms.ticketForms.CREATE.labels.noReferences)}
+        </small>
+      )}
       <p>
         {translate(TEXT.forms.ticketForms.CREATE.labels.availableReferences)}
       </p>
-      <ReferencesAction>
+      <AvailableReferences>
         {referenceOptions
           .filter((option) => option.id !== ticketId)
           .map((option, key) => {
@@ -99,7 +121,7 @@ export const TicketReferences: FC<ITicketReferences> = ({
               />
             );
           })}
-      </ReferencesAction>
+      </AvailableReferences>
     </ReferencesDiv>
   );
 };

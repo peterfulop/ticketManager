@@ -2,8 +2,8 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
 import { breakPoints } from '../../assets/theme';
-import { ticketStatuses } from '../../helpers/ticket-statuses';
 import { ITicket } from '../../types/interfaces/ticket.interface';
+import { ticketStatuses } from './form/form-options';
 import { TicketColumn } from './ticket-column';
 
 const TicketColumnsContainer = styled.div({
