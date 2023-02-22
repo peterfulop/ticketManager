@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Ticket } from '../../../apollo/graphql-generated/types';
-import { useGetMyTicketsQuery } from '../../../apollo/graphql/tickets/ticket.generated';
-import { useUserErrorsHandler } from '../../../hooks/use-user-errors-handler.hook';
+import { Ticket } from '../../apollo/graphql-generated/types';
+import { useGetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import { useUserErrorsHandler } from '../use-user-errors-handler.hook';
 
 interface IUseGetTickets {
   projectId: string;
@@ -15,6 +15,7 @@ export const useGetTickets = (props: IUseGetTickets) => {
   const {
     data: myTickets,
     loading: getTicketsLoading,
+    error: getTicketsError,
     refetch: refetchMyTickets,
   } = useGetMyTicketsQuery({
     fetchPolicy: 'no-cache',
@@ -40,6 +41,7 @@ export const useGetTickets = (props: IUseGetTickets) => {
   return {
     tickets,
     getTicketsLoading,
+    getTicketsError,
     refetchMyTickets,
   };
 };

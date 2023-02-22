@@ -1,31 +1,28 @@
 import { useEffect } from 'react';
-import { TicketCreateInput } from '../../../apollo/graphql-generated/types';
-import { useGetTicketQuery } from '../../../apollo/graphql/tickets/ticket.generated';
-import { useUserErrorsHandler } from '../../../hooks/use-user-errors-handler.hook';
-import { EActionTypes } from '../../../types/enums/common.enum';
+import { TicketCreateInput } from '../../apollo/graphql-generated/types';
+import { useGetTicketQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import { EActionTypes } from '../../types/enums/common.enum';
+import { useUserErrorsHandler } from '../use-user-errors-handler.hook';
 
-interface IUseGetTicketData {
-  ticketId: string;
-  projectId: string;
+interface IUseGetTicketByParams {
+  ticketId?: string;
   setActionType: React.Dispatch<React.SetStateAction<EActionTypes>>;
   setTicketInitialValues: React.Dispatch<
     React.SetStateAction<TicketCreateInput>
   >;
-  callBackFn: () => void;
+  callBackFn?: () => void;
 }
 
-export const useGetTicketData = (props: IUseGetTicketData) => {
-  const {
-    ticketId,
-    projectId,
-    setActionType,
-    setTicketInitialValues,
-    callBackFn,
-  } = props;
+export const useGetTicketByParams = (props: IUseGetTicketByParams) => {
+  const { ticketId, setActionType, setTicketInitialValues, callBackFn } = props;
 
   const { notFound, checkErrorMessage } = useUserErrorsHandler();
 
-  const { data: ticketData, loading: getTicketLoading } = useGetTicketQuery({
+  const {
+    data: ticketData,
+    loading: getTicketLoading,
+    error: getTicketError,
+  } = useGetTicketQuery({
     fetchPolicy: 'no-cache',
     variables: {
       id: ticketId as string,
@@ -34,7 +31,7 @@ export const useGetTicketData = (props: IUseGetTicketData) => {
   });
 
   useEffect(() => {
-    if (projectId) {
+    if (ticketId) {
       const data = ticketData?.getTicket.ticket;
       const errors = ticketData?.getTicket.userErrors;
       if (!getTicketLoading && errors && errors.length > 0) {
@@ -43,10 +40,10 @@ export const useGetTicketData = (props: IUseGetTicketData) => {
       if (!getTicketLoading && data) {
         setTicketInitialValues(data);
         setActionType(EActionTypes.UPDATE);
-        callBackFn();
+        callBackFn && callBackFn();
       }
     }
   }, [ticketData]);
 
-  return { notFound };
+  return { notFound, getTicketError };
 };

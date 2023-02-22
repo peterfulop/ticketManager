@@ -14,13 +14,13 @@ import { TicketForm } from '../../components/tickets/form/ticket-form';
 import { TicketColumns } from '../../components/tickets/ticket-columns';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
+import { useGetProjectData } from '../../hooks/ticket-hooks/use-get-project-data.hook';
+import { useGetTicketByParams } from '../../hooks/ticket-hooks/use-get-ticket-by-params.hook';
+import { useGetTickets } from '../../hooks/ticket-hooks/use-get-tickets.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 import { NotFound } from '../404';
-import { useGetProjectData } from './hooks/use-get-project-data.hook';
-import { useGetTicketData } from './hooks/use-get-ticket-data.hook';
-import { useGetTickets } from './hooks/use-get-tickets.hook';
 
 export const TicketsPage = () => {
   const { projectId, ticketId } = useParams();
@@ -57,9 +57,8 @@ export const TicketsPage = () => {
     projectId: projectId as string,
   });
 
-  const { notFound } = useGetTicketData({
-    ticketId: ticketId as string,
-    projectId: projectId as string,
+  const { notFound } = useGetTicketByParams({
+    ticketId: ticketId,
     setActionType,
     setTicketInitialValues,
     callBackFn: () => {
