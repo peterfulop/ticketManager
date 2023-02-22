@@ -16,8 +16,8 @@ import { ProjectForm } from '../../components/projects/forms/project-form';
 import { ProjectList } from '../../components/projects/project-list';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { useUserAuthentication } from '../../hooks/use-logging-out-user.hook';
 import { useModal } from '../../hooks/use-modal.hook';
+import { useUserErrorsHandler } from '../../hooks/use-user-errors-handler.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 
@@ -58,7 +58,7 @@ export const ProjectsPage = () => {
 
   const loading = getProjectsDataLoading || getProjectDataLoading;
 
-  const { checkErrorMessage } = useUserAuthentication();
+  const { checkErrorMessage } = useUserErrorsHandler();
 
   const toggleCallBackFn = () => {
     setActionType(EActionTypes.CREATE);

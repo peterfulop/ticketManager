@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
 import { useTicketStatusUpdateMutation } from '../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../assets/theme';
-import { useUserAuthentication } from '../../hooks/use-logging-out-user.hook';
+import { useUserErrorsHandler } from '../../hooks/use-user-errors-handler.hook';
 import { ERoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
 import { setSelectOptions } from '../../utils/set-select-options';
@@ -99,7 +99,7 @@ export const TicketListItem: FC<ITicketItem> = ({
   const [updateStatus, { loading, data: updateStatusData }] =
     useTicketStatusUpdateMutation();
 
-  const { checkErrorMessage } = useUserAuthentication();
+  const { checkErrorMessage } = useUserErrorsHandler();
 
   useEffect(() => {
     const errors = updateStatusData?.ticketStatusUpdate.userErrors;
