@@ -26,6 +26,7 @@ export const updateTicketUseCase = async (
     type,
     projectId,
     description,
+    storyPoints,
     comment,
     references,
     ticketId,
@@ -92,6 +93,7 @@ export const updateTicketUseCase = async (
     projectId,
     comment,
     references,
+    storyPoints,
   });
 
   try {
