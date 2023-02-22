@@ -13,6 +13,7 @@ export enum ETicketInputs {
   DESCRIPTION = 'description',
   PRIORITY = 'priority',
   REFERENCES = 'references',
+  AVAILABLE_REFERENCES = 'availableReferences',
   STATUS = 'status',
   STORY_POINTS = 'storyPoints',
   TITLE = 'title',

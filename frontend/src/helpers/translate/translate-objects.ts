@@ -17,13 +17,15 @@ const ticketFormLabels: Record<ETicketInputs, Content> = {
   references: {
     ENG: 'references:',
   },
+  availableReferences: {
+    ENG: 'available references:',
+  },
   status: {
     ENG: 'status:',
   },
   storyPoints: {
     ENG: 'estimated story points:',
   },
-
   type: {
     ENG: 'type:',
   },

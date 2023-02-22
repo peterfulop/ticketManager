@@ -9,7 +9,9 @@ import { ERoutePath } from '../../../types/enums/routes.enum';
 
 const ReferencesDiv = styled.div({});
 
-const ReferencesList = styled.div({});
+const ReferencesList = styled.div({
+  marginBottom: '1rem',
+});
 
 const RefLink = styled.p({
   textDecoration: 'underline',
@@ -76,24 +78,27 @@ export const TicketReferences: FC<ITicketReferences> = ({
           );
         })}
       </ReferencesList>
-      <p>{translate(TEXT.forms.ticketForms.CREATE.labels.references)}</p>
-
+      <p>
+        {translate(TEXT.forms.ticketForms.CREATE.labels.availableReferences)}
+      </p>
       <ReferencesAction>
-        {referenceOptions.map((option, key) => {
-          const isExists = activeReferences.includes(option.id);
-          return (
-            <Form.Check
-              id={option.id}
-              key={key}
-              title={option.title}
-              label={`${option.sequenceId} - ${option.title}`}
-              type={'checkbox'}
-              onChange={onChange}
-              defaultChecked={isExists}
-              disabled={disabled || ticketId === option.id}
-            />
-          );
-        })}
+        {referenceOptions
+          .filter((option) => option.id !== ticketId)
+          .map((option, key) => {
+            const isExists = activeReferences.includes(option.id);
+            return (
+              <Form.Check
+                id={option.id}
+                key={key}
+                title={option.title}
+                label={`${option.sequenceId} - ${option.title}`}
+                type={'checkbox'}
+                onChange={onChange}
+                defaultChecked={isExists}
+                disabled={disabled}
+              />
+            );
+          })}
       </ReferencesAction>
     </ReferencesDiv>
   );

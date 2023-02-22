@@ -46,6 +46,9 @@ const FormDiv = styled.div({
       gridRow: 10,
     },
   },
+  '.mt-inline': {
+    marginTop: '2rem',
+  },
   [`@media screen and (max-width: ${breakPoints.lg})`]: {
     '#ticket-form-row': {
       flexDirection: 'column',
@@ -239,7 +242,7 @@ export const TicketForm: FC<ITicketForm> = ({
                 disabled={loading || actionType === EActionTypes.DELETE}
               />
             </Col>
-            <Col className='col-4 mt-4'>
+            <Col className='mt-inline col-4'>
               <Form.Group className='mb-3'>
                 <MainSelect
                   name='status'
