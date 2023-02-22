@@ -13,6 +13,8 @@ export type VerifyUserInput = {
 export const verifyUserUseCase = async (
   input: VerifyUserInput
 ): Promise<VerifyPayload> => {
+  console.log('Járok itt...');
+
   const { token } = input.args;
   const { prisma } = input.context;
 
@@ -22,6 +24,8 @@ export const verifyUserUseCase = async (
   };
 
   const user = JWTVerify(token);
+
+  console.log('user', user);
 
   if (!user) {
     return {

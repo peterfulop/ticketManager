@@ -74,15 +74,32 @@ export const ProjectForm: FC<IProjectForm> = ({
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
   const [actionType, setActionType] = useState<EActionTypes>(action);
 
-  const [createProject, { loading: createLoading, data: createData }] =
-    useProjectCreateMutation();
-  const [updateProject, { loading: updateLoading, data: updateData }] =
-    useProjectUpdateMutation();
-  const [deleteProject, { loading: deleteLoading, data: deleteData }] =
-    useProjectDeleteMutation();
+  const [
+    createProject,
+    { loading: createLoading, data: createData, error: createDataError },
+  ] = useProjectCreateMutation();
+  const [
+    updateProject,
+    { loading: updateLoading, data: updateData, error: updateDataError },
+  ] = useProjectUpdateMutation();
+  const [
+    deleteProject,
+    { loading: deleteLoading, data: deleteData, error: deleteDataError },
+  ] = useProjectDeleteMutation();
 
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;
+  const error = createDataError || updateDataError || deleteDataError;
+
+  useEffect(() => {
+    if (
+      error
+      // createData?.projectCreate.userErrors[0].message ===
+      //   EServerSideError.AUTHORIZATION_FAILED
+    ) {
+      console.log(error);
+    }
+  }, [error]);
 
   const DateFormat = (date: string) => {
     return new Date(date).toLocaleString();
