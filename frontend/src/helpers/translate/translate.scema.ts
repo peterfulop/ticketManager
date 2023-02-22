@@ -32,9 +32,14 @@ type ProjectForms = Record<
 type TicketForms = Record<
   EActionTypes,
   Form & {
-    labels: Record<ETicketInputs, Content>;
+    labels: Record<ETicketInputs, Content> & TicketFormExtraLabels;
   }
 >;
+
+export type TicketFormExtraLabels = {
+  availableReferences: Content;
+  noReferences: Content;
+};
 
 export type MyForms = {
   projectForms: ProjectForms;

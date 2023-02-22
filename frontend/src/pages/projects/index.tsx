@@ -16,6 +16,7 @@ import { ProjectForm } from '../../components/projects/forms/project-form';
 import { ProjectList } from '../../components/projects/project-list';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
+import { useUserAuthentication } from '../../hooks/use-logging-out-user.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
@@ -30,22 +31,34 @@ export const ProjectsPage = () => {
   const [actionType, setActionType] = useState<EActionTypes>(
     EActionTypes.CREATE
   );
-  const [selectedId, setSelectedId] = useState<string>('');
 
   const [projectInitialValues, setProjectInitialValues] =
     useState<ProjectCreateInput>(PROJECT_INITIAL_VALUES);
 
-  const { data, loading, refetch } = useGetMyProjectsQuery({
+  const {
+    data: projectsData,
+    loading: getProjectsDataLoading,
+    error: getProjectsError,
+    refetch,
+  } = useGetMyProjectsQuery({
     fetchPolicy: 'no-cache',
   });
 
-  const { data: projectData } = useGetMyProjectQuery({
+  const {
+    data: projectData,
+    error: getProjectError,
+    loading: getProjectDataLoading,
+  } = useGetMyProjectQuery({
     fetchPolicy: 'no-cache',
     variables: {
       id: projectId as string,
     },
     skip: !projectId,
   });
+
+  const loading = getProjectsDataLoading || getProjectDataLoading;
+
+  const { checkErrorMessage } = useUserAuthentication();
 
   const toggleCallBackFn = () => {
     setActionType(EActionTypes.CREATE);
@@ -54,22 +67,35 @@ export const ProjectsPage = () => {
   };
 
   useEffect(() => {
-    if (data?.getMyProjects.projects) {
-      setProjects(data?.getMyProjects.projects as Project[]);
+    const data = projectsData?.getMyProjects.projects;
+    const errors = projectsData?.getMyProjects.userErrors;
+
+    if (!getProjectsDataLoading && errors && errors?.length > 0) {
+      checkErrorMessage(errors[0].message);
     }
-  }, [data?.getMyProjects.projects]);
+    if (!getProjectsDataLoading && data) {
+      setProjects(data as Project[]);
+    }
+  }, [projectsData]);
 
   useEffect(() => {
     if (projectId) {
-      if (projectData?.getMyProject.project) {
+      const data = projectData?.getMyProject.project;
+      const errors = projectData?.getMyProject.userErrors;
+
+      if (!getProjectDataLoading && errors && errors?.length > 0) {
+        checkErrorMessage(errors[0].message);
+      }
+      if (!getProjectDataLoading && data) {
         setActionType(EActionTypes.UPDATE);
-        setProjectInitialValues(projectData.getMyProject.project);
+        setProjectInitialValues(data);
         if (!isOpen) {
           toggle();
         }
       }
+    } else {
     }
-  }, [projectData?.getMyProject.project]);
+  }, [projectData]);
 
   return (
     <>
@@ -95,16 +121,7 @@ export const ProjectsPage = () => {
           <GrAdd />
         </MainButton>
         {loading && <p>{translate(TEXT.general.loading)}</p>}
-        {!loading && (
-          <ProjectList
-            setProjectInitialInputs={setProjectInitialValues}
-            setActionType={setActionType}
-            setSelectedId={setSelectedId}
-            toggle={toggle}
-            selectedId={selectedId}
-            projects={projects}
-          />
-        )}
+        {!loading && <ProjectList projects={projects} />}
       </MainContainer>
     </>
   );

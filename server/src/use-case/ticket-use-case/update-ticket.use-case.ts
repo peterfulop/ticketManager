@@ -38,6 +38,15 @@ export const updateTicketUseCase = async (
     ticket: null,
   };
 
+  if (!user) {
+    return {
+      ...ticketPayload,
+      userErrors: [
+        { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
+      ],
+    };
+  }
+
   const ticketToUpdate = await prisma.ticket.findUnique({
     where: { id: ticketId },
   });

@@ -22,7 +22,6 @@ export const verifyUserUseCase = async (
   };
 
   const user = JWTVerify(token);
-
   if (!user) {
     return {
       ...verifyPayload,

@@ -28,24 +28,26 @@ export const createTicketUseCase = async (
     comment,
     references,
   } = input.args.input;
-  const userId = input.context.user?.userId;
-  const { prisma, user } = input.context;
+  const { user } = input.context;
+  const { prisma } = input.context;
 
   const ticketPayload: TicketPayload = {
     userErrors: [],
     ticket: null,
   };
 
-  if (!userId) {
+  if (!user) {
     return {
       ...ticketPayload,
-      userErrors: [{ ...userError, message: DBErrorMessages.UNAUTHENTICATED }],
+      userErrors: [
+        { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
+      ],
     };
   }
 
   const userExists = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id: user.userId,
     },
   });
 
@@ -122,7 +124,7 @@ export const createTicketUseCase = async (
   try {
     const newTicket = await prisma.ticket.create({
       data: {
-        userId,
+        userId: user.userId,
         projectId,
         title,
         status,

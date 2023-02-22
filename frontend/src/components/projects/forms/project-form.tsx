@@ -17,6 +17,7 @@ import {
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
+import { useUserAuthentication } from '../../../hooks/use-logging-out-user.hook';
 import { createProjectMutation } from '../../../modules/project-modules/create-project';
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
@@ -73,12 +74,20 @@ export const ProjectForm: FC<IProjectForm> = ({
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
   const [actionType, setActionType] = useState<EActionTypes>(action);
 
-  const [createProject, { loading: createLoading, data: createData }] =
-    useProjectCreateMutation();
-  const [updateProject, { loading: updateLoading, data: updateData }] =
-    useProjectUpdateMutation();
-  const [deleteProject, { loading: deleteLoading, data: deleteData }] =
-    useProjectDeleteMutation();
+  const [
+    createProject,
+    { loading: createLoading, data: createData, error: createDataError },
+  ] = useProjectCreateMutation();
+  const [
+    updateProject,
+    { loading: updateLoading, data: updateData, error: updateDataError },
+  ] = useProjectUpdateMutation();
+  const [
+    deleteProject,
+    { loading: deleteLoading, data: deleteData, error: deleteDataError },
+  ] = useProjectDeleteMutation();
+
+  const { checkErrorMessage } = useUserAuthentication();
 
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;
@@ -88,6 +97,14 @@ export const ProjectForm: FC<IProjectForm> = ({
   };
 
   useEffect(() => {
+    const errors =
+      createData?.projectCreate.userErrors ||
+      updateData?.projectUpdate.userErrors ||
+      deleteData?.projectDelete.userErrors;
+
+    if (!loading && errors && errors.length > 0) {
+      checkErrorMessage(errors[0].message);
+    }
     if (data) {
       refetch();
     }

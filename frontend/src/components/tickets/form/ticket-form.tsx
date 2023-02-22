@@ -7,7 +7,6 @@ import {
   Ticket,
   TicketCreateInput,
   TicketPriority,
-  TicketStatus,
   TicketType,
 } from '../../../apollo/graphql-generated/types';
 import {
@@ -16,26 +15,26 @@ import {
   useTicketUpdateMutation,
 } from '../../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../../assets/theme';
-import { ticketPriorities } from '../../../helpers/ticket-priorities';
-import { ticketTypes } from '../../../helpers/ticket-types';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
+import { useUserAuthentication } from '../../../hooks/use-logging-out-user.hook';
 import { useTicketReferences } from '../../../hooks/use-ticket-references.hook';
 import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
 import { deleteTicketMutation } from '../../../modules/ticket-modules/delete-ticket';
 import { updateTicketMutation } from '../../../modules/ticket-modules/update-ticket';
-import { MainSelectOption } from '../../../types';
 import { EActionTypes } from '../../../types/enums/common.enum';
 import { ITicket } from '../../../types/interfaces/ticket.interface';
-import { stringPrettier } from '../../../utils/string-prettier';
+import { setSelectOptions } from '../../../utils/set-select-options';
 import { FormActions } from '../../component-library/form-actions/form-actions';
 import { PriorityIcon } from '../../component-library/icons/priority-icon';
 import { TicketTypeIcon } from '../../component-library/icons/ticket-type-icon';
 import { MainSelect } from '../../component-library/main-select/main-select';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
 import { Modal } from '../../modal/modal';
+import { SequneceId } from '../sequnce-id/sequence-id';
 import { TicketReferences } from '../ticket-references/ticket-references';
+import { ticketPriorities, ticketStatuses, ticketTypes } from './form-options';
 
 const FormDiv = styled.div({
   form: {
@@ -45,6 +44,9 @@ const FormDiv = styled.div({
     textarea: {
       gridRow: 10,
     },
+  },
+  '.mt-inline': {
+    marginTop: '2rem',
   },
   [`@media screen and (max-width: ${breakPoints.lg})`]: {
     '#ticket-form-row': {
@@ -78,7 +80,6 @@ export const TicketForm: FC<ITicketForm> = ({
   const [success, setSuccess] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
-
   const [actionType, setActionType] = useState<EActionTypes>(action);
 
   const [createTicket, { loading: createLoading, data: createData }] =
@@ -91,7 +92,16 @@ export const TicketForm: FC<ITicketForm> = ({
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;
 
+  const { checkErrorMessage } = useUserAuthentication();
+
   useEffect(() => {
+    const errors =
+      createData?.ticketCreate.userErrors ||
+      updateData?.ticketUpdate.userErrors ||
+      deleteData?.ticketDelete.userErrors;
+    if (!loading && errors && errors.length > 0) {
+      checkErrorMessage(errors[0].message);
+    }
     if (data) {
       refetchMyTickets();
     }
@@ -138,50 +148,17 @@ export const TicketForm: FC<ITicketForm> = ({
     }
   };
 
-  const { handleChange, references } = useTicketReferences({
-    initialState: initialValues.references as string[],
-  });
-
   const { onChange, onSubmit, values } = useForm({
     callback: selectMutation,
     initialState: initialValues,
   });
 
-  const [priority, setPriority] = useState<TicketPriority>(values.priority);
-  const [type, setType] = useState<TicketType>(values.type);
-
-  const ticketStatusOptions: MainSelectOption[] = [
-    {
-      value: TicketStatus.TO_DO,
-      content: stringPrettier(TicketStatus.TO_DO),
-    },
-    {
-      value: TicketStatus.BACKLOG,
-      content: stringPrettier(TicketStatus.BACKLOG),
-    },
-  ];
-
-  const ticketPriorityOptions: MainSelectOption[] = Object.entries(
-    ticketPriorities
-  ).map((obj) => {
-    const priority = obj[0];
-    const values = obj[1];
-    return {
-      value: priority,
-      content: values.title,
-    };
+  const { handleChange, references } = useTicketReferences({
+    initialState: values.references,
   });
 
-  const ticketTypeOptions: MainSelectOption[] = Object.entries(ticketTypes).map(
-    (obj) => {
-      const type = obj[0];
-      const values = obj[1];
-      return {
-        value: type,
-        content: values.title,
-      };
-    }
-  );
+  const [priority, setPriority] = useState<TicketPriority>(values.priority);
+  const [type, setType] = useState<TicketType>(values.type);
 
   return (
     <Modal
@@ -190,7 +167,7 @@ export const TicketForm: FC<ITicketForm> = ({
       title={`${projectName} - ${translate(
         TEXT.forms.ticketForms[actionType].title
       )}`}
-      maxWidth={'800px'}
+      maxWidth={'850px'}
       callBackFn={toggleCallBackFn}
     >
       <FormDiv>
@@ -201,8 +178,9 @@ export const TicketForm: FC<ITicketForm> = ({
               resetForm();
             }
           }}
+          className='mt-2'
         >
-          <Form.Group className='mb-3'>
+          <Form.Group className='mb-1'>
             <Form.Label>
               {translate(TEXT.forms.ticketForms[actionType].labels.title)}
             </Form.Label>
@@ -214,6 +192,7 @@ export const TicketForm: FC<ITicketForm> = ({
               value={values.title}
             />
           </Form.Group>
+          <SequneceId sequenceId={values.sequenceId} title={values.title} />
           <Row id='ticket-form-row' className='justify-content-center mb-5'>
             <Col className='col-8'>
               <Form.Group className='mb-3 w-100'>
@@ -232,30 +211,43 @@ export const TicketForm: FC<ITicketForm> = ({
                 />
               </Form.Group>
               <TicketReferences
+                actionType={actionType}
                 referenceOptions={tickets}
                 onChange={handleChange}
+                currentReferencies={references}
                 activeReferences={initialValues.references as string[]}
                 toggle={toggle}
                 disabled={loading || actionType === EActionTypes.DELETE}
               />
             </Col>
-            <Col className='col-4 mt-4'>
-              <Form.Group className='mb-3'>
-                <MainSelect
-                  name='status'
-                  value={values.status}
-                  options={ticketStatusOptions}
-                  onChange={onChange}
-                  disabled={loading || actionType === EActionTypes.DELETE}
-                />
-              </Form.Group>
-              <Form.Group className='mb-3 w-100'>
+            <Col className='col-4'>
+              {actionType !== EActionTypes.CREATE && (
+                <Form.Group className='mb-3'>
+                  <Form.Label>
+                    {translate(
+                      TEXT.forms.ticketForms[actionType].labels.status
+                    )}
+                  </Form.Label>
+                  <MainSelect
+                    name='status'
+                    value={values.status}
+                    options={setSelectOptions(ticketStatuses)}
+                    onChange={onChange}
+                    disabled={loading || actionType === EActionTypes.DELETE}
+                  />
+                </Form.Group>
+              )}
+              <Form.Group
+                className={`mb-3 w-100 ${
+                  actionType === EActionTypes.CREATE && 'mt-inline'
+                }`}
+              >
                 <div className='d-flex align-items-center gap-2'>
                   <TicketTypeIcon type={type} size={25} />
                   <MainSelect
                     name='type'
                     value={values.type}
-                    options={ticketTypeOptions}
+                    options={setSelectOptions(ticketTypes)}
                     onChange={(e) => {
                       onChange(e);
                       setType(e.target.value as TicketType);
@@ -270,7 +262,7 @@ export const TicketForm: FC<ITicketForm> = ({
                   <MainSelect
                     name='priority'
                     value={values.priority}
-                    options={ticketPriorityOptions}
+                    options={setSelectOptions(ticketPriorities)}
                     onChange={(e) => {
                       onChange(e);
                       setPriority(e.target.value as TicketPriority);
@@ -279,8 +271,8 @@ export const TicketForm: FC<ITicketForm> = ({
                   />
                 </div>
               </Form.Group>
-              <Form.Group className='mb-3'>
-                <Form.Label>
+              <Form.Group className='mb-3 d-flex align-items-center justify-content-between gap-2'>
+                <Form.Label className='m-0 p-0'>
                   {translate(
                     TEXT.forms.ticketForms[actionType].labels.storyPoints
                   )}
@@ -292,6 +284,7 @@ export const TicketForm: FC<ITicketForm> = ({
                   onChange={onChange}
                   disabled={loading || actionType === EActionTypes.DELETE}
                   value={Number(values.storyPoints)}
+                  className='text-left w-25'
                 />
               </Form.Group>
             </Col>

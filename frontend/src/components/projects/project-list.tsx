@@ -1,16 +1,9 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-import {
-  Project,
-  ProjectCreateInput,
-} from '../../apollo/graphql-generated/types';
+import { Project } from '../../apollo/graphql-generated/types';
 import { breakPoints } from '../../assets/theme';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import {
-  IMutationProps,
-  IReact,
-} from '../../types/interfaces/common.interface';
 import { ProjectListItem } from './project-list-item';
 
 const Projects = styled.div({
@@ -27,37 +20,16 @@ const Projects = styled.div({
   },
 });
 
-interface IProjectList extends IReact, IMutationProps {
+interface IProjectList {
   projects: Project[];
-  toggle: () => void;
-  setProjectInitialInputs: React.Dispatch<
-    React.SetStateAction<ProjectCreateInput>
-  >;
 }
 
-export const ProjectList: FC<IProjectList> = ({
-  projects,
-  toggle,
-  setProjectInitialInputs,
-  setActionType,
-  setSelectedId,
-  selectedId,
-}) => {
+export const ProjectList: FC<IProjectList> = ({ projects }) => {
   return (
     <Projects>
       {projects.length ? (
         projects.map((project, key) => {
-          return (
-            <ProjectListItem
-              key={key}
-              project={project}
-              toggle={toggle}
-              setProjectInitialInputs={setProjectInitialInputs}
-              setActionType={setActionType}
-              setSelectedId={setSelectedId}
-              selectedId={selectedId}
-            />
-          );
+          return <ProjectListItem key={key} project={project} />;
         })
       ) : (
         <p>{translate(TEXT.pages.projects.labels.noProjects)}</p>

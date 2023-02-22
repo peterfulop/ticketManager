@@ -16,7 +16,7 @@ export const createProjectUseCase = async (
   input: CreateProjectInput
 ): Promise<ProjectPayload> => {
   const { name } = input.args.input;
-  const userId = input.context.user?.userId;
+  const { user } = input.context;
   const { prisma } = input.context;
 
   const projectPayload: ProjectPayload = {
@@ -24,16 +24,18 @@ export const createProjectUseCase = async (
     project: null,
   };
 
-  if (!userId) {
+  if (!user) {
     return {
       ...projectPayload,
-      userErrors: [{ ...userError, message: DBErrorMessages.UNAUTHENTICATED }],
+      userErrors: [
+        { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
+      ],
     };
   }
 
   const userExists = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id: user.userId,
     },
   });
 
@@ -62,7 +64,7 @@ export const createProjectUseCase = async (
     const project = await prisma.project.create({
       data: {
         name,
-        userId,
+        userId: user.userId,
       },
     });
     return {

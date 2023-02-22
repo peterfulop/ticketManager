@@ -22,7 +22,7 @@ export const getMyProjectUseCase = async (
     userErrors: [],
   };
 
-  if (!user?.userId) {
+  if (!user) {
     return {
       ...projectPayload,
       userErrors: [

@@ -1,7 +1,7 @@
 import { ETicketInputs } from '../../types/enums/common.enum';
-import { Content, Text } from './translate.scema';
+import { Content, Text, TicketFormExtraLabels } from './translate.scema';
 
-const ticketFormLabels: Record<ETicketInputs, Content> = {
+const ticketFormInputs: Record<ETicketInputs, Content> = {
   title: {
     ENG: 'ticket title:',
   },
@@ -23,10 +23,23 @@ const ticketFormLabels: Record<ETicketInputs, Content> = {
   storyPoints: {
     ENG: 'estimated story points:',
   },
-
   type: {
     ENG: 'type:',
   },
+};
+
+const ticketFormExtraLabels: TicketFormExtraLabels = {
+  availableReferences: {
+    ENG: 'available references:',
+  },
+  noReferences: {
+    ENG: 'no referencies added ...',
+  },
+};
+
+const ticketFormLabels = {
+  ...ticketFormInputs,
+  ...ticketFormExtraLabels,
 };
 
 export const TEXT: Text = {

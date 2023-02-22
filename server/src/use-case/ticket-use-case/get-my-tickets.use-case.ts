@@ -19,12 +19,12 @@ export const getMyTicketsUseCase = async (
 
   const searchParams = input.args.input || {};
 
-  if (!user?.userId) {
+  if (!user) {
     return {
+      tickets: [],
       userErrors: [
         { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
       ],
-      tickets: [],
     };
   }
 

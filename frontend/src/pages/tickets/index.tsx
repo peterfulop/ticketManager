@@ -16,10 +16,11 @@ import {
 } from '../../apollo/graphql/tickets/ticket.generated';
 import { MainButton } from '../../components/component-library/main-button/main-button';
 import { MainContainer } from '../../components/main-content/main-content';
-import { TicketForm } from '../../components/tickets/forms/ticket-form';
+import { TicketForm } from '../../components/tickets/form/ticket-form';
 import { TicketColumns } from '../../components/tickets/ticket-columns';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
+import { useUserAuthentication } from '../../hooks/use-logging-out-user.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
@@ -42,15 +43,18 @@ export const TicketsPage = () => {
   const navigate = useNavigate();
   const { isOpen, toggle } = useModal();
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [projectName, setProjectName] = useState<string>('');
   const [actionType, setActionType] = useState<EActionTypes>(
     EActionTypes.CREATE
   );
   const [ticketInitialValues, setTicketInitialValues] =
     useState<TicketCreateInput>(TICKET_INITIAL_INPUT);
 
+  const { checkErrorMessage } = useUserAuthentication();
+
   const {
     data: myTickets,
-    loading: loadingMyTickets,
+    loading: getTicketsLoading,
     refetch: refetchMyTickets,
   } = useGetMyTicketsQuery({
     fetchPolicy: 'no-cache',
@@ -62,14 +66,15 @@ export const TicketsPage = () => {
     skip: !projectId,
   });
 
-  const { data: projectData } = useGetMyProjectQuery({
-    fetchPolicy: 'no-cache',
-    variables: {
-      id: projectId as string,
-    },
-  });
+  const { data: projectData, loading: getProjectLoading } =
+    useGetMyProjectQuery({
+      fetchPolicy: 'no-cache',
+      variables: {
+        id: projectId as string,
+      },
+    });
 
-  const { data: ticketData, loading: loadingGetTicket } = useGetTicketQuery({
+  const { data: ticketData, loading: getTicketLoading } = useGetTicketQuery({
     fetchPolicy: 'no-cache',
     variables: {
       id: ticketId as string,
@@ -84,24 +89,43 @@ export const TicketsPage = () => {
   };
 
   useEffect(() => {
-    if (myTickets?.getMyTickets.tickets && !loadingMyTickets) {
-      setTickets(myTickets?.getMyTickets.tickets as Ticket[]);
+    const data = projectData?.getMyProject.project;
+    const errors = projectData?.getMyProject.userErrors;
+    if (!getProjectLoading && errors && errors.length > 0) {
+      checkErrorMessage(errors[0].message);
     }
-  }, [myTickets?.getMyTickets.tickets]);
+    if (!getProjectLoading && data) {
+      setProjectName(data.name);
+    }
+  }, [projectData]);
+
+  useEffect(() => {
+    const data = myTickets?.getMyTickets.tickets;
+    const errors = myTickets?.getMyTickets.userErrors;
+    if (!getTicketsLoading && errors && errors.length > 0) {
+      checkErrorMessage(errors[0].message);
+    }
+    if (!getTicketsLoading && data) {
+      setTickets(data as Ticket[]);
+    }
+  }, [myTickets]);
 
   useEffect(() => {
     if (projectId) {
-      if (ticketData?.getTicket.ticket && !loadingGetTicket) {
-        setTicketInitialValues(ticketData?.getTicket.ticket);
+      const data = ticketData?.getTicket.ticket;
+      const errors = ticketData?.getTicket.userErrors;
+      if (!getTicketLoading && errors && errors.length > 0) {
+        checkErrorMessage(errors[0].message);
+      }
+      if (!getTicketLoading && data) {
+        setTicketInitialValues(data);
         setActionType(EActionTypes.UPDATE);
         if (!isOpen) {
           toggle();
         }
       }
     }
-  }, [ticketData?.getTicket.ticket]);
-
-  const projectName = projectData?.getMyProject.project?.name as string;
+  }, [ticketData]);
 
   return (
     <>
@@ -138,7 +162,7 @@ export const TicketsPage = () => {
             <GrAdd />
           </MainButton>
         </div>
-        {loadingMyTickets && <p>{translate(TEXT.general.loading)}</p>}
+        {getTicketsLoading && <p>{translate(TEXT.general.loading)}</p>}
         <TicketColumns
           tickets={tickets}
           refetchMyTickets={refetchMyTickets}

@@ -1,6 +1,6 @@
 import {
+  BsChevronCompactDown,
   BsChevronCompactUp,
-  BsChevronDoubleDown,
   BsChevronDoubleUp,
 } from 'react-icons/bs';
 import { RxHamburgerMenu } from 'react-icons/rx';
@@ -24,7 +24,7 @@ export const PriorityIcon = (props: {
       );
     case TicketPriority.LOW:
       return (
-        <BsChevronDoubleDown size={props.size} title={TicketPriority.LOW} />
+        <BsChevronCompactDown size={props.size} title={TicketPriority.LOW} />
       );
   }
 };

@@ -17,12 +17,12 @@ export const getMyProjectByNameUseCase = async (
   const { projectName } = input.args;
   const { prisma, user } = input.context;
 
-  if (!user?.userId) {
+  if (!user) {
     return {
+      projectId: '',
       userErrors: [
         { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
       ],
-      projectId: null,
     };
   }
 
