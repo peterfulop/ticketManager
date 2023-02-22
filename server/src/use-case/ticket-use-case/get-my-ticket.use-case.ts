@@ -23,6 +23,15 @@ export const getMyTicketUseCase = async (
     ticket: null,
   };
 
+  if (!user) {
+    return {
+      ...ticketPayload,
+      userErrors: [
+        { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
+      ],
+    };
+  }
+
   const ticket = await prisma.ticket.findFirst({
     where: {
       id,

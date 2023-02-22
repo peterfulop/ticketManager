@@ -13,6 +13,7 @@ export const getTicketssByUserIdUseCase = async (
   input: GetTicketsByUserIdUseCaseInput
 ): Promise<Ticket> => {
   const { prisma, user } = input.context;
+
   return (await prisma.ticket.findMany({
     where: {
       userId: user?.userId,

@@ -25,6 +25,15 @@ export const deleteTicketUseCase = async (
     success: false,
   };
 
+  if (!user) {
+    return {
+      ...ticketPayload,
+      userErrors: [
+        { ...userError, message: DBErrorMessages.AUTHORIZATION_FAILED },
+      ],
+    };
+  }
+
   const ticket = await prisma.ticket.findUnique({ where: { id } });
 
   if (!ticket) {
