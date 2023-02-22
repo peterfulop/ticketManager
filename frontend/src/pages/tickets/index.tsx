@@ -21,7 +21,6 @@ import { TicketColumns } from '../../components/tickets/ticket-columns';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useModal } from '../../hooks/use-modal.hook';
-import { useTokenValidation } from '../../hooks/use-token-validation';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 
@@ -103,8 +102,6 @@ export const TicketsPage = () => {
   }, [ticketData?.getTicket.ticket]);
 
   const projectName = projectData?.getMyProject.project?.name as string;
-
-  useTokenValidation();
 
   return (
     <>
