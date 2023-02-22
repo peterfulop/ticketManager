@@ -9,7 +9,6 @@ export const useTokenValidation = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log('useLocation to validation');
     CheckLocalStorageForCredentials();
   }, [location]);
 

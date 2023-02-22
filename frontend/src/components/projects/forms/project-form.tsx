@@ -2,7 +2,7 @@ import { ApolloQueryResult } from '@apollo/client';
 import { FC, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { Variant } from 'react-bootstrap/esm/types';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Exact,
@@ -17,6 +17,7 @@ import {
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
+import { useUserAuthentication } from '../../../hooks/use-logging-out-user.hook';
 import { createProjectMutation } from '../../../modules/project-modules/create-project';
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
@@ -67,7 +68,6 @@ export const ProjectForm: FC<IProjectForm> = ({
   refetch,
   toggleCallBackFn,
 }) => {
-  const navigate = useNavigate();
   const { projectId } = useParams();
   const [success, setSuccess] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -87,25 +87,24 @@ export const ProjectForm: FC<IProjectForm> = ({
     { loading: deleteLoading, data: deleteData, error: deleteDataError },
   ] = useProjectDeleteMutation();
 
+  const { checkErrorMessage } = useUserAuthentication();
+
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;
-  const error = createDataError || updateDataError || deleteDataError;
-
-  useEffect(() => {
-    if (
-      error
-      // createData?.projectCreate.userErrors[0].message ===
-      //   EServerSideError.AUTHORIZATION_FAILED
-    ) {
-      console.log(error);
-    }
-  }, [error]);
 
   const DateFormat = (date: string) => {
     return new Date(date).toLocaleString();
   };
 
   useEffect(() => {
+    const errors =
+      createData?.projectCreate.userErrors ||
+      updateData?.projectUpdate.userErrors ||
+      deleteData?.projectDelete.userErrors;
+
+    if (!loading && errors && errors.length > 0) {
+      checkErrorMessage(errors[0].message);
+    }
     if (data) {
       refetch();
     }

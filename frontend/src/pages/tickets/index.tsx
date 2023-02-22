@@ -97,7 +97,7 @@ export const TicketsPage = () => {
     if (!getProjectLoading && data) {
       setProjectName(data.name);
     }
-  }, [projectData?.getMyProject.project]);
+  }, [projectData]);
 
   useEffect(() => {
     const data = myTickets?.getMyTickets.tickets;
@@ -108,7 +108,7 @@ export const TicketsPage = () => {
     if (!getTicketsLoading && data) {
       setTickets(data as Ticket[]);
     }
-  }, [myTickets?.getMyTickets.tickets]);
+  }, [myTickets]);
 
   useEffect(() => {
     if (projectId) {
@@ -125,7 +125,7 @@ export const TicketsPage = () => {
         }
       }
     }
-  }, [ticketData?.getTicket.ticket]);
+  }, [ticketData]);
 
   return (
     <>

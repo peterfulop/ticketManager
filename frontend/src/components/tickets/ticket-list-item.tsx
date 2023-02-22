@@ -1,9 +1,10 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
 import { useTicketStatusUpdateMutation } from '../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../assets/theme';
+import { useUserAuthentication } from '../../hooks/use-logging-out-user.hook';
 import { ERoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
 import { setSelectOptions } from '../../utils/set-select-options';
@@ -95,7 +96,17 @@ export const TicketListItem: FC<ITicketItem> = ({
 
   const navigate = useNavigate();
   const { projectId } = useParams();
-  const [updateStatus] = useTicketStatusUpdateMutation();
+  const [updateStatus, { loading, data: updateStatusData }] =
+    useTicketStatusUpdateMutation();
+
+  const { checkErrorMessage } = useUserAuthentication();
+
+  useEffect(() => {
+    const errors = updateStatusData?.ticketStatusUpdate.userErrors;
+    if (!loading && errors && errors.length > 0) {
+      checkErrorMessage(errors[0].message);
+    }
+  }, [updateStatusData]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     await updateStatus({

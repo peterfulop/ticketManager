@@ -18,6 +18,7 @@ import { breakPoints } from '../../../assets/theme';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
+import { useUserAuthentication } from '../../../hooks/use-logging-out-user.hook';
 import { useTicketReferences } from '../../../hooks/use-ticket-references.hook';
 import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
 import { deleteTicketMutation } from '../../../modules/ticket-modules/delete-ticket';
@@ -91,7 +92,16 @@ export const TicketForm: FC<ITicketForm> = ({
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;
 
+  const { checkErrorMessage } = useUserAuthentication();
+
   useEffect(() => {
+    const errors =
+      createData?.ticketCreate.userErrors ||
+      updateData?.ticketUpdate.userErrors ||
+      deleteData?.ticketDelete.userErrors;
+    if (!loading && errors && errors.length > 0) {
+      checkErrorMessage(errors[0].message);
+    }
     if (data) {
       refetchMyTickets();
     }
