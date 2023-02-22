@@ -16,7 +16,7 @@ import {
 } from '../../apollo/graphql/tickets/ticket.generated';
 import { MainButton } from '../../components/component-library/main-button/main-button';
 import { MainContainer } from '../../components/main-content/main-content';
-import { TicketForm } from '../../components/tickets/forms/ticket-form';
+import { TicketForm } from '../../components/tickets/form/ticket-form';
 import { TicketColumns } from '../../components/tickets/ticket-columns';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
