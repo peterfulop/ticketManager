@@ -192,7 +192,9 @@ export const TicketForm: FC<ITicketForm> = ({
               value={values.title}
             />
           </Form.Group>
-          <SequneceId sequenceId={values.sequenceId} title={values.title} />
+          {actionType !== EActionTypes.CREATE && (
+            <SequneceId sequenceId={values.sequenceId} title={values.title} />
+          )}
           <Row id='ticket-form-row' className='justify-content-center mb-5'>
             <Col className='col-8'>
               <Form.Group className='mb-3 w-100'>
