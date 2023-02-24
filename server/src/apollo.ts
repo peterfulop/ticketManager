@@ -1,17 +1,17 @@
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import type Prisma from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
+import depthLimit from 'graphql-depth-limit';
 import http from 'http';
-import { resolvers, typeDefs } from './graphql';
-import { JWTVerify } from './helpers/jwt';
-
-import type Prisma from '@prisma/client';
-import { PrismaClient } from '@prisma/client';
 import morgan from 'morgan';
 import { config } from './config/config';
+import { resolvers, typeDefs } from './graphql';
+import { JWTVerify } from './helpers/jwt';
 
 export const prisma = new PrismaClient();
 
@@ -34,6 +34,8 @@ const server = new ApolloServer<ApolloContext>({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  validationRules: [depthLimit(10)],
+  introspection: process.env.NODE_ENV !== 'production',
 });
 
 export const createApolloServer = async () => {
@@ -56,7 +58,9 @@ export const createApolloServer = async () => {
   );
 
   await new Promise<void>((resolve) =>
-    httpServer.listen({ port: config.server.port }, resolve)
+    httpServer
+      .listen({ port: config.server.port }, resolve)
+      .setTimeout(1000 * 60 * 10)
   );
   console.log(
     `🚀 Server ready at http://localhost:${config.server.port}/graphql`
