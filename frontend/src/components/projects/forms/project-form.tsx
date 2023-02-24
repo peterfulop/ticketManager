@@ -17,7 +17,7 @@ import {
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useForm } from '../../../hooks/use-form.hook';
-import { useUserAuthentication } from '../../../hooks/use-logging-out-user.hook';
+import { useUserErrorsHandler } from '../../../hooks/use-user-errors-handler.hook';
 import { createProjectMutation } from '../../../modules/project-modules/create-project';
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
@@ -87,7 +87,7 @@ export const ProjectForm: FC<IProjectForm> = ({
     { loading: deleteLoading, data: deleteData, error: deleteDataError },
   ] = useProjectDeleteMutation();
 
-  const { checkErrorMessage } = useUserAuthentication();
+  const { checkErrorMessage } = useUserErrorsHandler();
 
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;

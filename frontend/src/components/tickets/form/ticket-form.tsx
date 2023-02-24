@@ -17,9 +17,9 @@ import {
 import { breakPoints } from '../../../assets/theme';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
+import { useTicketReferences } from '../../../hooks/ticket-hooks/use-ticket-references.hook';
 import { useForm } from '../../../hooks/use-form.hook';
-import { useUserAuthentication } from '../../../hooks/use-logging-out-user.hook';
-import { useTicketReferences } from '../../../hooks/use-ticket-references.hook';
+import { useUserErrorsHandler } from '../../../hooks/use-user-errors-handler.hook';
 import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
 import { deleteTicketMutation } from '../../../modules/ticket-modules/delete-ticket';
 import { updateTicketMutation } from '../../../modules/ticket-modules/update-ticket';
@@ -92,7 +92,7 @@ export const TicketForm: FC<ITicketForm> = ({
   const loading = createLoading || updateLoading || deleteLoading;
   const data = createData || updateData || deleteData;
 
-  const { checkErrorMessage } = useUserAuthentication();
+  const { checkErrorMessage } = useUserErrorsHandler();
 
   useEffect(() => {
     const errors =
@@ -192,7 +192,9 @@ export const TicketForm: FC<ITicketForm> = ({
               value={values.title}
             />
           </Form.Group>
-          <SequneceId sequenceId={values.sequenceId} title={values.title} />
+          {actionType !== EActionTypes.CREATE && (
+            <SequneceId sequenceId={values.sequenceId} title={values.title} />
+          )}
           <Row id='ticket-form-row' className='justify-content-center mb-5'>
             <Col className='col-8'>
               <Form.Group className='mb-3 w-100'>
