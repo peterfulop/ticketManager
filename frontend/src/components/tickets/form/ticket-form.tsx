@@ -1,6 +1,5 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { Variant } from 'react-bootstrap/esm/types';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -9,17 +8,13 @@ import {
   TicketPriority,
   TicketType,
 } from '../../../apollo/graphql-generated/types';
-import {
-  useTicketCreateMutation,
-  useTicketDeleteMutation,
-  useTicketUpdateMutation,
-} from '../../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../../assets/theme';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
+import { useTicketMutations } from '../../../hooks/ticket-hooks/use-ticket-mutations.hook';
 import { useTicketReferences } from '../../../hooks/ticket-hooks/use-ticket-references.hook';
+import { useAlerts } from '../../../hooks/use-alerts.hook';
 import { useForm } from '../../../hooks/use-form.hook';
-import { useUserErrorsHandler } from '../../../hooks/use-user-errors-handler.hook';
 import { createTicketMutation } from '../../../modules/ticket-modules/create-ticket';
 import { deleteTicketMutation } from '../../../modules/ticket-modules/delete-ticket';
 import { updateTicketMutation } from '../../../modules/ticket-modules/update-ticket';
@@ -63,7 +58,6 @@ interface ITicketForm extends ITicket {
   projectName: string;
   initialValues: TicketCreateInput;
   action: EActionTypes;
-  toggle: () => void;
   toggleCallBackFn: () => void;
 }
 
@@ -73,44 +67,30 @@ export const TicketForm: FC<ITicketForm> = ({
   projectName,
   initialValues,
   toggle,
-  refetchMyTickets,
+  refetch,
   toggleCallBackFn,
 }) => {
   const { ticketId } = useParams();
-  const [success, setSuccess] = useState<boolean>(false);
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
   const [actionType, setActionType] = useState<EActionTypes>(action);
 
-  const [createTicket, { loading: createLoading, data: createData }] =
-    useTicketCreateMutation();
-  const [updateTicket, { loading: updateLoading, data: updateData }] =
-    useTicketUpdateMutation();
-  const [deleteTicket, { loading: deleteLoading, data: deleteData }] =
-    useTicketDeleteMutation();
-
-  const loading = createLoading || updateLoading || deleteLoading;
-  const data = createData || updateData || deleteData;
-
-  const { checkErrorMessage } = useUserErrorsHandler();
-
-  useEffect(() => {
-    const errors =
-      createData?.ticketCreate.userErrors ||
-      updateData?.ticketUpdate.userErrors ||
-      deleteData?.ticketDelete.userErrors;
-    if (!loading && errors && errors.length > 0) {
-      checkErrorMessage(errors[0].message);
-    }
-    if (data) {
-      refetchMyTickets();
-    }
-  }, [data]);
+  const {
+    success,
+    alertMessage,
+    alertMessageColor,
+    setSuccess,
+    setAlertMessage,
+    setAlertMessageColor,
+  } = useAlerts();
 
   const resetForm = () => {
     setAlertMessage(null);
     setSuccess(false);
   };
+
+  const { loading, createTicket, updateTicket, deleteTicket } =
+    useTicketMutations({
+      refetch,
+    });
 
   const selectMutation = async () => {
     switch (actionType) {
@@ -162,7 +142,7 @@ export const TicketForm: FC<ITicketForm> = ({
 
   return (
     <Modal
-      toggle={toggle}
+      toggle={() => toggle && toggle()}
       closeOnBackdrop={true}
       title={`${projectName} - ${translate(
         TEXT.forms.ticketForms[actionType].title
@@ -299,7 +279,7 @@ export const TicketForm: FC<ITicketForm> = ({
             form={'ticketForms'}
             actionType={actionType}
             onCancel={() => {
-              toggle();
+              toggle && toggle();
               toggleCallBackFn();
             }}
             setAlertMessage={setAlertMessage}

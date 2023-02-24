@@ -81,7 +81,7 @@ export const TicketsPage = () => {
           projectName={projectName}
           initialValues={ticketInitialValues}
           toggle={toggle}
-          refetchMyTickets={refetchMyTickets}
+          refetch={refetchMyTickets}
           toggleCallBackFn={toggleCallBackFn}
         />
       )}
@@ -110,7 +110,7 @@ export const TicketsPage = () => {
         {getTicketsLoading && <p>{translate(TEXT.general.loading)}</p>}
         <TicketColumns
           tickets={tickets}
-          refetchMyTickets={refetchMyTickets}
+          refetch={refetchMyTickets}
           toggle={toggle}
         />
       </MainContainer>

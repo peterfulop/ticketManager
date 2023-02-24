@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useGetMyProjectQuery } from '../../apollo/graphql/project/project.generated';
-import { useUserErrorsHandler } from '../use-user-errors-handler.hook';
+import { useUserErrorHandler } from '../use-user-errors-handler.hook';
 
 interface IUseGetProjectData {
   projectId: string;
@@ -9,8 +9,7 @@ interface IUseGetProjectData {
 export const useGetProjectData = (props: IUseGetProjectData) => {
   const { projectId } = props;
   const [projectName, setProjectName] = useState<string>('');
-
-  const { checkErrorMessage } = useUserErrorsHandler();
+  const { checkErrorMessage } = useUserErrorHandler();
 
   const {
     data: projectData,
@@ -25,14 +24,14 @@ export const useGetProjectData = (props: IUseGetProjectData) => {
 
   useEffect(() => {
     const data = projectData?.getMyProject.project;
-    const errors = projectData?.getMyProject.userErrors;
-    if (!getProjectLoading && errors && errors.length > 0) {
-      checkErrorMessage(errors[0].message);
+    if (!getProjectLoading) {
+      checkErrorMessage({
+        userErrors: projectData?.getMyProject.userErrors,
+        graphqlError: getProjectError,
+      });
+      if (data) setProjectName(data.name);
     }
-    if (!getProjectLoading && data) {
-      setProjectName(data.name);
-    }
-  }, [projectData]);
+  }, [projectData, getProjectError]);
 
   return {
     projectName,

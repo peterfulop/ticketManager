@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
 import { useTicketStatusUpdateMutation } from '../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../assets/theme';
-import { useUserErrorsHandler } from '../../hooks/use-user-errors-handler.hook';
+import { useUserErrorHandler } from '../../hooks/use-user-errors-handler.hook';
 import { ERoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
 import { setSelectOptions } from '../../utils/set-select-options';
@@ -89,22 +89,24 @@ interface ITicketItem extends ITicket {
 
 export const TicketListItem: FC<ITicketItem> = ({
   ticketItem,
-  refetchMyTickets,
+  refetch: refetchMyTickets,
 }) => {
   const { id, title, status, priority, type, storyPoints, sequenceId } =
     ticketItem;
 
   const navigate = useNavigate();
   const { projectId } = useParams();
-  const [updateStatus, { loading, data: updateStatusData }] =
-    useTicketStatusUpdateMutation();
+  const [
+    updateStatus,
+    { loading, data: updateStatusData, error: graphqlError },
+  ] = useTicketStatusUpdateMutation();
 
-  const { checkErrorMessage } = useUserErrorsHandler();
+  const { checkErrorMessage } = useUserErrorHandler();
 
   useEffect(() => {
-    const errors = updateStatusData?.ticketStatusUpdate.userErrors;
-    if (!loading && errors && errors.length > 0) {
-      checkErrorMessage(errors[0].message);
+    const userErrors = updateStatusData?.ticketStatusUpdate.userErrors;
+    if (!loading) {
+      checkErrorMessage({ userErrors, graphqlError });
     }
   }, [updateStatusData]);
 

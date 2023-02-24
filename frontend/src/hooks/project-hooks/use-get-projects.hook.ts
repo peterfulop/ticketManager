@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Project } from '../../apollo/graphql-generated/types';
 import { useGetMyProjectsQuery } from '../../apollo/graphql/project/project.generated';
-import { useUserErrorsHandler } from '../use-user-errors-handler.hook';
+import { useUserErrorHandler } from '../use-user-errors-handler.hook';
 
 export const useGetProjects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
-  const { checkErrorMessage } = useUserErrorsHandler();
+  const { checkErrorMessage } = useUserErrorHandler();
 
   const {
     data: projectsData,
@@ -18,15 +18,14 @@ export const useGetProjects = () => {
 
   useEffect(() => {
     const data = projectsData?.getMyProjects.projects;
-    const errors = projectsData?.getMyProjects.userErrors;
-
-    if (!getProjectsDataLoading && errors && errors?.length > 0) {
-      checkErrorMessage(errors[0].message);
+    if (!getProjectsDataLoading) {
+      checkErrorMessage({
+        userErrors: projectsData?.getMyProjects.userErrors,
+        graphqlError: getProjectsError,
+      });
+      if (data) setProjects(data as Project[]);
     }
-    if (!getProjectsDataLoading && data) {
-      setProjects(data as Project[]);
-    }
-  }, [projectsData]);
+  }, [projectsData, getProjectsError]);
 
   return {
     projects,

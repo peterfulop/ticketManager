@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { ProjectCreateInput } from '../../apollo/graphql-generated/types';
 import { useGetMyProjectQuery } from '../../apollo/graphql/project/project.generated';
 import { EActionTypes } from '../../types/enums/common.enum';
-import { useUserErrorsHandler } from '../use-user-errors-handler.hook';
+import { useUserErrorHandler } from '../use-user-errors-handler.hook';
 
 interface IUseGetProjectByParams {
   projectId?: string;
@@ -17,7 +17,7 @@ export const useGetProjectByParams = (props: IUseGetProjectByParams) => {
   const { projectId, setActionType, setProjectInitialValues, callBackFn } =
     props;
 
-  const { notFound, checkErrorMessage } = useUserErrorsHandler();
+  const { notFound, checkErrorMessage } = useUserErrorHandler();
 
   const {
     data: projectData,
@@ -34,18 +34,19 @@ export const useGetProjectByParams = (props: IUseGetProjectByParams) => {
   useEffect(() => {
     if (projectId) {
       const data = projectData?.getMyProject.project;
-      const errors = projectData?.getMyProject.userErrors;
-      if (!getProjectDataLoading && errors && errors?.length > 0) {
-        checkErrorMessage(errors[0].message);
+      if (!getProjectDataLoading) {
+        checkErrorMessage({
+          userErrors: projectData?.getMyProject.userErrors,
+          graphqlError: getProjectError,
+        });
+        if (data) {
+          setActionType(EActionTypes.UPDATE);
+          setProjectInitialValues(data);
+          callBackFn && callBackFn();
+        }
       }
-      if (!getProjectDataLoading && data) {
-        setActionType(EActionTypes.UPDATE);
-        setProjectInitialValues(data);
-        callBackFn && callBackFn();
-      }
-    } else {
     }
-  }, [projectData]);
+  }, [projectData, getProjectError]);
 
   return { notFound, getProjectError };
 };
