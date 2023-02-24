@@ -87,7 +87,7 @@ export const deleteTicketUseCase = async (
       success: true,
     };
   } catch (error) {
-    const { userErrors } = prismaRequestErrorHandler(error);
+    const { userErrors } = prismaRequestErrorHandler(error as Error);
     return {
       ...ticketPayload,
       userErrors,

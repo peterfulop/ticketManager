@@ -180,7 +180,7 @@ export const createTicketUseCase = async (
       },
     };
   } catch (error) {
-    const { userErrors } = prismaRequestErrorHandler(error);
+    const { userErrors } = prismaRequestErrorHandler(error as Error);
     return {
       ...ticketPayload,
       userErrors,

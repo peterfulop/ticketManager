@@ -14,15 +14,15 @@ import { getUserUseCase } from '../../use-case/user-use-case/get-user.use-case';
 export const userGQLResolver = {
   Query: {
     getUser: async (
-      _parent: any,
+      _parent: unknown,
       args: QueryGetUserArgs,
       context: ApolloContext
     ): Promise<GetUserPayload> => {
       return await getUserUseCase({ args, context });
     },
     getMyProfile: async (
-      _parent: any,
-      _args: any,
+      _parent: unknown,
+      _args: unknown,
       context: ApolloContext
     ): Promise<GetUserPayload> => {
       return await getMyProfileUseCase({ context });
@@ -31,14 +31,14 @@ export const userGQLResolver = {
   User: {
     projects: async (
       parent: ResolversParentTypes['Project'],
-      _args: any,
+      _args: unknown,
       context: ApolloContext
     ): Promise<Project> => {
       return await getProjectsByUserIdUseCase({ parent, context });
     },
     tickets: async (
       parent: ResolversParentTypes['Ticket'],
-      _args: any,
+      _args: unknown,
       context: ApolloContext
     ): Promise<Ticket> => {
       return await getTicketssByUserIdUseCase({ parent, context });

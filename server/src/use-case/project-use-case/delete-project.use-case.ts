@@ -64,7 +64,7 @@ export const deleteProjectUseCase = async (
       success: true,
     };
   } catch (error) {
-    const { userErrors } = prismaRequestErrorHandler(error);
+    const { userErrors } = prismaRequestErrorHandler(error as Error);
     return {
       ...projectDeletePayload,
       userErrors,
