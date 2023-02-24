@@ -1,27 +1,19 @@
-import { ApolloQueryResult } from '@apollo/client';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { Variant } from 'react-bootstrap/esm/types';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  Exact,
-  ProjectCreateInput,
-} from '../../../apollo/graphql-generated/types';
-import {
-  GetMyProjectsQuery,
-  useProjectCreateMutation,
-  useProjectDeleteMutation,
-  useProjectUpdateMutation,
-} from '../../../apollo/graphql/project/project.generated';
+import { ProjectCreateInput } from '../../../apollo/graphql-generated/types';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
+import { useProjectMutations } from '../../../hooks/project-hooks/use-project-mutations.hook';
+import { useAlerts } from '../../../hooks/use-alerts.hook';
 import { useForm } from '../../../hooks/use-form.hook';
-import { useUserErrorsHandler } from '../../../hooks/use-user-errors-handler.hook';
 import { createProjectMutation } from '../../../modules/project-modules/create-project';
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
 import { EActionTypes } from '../../../types/enums/common.enum';
+import { IProject } from '../../../types/interfaces/project.interface';
+import { DateFormat } from '../../../utils/date-format';
 import { FormActions } from '../../component-library/form-actions/form-actions';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
 import { Modal } from '../../modal/modal';
@@ -45,19 +37,9 @@ const Details = styled.div({
   },
 });
 
-interface IProjectForm {
+interface IProjectForm extends IProject {
   initialValues: ProjectCreateInput;
   action: EActionTypes;
-  toggle: () => void;
-  refetch: (
-    variables?:
-      | Partial<
-          Exact<{
-            [key: string]: never;
-          }>
-        >
-      | undefined
-  ) => Promise<ApolloQueryResult<GetMyProjectsQuery>>;
   toggleCallBackFn: () => void;
 }
 
@@ -69,59 +51,34 @@ export const ProjectForm: FC<IProjectForm> = ({
   toggleCallBackFn,
 }) => {
   const { projectId } = useParams();
-  const [success, setSuccess] = useState<boolean>(false);
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [alertMessageColor, setAlertMessageColor] = useState<Variant>('danger');
   const [actionType, setActionType] = useState<EActionTypes>(action);
 
-  const [
-    createProject,
-    { loading: createLoading, data: createData, error: createDataError },
-  ] = useProjectCreateMutation();
-  const [
-    updateProject,
-    { loading: updateLoading, data: updateData, error: updateDataError },
-  ] = useProjectUpdateMutation();
-  const [
-    deleteProject,
-    { loading: deleteLoading, data: deleteData, error: deleteDataError },
-  ] = useProjectDeleteMutation();
-
-  const { checkErrorMessage } = useUserErrorsHandler();
-
-  const loading = createLoading || updateLoading || deleteLoading;
-  const data = createData || updateData || deleteData;
-
-  const DateFormat = (date: string) => {
-    return new Date(date).toLocaleString();
-  };
-
-  useEffect(() => {
-    const errors =
-      createData?.projectCreate.userErrors ||
-      updateData?.projectUpdate.userErrors ||
-      deleteData?.projectDelete.userErrors;
-
-    if (!loading && errors && errors.length > 0) {
-      checkErrorMessage(errors[0].message);
-    }
-    if (data) {
-      refetch();
-    }
-  }, [data]);
+  const {
+    success,
+    alertMessage,
+    alertMessageColor,
+    setSuccess,
+    setAlertMessage,
+    setAlertMessageColor,
+  } = useAlerts();
 
   const resetForm = () => {
     setAlertMessage(null);
     setSuccess(false);
   };
 
+  const { loading, createProject, updateProject, deleteProject } =
+    useProjectMutations({
+      refetch,
+    });
+
   const selectMutation = async () => {
     switch (actionType) {
       case EActionTypes.CREATE:
         return await createProjectMutation({
           values,
-          setSuccess,
           createProject,
+          setSuccess,
           setAlertMessage,
           setAlertMessageColor,
         });
@@ -129,16 +86,16 @@ export const ProjectForm: FC<IProjectForm> = ({
         return await updateProjectMutation({
           projectId: projectId as string,
           values,
-          setSuccess,
           updateProject,
+          setSuccess,
           setAlertMessage,
           setAlertMessageColor,
         });
       case EActionTypes.DELETE:
         return await deleteProjectMutation({
           projectId: projectId as string,
-          setSuccess,
           deleteProject,
+          setSuccess,
           setAlertMessage,
           setAlertMessageColor,
         });
@@ -152,7 +109,7 @@ export const ProjectForm: FC<IProjectForm> = ({
 
   return (
     <Modal
-      toggle={toggle}
+      toggle={() => toggle && toggle()}
       closeOnBackdrop={true}
       title={translate(TEXT.forms.projectForms[actionType].title)}
       callBackFn={toggleCallBackFn}
@@ -210,7 +167,7 @@ export const ProjectForm: FC<IProjectForm> = ({
             form={'projectForms'}
             actionType={actionType}
             onCancel={() => {
-              toggle();
+              toggle && toggle();
               toggleCallBackFn();
             }}
             setAlertMessage={setAlertMessage}
