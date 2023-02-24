@@ -1,4 +1,5 @@
 import { ApolloContext } from '../../apollo';
+import { authMiddleware } from '../../middlewares/auth-middleware';
 import {
   MutationTicketCreateArgs,
   MutationTicketDeleteArgs,
@@ -25,6 +26,7 @@ export const ticketGQLResolvers = {
       args: QueryGetTicketArgs,
       context: ApolloContext
     ): Promise<TicketPayload> => {
+      authMiddleware(context);
       return await getMyTicketUseCase({ args, context });
     },
     getMyTickets: async (
@@ -32,6 +34,7 @@ export const ticketGQLResolvers = {
       args: QueryGetMyTicketsArgs,
       context: ApolloContext
     ): Promise<TicketsPayload> => {
+      authMiddleware(context);
       return await getMyTicketsUseCase({ args, context });
     },
   },
@@ -41,6 +44,7 @@ export const ticketGQLResolvers = {
       args: MutationTicketCreateArgs,
       context: ApolloContext
     ): Promise<TicketPayload> => {
+      authMiddleware(context);
       return await createTicketUseCase({ args, context });
     },
     ticketUpdate: async (
@@ -48,6 +52,7 @@ export const ticketGQLResolvers = {
       args: MutationTicketUpdateArgs,
       context: ApolloContext
     ): Promise<TicketPayload> => {
+      authMiddleware(context);
       return await updateTicketUseCase({ args, context });
     },
     ticketStatusUpdate: async (
@@ -55,6 +60,7 @@ export const ticketGQLResolvers = {
       args: MutationTicketStatusUpdateArgs,
       context: ApolloContext
     ): Promise<TicketPayload> => {
+      authMiddleware(context);
       return await updateTicketStatusUseCase({ args, context });
     },
     ticketDelete: async (
@@ -62,6 +68,7 @@ export const ticketGQLResolvers = {
       args: MutationTicketDeleteArgs,
       context: ApolloContext
     ): Promise<TicketDeletePayload> => {
+      authMiddleware(context);
       return await deleteTicketUseCase({ args, context });
     },
   },

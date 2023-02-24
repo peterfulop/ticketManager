@@ -1,4 +1,5 @@
 import { ApolloContext } from '../../apollo';
+import { authMiddleware } from '../../middlewares/auth-middleware';
 import {
   MutationProjectCreateArgs,
   MutationProjectDeleteArgs,
@@ -28,6 +29,7 @@ export const projectGQLResolver = {
       args: QueryGetMyProjectArgs,
       context: ApolloContext
     ): Promise<ProjectPayload> => {
+      authMiddleware(context);
       return await getMyProjectUseCase({ args, context });
     },
     getMyProjects: async (
@@ -35,6 +37,7 @@ export const projectGQLResolver = {
       _args: any,
       context: ApolloContext
     ): Promise<ProjectsPayload> => {
+      authMiddleware(context);
       return await getMyProjectsUseCase({ context });
     },
     getMyProjectIdByName: async (
@@ -42,6 +45,7 @@ export const projectGQLResolver = {
       args: QueryGetMyProjectIdByNameArgs,
       context: ApolloContext
     ): Promise<ProjectIdByNamePayload> => {
+      authMiddleware(context);
       return await getMyProjectByNameUseCase({ args, context });
     },
   },
@@ -51,6 +55,7 @@ export const projectGQLResolver = {
       args: MutationProjectCreateArgs,
       context: ApolloContext
     ): Promise<ProjectPayload> => {
+      authMiddleware(context);
       return await createProjectUseCase({ args, context });
     },
     projectUpdate: async (
@@ -58,6 +63,7 @@ export const projectGQLResolver = {
       args: MutationProjectUpdateArgs,
       context: ApolloContext
     ): Promise<ProjectPayload> => {
+      authMiddleware(context);
       return await updateProjectUseCase({ args, context });
     },
     projectDelete: async (
@@ -65,6 +71,7 @@ export const projectGQLResolver = {
       args: MutationProjectDeleteArgs,
       context: ApolloContext
     ): Promise<ProjectDeletePayload> => {
+      authMiddleware(context);
       return await deleteProjectUseCase({ args, context });
     },
   },
@@ -74,6 +81,7 @@ export const projectGQLResolver = {
       _args: any,
       context: ApolloContext
     ): Promise<Ticket> => {
+      authMiddleware(context);
       return await getProjectWithTicketsUseCase({ parent, context });
     },
   },
