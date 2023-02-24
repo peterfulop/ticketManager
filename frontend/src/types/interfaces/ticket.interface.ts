@@ -5,7 +5,7 @@ import { IMutationProps } from './common.interface';
 
 export interface ITicket {
   toggle?: () => void;
-  refetchMyTickets: (
+  refetch: (
     variables?:
       | Partial<
           Exact<{

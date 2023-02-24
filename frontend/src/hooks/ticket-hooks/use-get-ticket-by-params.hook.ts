@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { TicketCreateInput } from '../../apollo/graphql-generated/types';
 import { useGetTicketQuery } from '../../apollo/graphql/tickets/ticket.generated';
 import { EActionTypes } from '../../types/enums/common.enum';
-import { useUserErrorsHandler } from '../use-user-errors-handler.hook';
+import { useUserErrorHandler } from '../use-user-errors-handler.hook';
 
 interface IUseGetTicketByParams {
   ticketId?: string;
@@ -15,8 +15,7 @@ interface IUseGetTicketByParams {
 
 export const useGetTicketByParams = (props: IUseGetTicketByParams) => {
   const { ticketId, setActionType, setTicketInitialValues, callBackFn } = props;
-
-  const { notFound, checkErrorMessage } = useUserErrorsHandler();
+  const { notFound, checkErrorMessage } = useUserErrorHandler();
 
   const {
     data: ticketData,
@@ -31,19 +30,21 @@ export const useGetTicketByParams = (props: IUseGetTicketByParams) => {
   });
 
   useEffect(() => {
+    const data = ticketData?.getTicket.ticket;
     if (ticketId) {
-      const data = ticketData?.getTicket.ticket;
-      const errors = ticketData?.getTicket.userErrors;
-      if (!getTicketLoading && errors && errors.length > 0) {
-        checkErrorMessage(errors[0].message);
-      }
-      if (!getTicketLoading && data) {
-        setTicketInitialValues(data);
-        setActionType(EActionTypes.UPDATE);
-        callBackFn && callBackFn();
+      if (!getTicketLoading) {
+        checkErrorMessage({
+          userErrors: ticketData?.getTicket.userErrors,
+          graphqlError: getTicketError,
+        });
+        if (data) {
+          setTicketInitialValues(data);
+          setActionType(EActionTypes.UPDATE);
+          callBackFn && callBackFn();
+        }
       }
     }
-  }, [ticketData]);
+  }, [ticketData, getTicketError]);
 
   return { notFound, getTicketError };
 };
