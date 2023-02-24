@@ -6,9 +6,7 @@ import { useUserErrorHandler } from '../../hooks/use-user-errors-handler.hook';
 import { EServerSideError } from '../../types/enums/db-errors.enum';
 import { IMutationAlerts } from '../../types/interfaces/common.interface';
 
-interface ICreateProject extends IMutationAlerts {}
-
-export const useCreateProjectMutationHook = (props: ICreateProject) => {
+export const useCreateProjectMutationHook = (props: IMutationAlerts) => {
   const { setSuccess, setAlertMessage, setAlertMessageColor } = props;
   const { errorMessage, checkErrorMessage } = useUserErrorHandler();
 
@@ -55,8 +53,11 @@ export const useCreateProjectMutationHook = (props: ICreateProject) => {
           translate(TEXT.forms.projectForms.CREATE.alerts.successful)
         );
       }
-    } catch (error: any) {
-      checkErrorMessage({ userErrors: [], graphqlError: error.message });
+    } catch (error) {
+      checkErrorMessage({
+        userErrors: [],
+        graphqlError: { ...(error as Error) },
+      });
       setAlertMessage(translate(TEXT.ERRORS.SERVER_ERROR));
     }
   };

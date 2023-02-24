@@ -19,7 +19,7 @@ interface IDeleteTicket extends IMutationAlerts {
           TicketDeleteMutation,
           Exact<{ id: string }>,
           DefaultContext,
-          ApolloCache<any>
+          ApolloCache<unknown>
         >
       | undefined
   ): Promise<FetchResult<TicketDeleteMutation>>;

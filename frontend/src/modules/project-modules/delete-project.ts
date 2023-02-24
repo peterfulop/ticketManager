@@ -19,7 +19,7 @@ interface IDeleteProject extends IMutationAlerts {
           ProjectDeleteMutation,
           Exact<{ id: string }>,
           DefaultContext,
-          ApolloCache<any>
+          ApolloCache<unknown>
         >
       | undefined
   ): Promise<FetchResult<ProjectDeleteMutation>>;

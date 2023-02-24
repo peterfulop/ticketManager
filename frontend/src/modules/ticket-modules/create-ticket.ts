@@ -19,7 +19,7 @@ interface ICreateTicket extends IMutationAlerts {
           TicketCreateMutation,
           Exact<{ input: TicketCreateInput }>,
           DefaultContext,
-          ApolloCache<any>
+          ApolloCache<unknown>
         >
       | undefined
   ): Promise<FetchResult<TicketCreateMutation>>;

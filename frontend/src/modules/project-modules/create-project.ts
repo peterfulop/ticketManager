@@ -22,7 +22,7 @@ interface ICreateProject extends IMutationAlerts {
           ProjectCreateMutation,
           Exact<{ input: ProjectCreateInput }>,
           DefaultContext,
-          ApolloCache<any>
+          ApolloCache<unknown>
         >
       | undefined
   ): Promise<FetchResult<ProjectCreateMutation>>;

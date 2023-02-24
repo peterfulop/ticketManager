@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 interface IUseForm {
-  callback: () => Promise<any>;
-  initialState: any;
+  callback: () => Promise<unknown>;
+  initialState: Record<string, unknown>;
 }
 
 export const useForm = (props: IUseForm) => {

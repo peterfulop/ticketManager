@@ -16,7 +16,7 @@ export const useUserErrorHandler = () => {
 
   const checkErrorMessage = (input: {
     userErrors?: UserError[];
-    graphqlError?: ApolloError | GraphQLError;
+    graphqlError?: ApolloError | GraphQLError | Error;
   }) => {
     const { userErrors, graphqlError } = input;
     const error =
