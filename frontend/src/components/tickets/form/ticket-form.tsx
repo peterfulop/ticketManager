@@ -7,6 +7,7 @@ import {
   TicketCreateInput,
   TicketPriority,
   TicketType,
+  TicketUpdateInput,
 } from '../../../apollo/graphql-generated/types';
 import { breakPoints } from '../../../assets/theme';
 import { translate } from '../../../helpers/translate/translate';
@@ -66,6 +67,7 @@ export const TicketForm: FC<ITicketForm> = ({
   tickets,
   projectName,
   initialValues,
+  modalURL,
   toggle,
   refetch,
   toggleCallBackFn,
@@ -99,7 +101,7 @@ export const TicketForm: FC<ITicketForm> = ({
           values: {
             ...values,
             references,
-          },
+          } as TicketCreateInput,
           setSuccess,
           createTicket,
           setAlertMessage,
@@ -111,7 +113,7 @@ export const TicketForm: FC<ITicketForm> = ({
           values: {
             ...values,
             references,
-          },
+          } as TicketUpdateInput,
           setSuccess,
           updateTicket,
           setAlertMessage,
@@ -175,7 +177,7 @@ export const TicketForm: FC<ITicketForm> = ({
           {actionType !== EActionTypes.CREATE && (
             <SequneceId sequenceId={values.sequenceId} title={values.title} />
           )}
-          <Row id='ticket-form-row' className='justify-content-center mb-5'>
+          <Row id='ticket-form-row' className='justify-content-center mb15'>
             <Col className='col-8'>
               <Form.Group className='mb-3 w-100'>
                 <Form.Label>
@@ -192,15 +194,6 @@ export const TicketForm: FC<ITicketForm> = ({
                   value={values.description || ''}
                 />
               </Form.Group>
-              <TicketReferences
-                actionType={actionType}
-                referenceOptions={tickets}
-                onChange={handleChange}
-                currentReferencies={references}
-                activeReferences={initialValues.references as string[]}
-                toggle={toggle}
-                disabled={loading || actionType === EActionTypes.DELETE}
-              />
             </Col>
             <Col className='col-4'>
               {actionType !== EActionTypes.CREATE && (
@@ -225,7 +218,6 @@ export const TicketForm: FC<ITicketForm> = ({
                 }`}
               >
                 <div className='d-flex align-items-center gap-2'>
-                  <TicketTypeIcon type={type} size={25} />
                   <MainSelect
                     name='type'
                     value={values.type}
@@ -235,12 +227,13 @@ export const TicketForm: FC<ITicketForm> = ({
                       setType(e.target.value as TicketType);
                     }}
                     disabled={loading || actionType === EActionTypes.DELETE}
-                  />
+                  >
+                    <TicketTypeIcon type={type} size={25} />
+                  </MainSelect>
                 </div>
               </Form.Group>
               <Form.Group className='mb-3'>
                 <div className='d-flex align-items-center gap-2'>
-                  <PriorityIcon priority={priority} size={25} />
                   <MainSelect
                     name='priority'
                     value={values.priority}
@@ -250,7 +243,9 @@ export const TicketForm: FC<ITicketForm> = ({
                       setPriority(e.target.value as TicketPriority);
                     }}
                     disabled={loading || actionType === EActionTypes.DELETE}
-                  />
+                  >
+                    <PriorityIcon priority={priority} size={25} />
+                  </MainSelect>
                 </div>
               </Form.Group>
               <Form.Group className='mb-3 d-flex align-items-center justify-content-between gap-2'>
@@ -271,6 +266,16 @@ export const TicketForm: FC<ITicketForm> = ({
               </Form.Group>
             </Col>
           </Row>
+          <TicketReferences
+            actionType={actionType}
+            referenceOptions={tickets}
+            onChange={handleChange}
+            currentReferencies={references}
+            activeReferences={initialValues.references as string[]}
+            toggle={toggle}
+            disabled={loading || actionType === EActionTypes.DELETE}
+            modalURL={modalURL as string}
+          />
           {alertMessage && (
             <MyAlert variant={alertMessageColor} content={alertMessage} />
           )}

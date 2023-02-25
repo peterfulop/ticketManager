@@ -1,11 +1,10 @@
 import { FC, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
 import { useTicketStatusUpdateMutation } from '../../apollo/graphql/tickets/ticket.generated';
 import { breakPoints } from '../../assets/theme';
 import { useUserErrorHandler } from '../../hooks/use-user-errors-handler.hook';
-import { ERoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
 import { setSelectOptions } from '../../utils/set-select-options';
 import { PriorityIcon } from '../component-library/icons/priority-icon';
@@ -14,7 +13,7 @@ import { MainSelect } from '../component-library/main-select/main-select';
 import { ticketStatuses } from './form/form-options';
 import { SequneceId } from './sequnce-id/sequence-id';
 
-const TicketItem = styled.div({
+const TicketComponent = styled.div({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -59,7 +58,7 @@ const TicketItemHeading = styled.div({
 const Symbols = styled.div({
   display: 'flex',
   alignItems: 'center',
-  gap: '1rem',
+  gap: '.75rem',
 });
 
 const StoryPoints = styled.p({
@@ -80,22 +79,30 @@ const TicketItemContent = styled.div({
   alignItems: 'center',
   marginTop: '1rem',
   padding: '5px',
+  [`@media screen and (max-width: ${breakPoints.xl})`]: {
+    flexDirection: 'column',
+    gap: '1rem',
+    alignItems: 'center',
+  },
+  [`@media screen and (max-width: ${breakPoints.md})`]: {
+    flexDirection: 'row',
+  },
 });
 
 interface ITicketItem extends ITicket {
   ticketItem: Ticket;
-  ticketId: string;
+  modalURL: string;
 }
 
-export const TicketListItem: FC<ITicketItem> = ({
+export const TicketItem: FC<ITicketItem> = ({
   ticketItem,
-  refetch: refetchMyTickets,
+  modalURL,
+  refetch,
 }) => {
   const { id, title, status, priority, type, storyPoints, sequenceId } =
     ticketItem;
 
   const navigate = useNavigate();
-  const { projectId } = useParams();
   const [
     updateStatus,
     { loading, data: updateStatusData, error: graphqlError },
@@ -119,20 +126,15 @@ export const TicketListItem: FC<ITicketItem> = ({
         },
       },
     });
-    await refetchMyTickets();
+    await refetch();
   };
 
   const handleClick = () => {
-    navigate(
-      ERoutePath.TICKET_DETAILS.replace(
-        ':projectId',
-        projectId as string
-      ).replace(':ticketId', id)
-    );
+    navigate(modalURL);
   };
 
   return (
-    <TicketItem key={id} onClick={handleClick}>
+    <TicketComponent key={id} onClick={handleClick}>
       <TicketItemHeading>
         <p title={title}>{title}</p>
         <MainSelect
@@ -151,6 +153,6 @@ export const TicketListItem: FC<ITicketItem> = ({
         </Symbols>
         <SequneceId sequenceId={sequenceId} title={title} />
       </TicketItemContent>
-    </TicketItem>
+    </TicketComponent>
   );
 };

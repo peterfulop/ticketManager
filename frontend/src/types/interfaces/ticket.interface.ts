@@ -4,6 +4,7 @@ import { GetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated
 import { IMutationProps } from './common.interface';
 
 export interface ITicket {
+  modalURL?: string;
   toggle?: () => void;
   refetch: (
     variables?:

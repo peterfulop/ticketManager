@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-import { Ticket, TicketStatus } from '../../apollo/graphql-generated/types';
-import { ITicket } from '../../types/interfaces/ticket.interface';
-import { TicketListItem } from './ticket-list-item';
+import { Ticket, TicketStatus } from '../../../apollo/graphql-generated/types';
+import { ERoutePath } from '../../../types/enums/routes.enum';
+import { ITicket } from '../../../types/interfaces/ticket.interface';
+import { TicketItem } from '../ticket-item';
 
 const TicketColumnSection = styled.div({
   backgroundColor: '#f4f5f7',
@@ -32,7 +33,7 @@ export const TicketColumn: FC<ITicketColumn> = ({
   tickets,
   columnName,
   status,
-  refetch: refetchMyTickets,
+  refetch,
   toggle,
 }) => {
   return (
@@ -42,12 +43,15 @@ export const TicketColumn: FC<ITicketColumn> = ({
         {tickets.map((ticket, index) => {
           return (
             ticket.status === status && (
-              <TicketListItem
+              <TicketItem
                 key={index}
                 ticketItem={ticket}
-                refetch={refetchMyTickets}
+                refetch={refetch}
                 toggle={toggle}
-                ticketId={ticket.id}
+                modalURL={ERoutePath.TICKET_DETAILS.replace(
+                  ':projectId',
+                  ticket.projectId
+                ).replace(':ticketId', ticket.id)}
               />
             )
           );

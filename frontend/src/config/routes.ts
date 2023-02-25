@@ -1,4 +1,5 @@
 import { NotFound } from '../pages/404';
+import { BacklogPage } from '../pages/backlog';
 import { ConfirmUser } from '../pages/confirm-user';
 import { HomePage } from '../pages/home';
 import { LoginPage } from '../pages/login';
@@ -85,6 +86,18 @@ const ticketRoutes: IRoute[] = [
     auth: true,
     component: TicketsPage,
     name: 'Tickets page',
+  },
+  {
+    path: ERoutePath.BACKLOG,
+    auth: true,
+    component: BacklogPage,
+    name: 'Backlog page',
+  },
+  {
+    path: ERoutePath.BACKLOG_TICKET_DETAILS,
+    auth: true,
+    component: BacklogPage,
+    name: 'Backlog page',
   },
 ];
 
