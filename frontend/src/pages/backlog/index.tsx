@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import { Col } from 'react-bootstrap';
-import { GrAdd, GrRun } from 'react-icons/gr';
-import {
-  MdOutlineArrowBackIos,
-  MdOutlineSettingsBackupRestore,
-} from 'react-icons/md';
+import { MdOutlineArrowBackIos } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   TicketCreateInput,
@@ -13,11 +8,9 @@ import {
   TicketType,
 } from '../../apollo/graphql-generated/types';
 import { MainButton } from '../../components/component-library/main-button/main-button';
-import { MainSelect } from '../../components/component-library/main-select/main-select';
 import { MainContainer } from '../../components/main-content/main-content';
-import { ticketStatuses } from '../../components/tickets/form/form-options';
 import { TicketForm } from '../../components/tickets/form/ticket-form';
-import { TicketColumns } from '../../components/tickets/ticket-list/ticket-columns';
+import { TicketBacklogList } from '../../components/tickets/ticket-backlog-list/ticket-backlog';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useGetProjectData } from '../../hooks/ticket-hooks/use-get-project-data.hook';
@@ -26,10 +19,9 @@ import { useGetTickets } from '../../hooks/ticket-hooks/use-get-tickets.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
-import { setSelectOptions } from '../../utils/set-select-options';
 import { NotFound } from '../404';
 
-export const TicketsPage = () => {
+export const BacklogPage = () => {
   const { projectId, ticketId } = useParams();
 
   const TICKET_INITIAL_INPUT: TicketCreateInput = {
@@ -55,7 +47,7 @@ export const TicketsPage = () => {
   const toggleCallBackFn = () => {
     setActionType(EActionTypes.CREATE);
     setTicketInitialValues(TICKET_INITIAL_INPUT);
-    navigate(ERoutePath.TICKETS.replace(':projectId', projectId as string));
+    navigate(ERoutePath.BACKLOG.replace(':projectId', projectId as string));
   };
 
   const { projectName } = useGetProjectData({ projectId: projectId as string });
@@ -90,58 +82,25 @@ export const TicketsPage = () => {
           toggle={toggle}
           refetch={refetchMyTickets}
           toggleCallBackFn={toggleCallBackFn}
-          modalURL={ERoutePath.TICKET_DETAILS}
+          modalURL={ERoutePath.BACKLOG_TICKET_DETAILS}
         />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <h3 className='mb-3'>{projectName} - active tickets</h3>
-        <div className='d-flex justify-content-between gap-2'>
-          <Col className='d-flex gap-3'>
-            <MainButton
-              label='back'
-              handleClick={() => {
-                navigate(ERoutePath.PROJECTS);
-              }}
-            >
-              <MdOutlineArrowBackIos />
-            </MainButton>
-            <MainButton
-              label={translate(TEXT.forms.ticketForms.CREATE.buttons.submitBtn)}
-              toggle={toggle}
-              handleClick={() => {
-                setActionType(EActionTypes.CREATE);
-                setTicketInitialValues(TICKET_INITIAL_INPUT);
-              }}
-            >
-              <GrAdd />
-            </MainButton>
-          </Col>
-          <Col className='d-flex gap-3 justify-content-end'>
-            <MainSelect
-              options={setSelectOptions(ticketStatuses)}
-              style={{ width: 'auto' }}
-            >
-              <GrRun size={22} />
-            </MainSelect>
-            <MainButton
-              label={'Backlog'}
-              toggle={toggle}
-              handleClick={() => {
-                navigate(
-                  ERoutePath.BACKLOG.replace(':projectId', projectId as string)
-                );
-              }}
-            >
-              <MdOutlineSettingsBackupRestore />
-            </MainButton>
-          </Col>
+        <h3 className='mb-3'>{projectName} - backlog</h3>
+        <div className='d-flex justify-content-start gap-2'>
+          <MainButton
+            label='back'
+            handleClick={() => {
+              navigate(
+                ERoutePath.TICKETS.replace(':projectId', projectId as string)
+              );
+            }}
+          >
+            <MdOutlineArrowBackIos />
+          </MainButton>
         </div>
         {getTicketsLoading && <p>{translate(TEXT.general.loading)}</p>}
-        <TicketColumns
-          tickets={tickets}
-          refetch={refetchMyTickets}
-          toggle={toggle}
-        />
+        <TicketBacklogList tickets={tickets} refetch={refetchMyTickets} />
       </MainContainer>
     </>
   );

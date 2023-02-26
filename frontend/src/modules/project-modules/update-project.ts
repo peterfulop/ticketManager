@@ -23,7 +23,7 @@ interface IUpdateProject extends IMutationAlerts {
           ProjectUpdateMutation,
           Exact<{ input: ProjectUpdateInput }>,
           DefaultContext,
-          ApolloCache<any>
+          ApolloCache<unknown>
         >
       | undefined
   ): Promise<FetchResult<ProjectUpdateMutation>>;

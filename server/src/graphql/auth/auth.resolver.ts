@@ -18,7 +18,7 @@ import { verifyUserUseCase } from '../../use-case/auth-use-case/verify-user.use-
 export const authGQLResolver = {
   Query: {
     verifyUser: async (
-      _parent: any,
+      _parent: unknown,
       args: QueryVerifyUserArgs,
       context: ApolloContext
     ): Promise<VerifyPayload> => {
@@ -27,28 +27,28 @@ export const authGQLResolver = {
   },
   Mutation: {
     signup: async (
-      _parent: any,
+      _parent: unknown,
       args: MutationSignupArgs,
       context: ApolloContext
     ): Promise<AuthPayload> => {
       return await signupUseCase({ args, context });
     },
     signin: async (
-      _parent: any,
+      _parent: unknown,
       args: MutationSigninArgs,
       context: ApolloContext
     ): Promise<SigninPayload> => {
       return await signinUseCase({ args, context });
     },
     confirmUser: async (
-      _parent: any,
+      _parent: unknown,
       args: MutationConfirmUserArgs,
       context: ApolloContext
     ): Promise<AuthPayload> => {
       return await confirmUserUseCase({ args, context });
     },
     confirmResend: async (
-      _parent: any,
+      _parent: unknown,
       args: MutationConfirmResendArgs,
       context: ApolloContext
     ): Promise<AuthPayload> => {

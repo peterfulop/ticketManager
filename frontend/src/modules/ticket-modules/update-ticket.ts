@@ -20,7 +20,7 @@ interface IUpdateTicket extends IMutationAlerts {
           TicketUpdateMutation,
           Exact<{ input: TicketUpdateInput }>,
           DefaultContext,
-          ApolloCache<any>
+          ApolloCache<unknown>
         >
       | undefined
   ): Promise<FetchResult<TicketUpdateMutation>>;

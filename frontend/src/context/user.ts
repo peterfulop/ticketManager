@@ -26,8 +26,8 @@ export const initialUserState: IUserState = {
 };
 
 export const userReducer = (state: IUserState, action: IUserActions) => {
-  let user = action.payload.user;
-  let token = action.payload.token;
+  const user = action.payload.user;
+  const token = action.payload.token;
 
   switch (action.type) {
     case 'login':
@@ -48,7 +48,7 @@ export interface IUserContextProps {
 
 const UserContext = createContext<IUserContextProps>({
   userState: initialUserState,
-  userDispatch: () => {},
+  userDispatch: () => undefined,
 });
 
 export const UserContextConsumer = UserContext.Consumer;

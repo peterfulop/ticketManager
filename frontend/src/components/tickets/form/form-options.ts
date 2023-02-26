@@ -7,7 +7,7 @@ import { Option } from '../../../types';
 
 export type EnabledTicketStatuses = Exclude<
   TicketStatus,
-  TicketStatus.ARCHIVED | TicketStatus.BACKLOG
+  TicketStatus.ARCHIVED
 >;
 
 export const ticketStatuses: Record<EnabledTicketStatuses, Option> = {
@@ -19,6 +19,7 @@ export const ticketStatuses: Record<EnabledTicketStatuses, Option> = {
   [TicketStatus.BLOCKED]: { sequence: 3, title: 'Blocked' },
   [TicketStatus.REVIEW]: { sequence: 4, title: 'Review' },
   [TicketStatus.DONE]: { sequence: 5, title: 'Done' },
+  [TicketStatus.BACKLOG]: { sequence: 6, title: 'Backlog' },
 };
 
 export const ticketPriorities: Record<TicketPriority, Option> = {

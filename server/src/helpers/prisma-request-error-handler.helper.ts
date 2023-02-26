@@ -6,7 +6,7 @@ type ErrorPayload = {
   userErrors: UserError[];
 };
 
-export const prismaRequestErrorHandler = (error: any): ErrorPayload => {
+export const prismaRequestErrorHandler = (error: Error): ErrorPayload => {
   const errorPayload: ErrorPayload = {
     userErrors: [],
   };

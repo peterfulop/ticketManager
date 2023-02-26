@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "codegen:gql": "graphql-codegen --require dotenv/config --config codegen.yml dotenv_config_path=.env"
+    "codegen:gql": "graphql-codegen --require dotenv/config --config codegen.yml dotenv_config_path=.env",
+    "lint": "eslint ./src --ext .ts"
   },
   "dependencies": {
     "@apollo/client": "^3.7.6",
@@ -31,7 +32,11 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/styled-components": "^5.1.26",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
     "@vitejs/plugin-react": "^3.1.0",
+    "eslint": "^8.34.0",
+    "eslint-plugin-react": "^7.32.2",
     "styled-components": "^5.3.6",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",

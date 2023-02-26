@@ -75,7 +75,7 @@ export const confirmUserUseCase = async (
       success: confirmedUser.confirmed,
     };
   } catch (error) {
-    const { userErrors } = prismaRequestErrorHandler(error);
+    const { userErrors } = prismaRequestErrorHandler(error as Error);
     return {
       ...authPayload,
       userErrors,

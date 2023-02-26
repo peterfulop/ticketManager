@@ -24,7 +24,6 @@ export const useGetProjectByParams = (props: IUseGetProjectByParams) => {
     error: getProjectError,
     loading: getProjectDataLoading,
   } = useGetMyProjectQuery({
-    fetchPolicy: 'no-cache',
     variables: {
       id: projectId as string,
     },

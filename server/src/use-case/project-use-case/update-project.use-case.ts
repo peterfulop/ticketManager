@@ -84,7 +84,7 @@ export const updateProjectUseCase = async (
       },
     } as unknown as ProjectPayload;
   } catch (error) {
-    const { userErrors } = prismaRequestErrorHandler(error);
+    const { userErrors } = prismaRequestErrorHandler(error as Error);
     return {
       ...projectPayload,
       userErrors,

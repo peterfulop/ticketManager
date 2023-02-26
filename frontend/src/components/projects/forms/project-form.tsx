@@ -2,7 +2,10 @@ import { FC, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { ProjectCreateInput } from '../../../apollo/graphql-generated/types';
+import {
+  ProjectCreateInput,
+  ProjectUpdateInput,
+} from '../../../apollo/graphql-generated/types';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { useProjectMutations } from '../../../hooks/project-hooks/use-project-mutations.hook';
@@ -76,7 +79,7 @@ export const ProjectForm: FC<IProjectForm> = ({
     switch (actionType) {
       case EActionTypes.CREATE:
         return await createProjectMutation({
-          values,
+          values: values as ProjectCreateInput,
           createProject,
           setSuccess,
           setAlertMessage,
@@ -85,7 +88,7 @@ export const ProjectForm: FC<IProjectForm> = ({
       case EActionTypes.UPDATE:
         return await updateProjectMutation({
           projectId: projectId as string,
-          values,
+          values: values as ProjectUpdateInput,
           updateProject,
           setSuccess,
           setAlertMessage,

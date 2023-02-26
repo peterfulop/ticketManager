@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 
 interface IUseForm {
-  callback: () => Promise<any>;
-  initialState: any;
+  callback: () => Promise<unknown>;
+  initialState: Record<string, any>;
 }
 
 export const useForm = (props: IUseForm) => {

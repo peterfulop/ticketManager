@@ -25,7 +25,7 @@ import { updateProjectUseCase } from '../../use-case/project-use-case/update-pro
 export const projectGQLResolver = {
   Query: {
     getMyProject: async (
-      _parent: any,
+      _parent: unknown,
       args: QueryGetMyProjectArgs,
       context: ApolloContext
     ): Promise<ProjectPayload> => {
@@ -33,15 +33,15 @@ export const projectGQLResolver = {
       return await getMyProjectUseCase({ args, context });
     },
     getMyProjects: async (
-      _parent: any,
-      _args: any,
+      _parent: unknown,
+      _args: unknown,
       context: ApolloContext
     ): Promise<ProjectsPayload> => {
       authMiddleware(context);
       return await getMyProjectsUseCase({ context });
     },
     getMyProjectIdByName: async (
-      _parent: any,
+      _parent: unknown,
       args: QueryGetMyProjectIdByNameArgs,
       context: ApolloContext
     ): Promise<ProjectIdByNamePayload> => {
@@ -51,7 +51,7 @@ export const projectGQLResolver = {
   },
   Mutations: {
     projectCreate: async (
-      _parent: any,
+      _parent: unknown,
       args: MutationProjectCreateArgs,
       context: ApolloContext
     ): Promise<ProjectPayload> => {
@@ -59,7 +59,7 @@ export const projectGQLResolver = {
       return await createProjectUseCase({ args, context });
     },
     projectUpdate: async (
-      _parent: any,
+      _parent: unknown,
       args: MutationProjectUpdateArgs,
       context: ApolloContext
     ): Promise<ProjectPayload> => {
@@ -67,7 +67,7 @@ export const projectGQLResolver = {
       return await updateProjectUseCase({ args, context });
     },
     projectDelete: async (
-      _parent: any,
+      _parent: unknown,
       args: MutationProjectDeleteArgs,
       context: ApolloContext
     ): Promise<ProjectDeletePayload> => {
@@ -78,7 +78,7 @@ export const projectGQLResolver = {
   Project: {
     tickets: async (
       parent: ResolversParentTypes['Project'],
-      _args: any,
+      _args: unknown,
       context: ApolloContext
     ): Promise<Ticket> => {
       authMiddleware(context);
