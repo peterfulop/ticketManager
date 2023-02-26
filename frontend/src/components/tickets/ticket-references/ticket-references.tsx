@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Col, Form } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Ticket } from '../../../apollo/graphql-generated/types';
@@ -7,11 +7,10 @@ import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
 import { EActionTypes } from '../../../types/enums/common.enum';
 
-const ReferencesDiv = styled.div({
+const ReferencesDiv = styled(Row)({
   display: 'flex',
   justifyContent: 'space-between',
   marginBottom: '2rem',
-  gap: '1rem',
   small: {
     display: 'block',
     color: 'tomato',
@@ -21,7 +20,7 @@ const ReferencesDiv = styled.div({
 });
 
 const CurrentReferences = styled.div({
-  height: '100px',
+  height: '120px',
   overflow: 'auto',
   marginTop: '.5rem',
   padding: '5px 10px',
@@ -37,13 +36,14 @@ const RefLink = styled.p({
 });
 
 const AvailableReferences = styled.div({
-  height: '100px',
+  height: '120px',
   overflow: 'auto',
   marginTop: '.5rem',
   padding: '5px',
   border: '1px solid lightGray',
   borderRadius: '5px',
   label: {
+    maxWidth: '100%',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -76,41 +76,9 @@ export const TicketReferences: FC<ITicketReferences> = ({
 
   return (
     <ReferencesDiv>
-      {actionType !== EActionTypes.CREATE && (
-        <Col>
-          <p>{translate(TEXT.forms.ticketForms.CREATE.labels.references)}</p>
-          {currentReferencies.length > 0 ? (
-            <>
-              <CurrentReferences>
-                {referenceOptions.map((option, key) => {
-                  const refTicketPath = modalURL
-                    .replace(':projectId', projectId as string)
-                    .replace(':ticketId', option.id);
-                  const isExists = currentReferencies.includes(option.id);
-                  return (
-                    isExists && (
-                      <RefLink
-                        key={key}
-                        onClick={() => {
-                          navigate(refTicketPath);
-                          toggle && toggle();
-                        }}
-                        title={refTicketPath}
-                        aria-disabled={disabled}
-                      >{`${option.sequenceId} - ${option.title}`}</RefLink>
-                    )
-                  );
-                })}
-              </CurrentReferences>
-            </>
-          ) : (
-            <small>
-              {translate(TEXT.forms.ticketForms.CREATE.labels.noReferences)}
-            </small>
-          )}
-        </Col>
-      )}
-      <Col>
+      <Col
+        className={`${actionType === EActionTypes.CREATE ? 'col-12' : 'col-6'}`}
+      >
         <p>
           {translate(TEXT.forms.ticketForms.CREATE.labels.availableReferences)}
         </p>
@@ -134,6 +102,38 @@ export const TicketReferences: FC<ITicketReferences> = ({
             })}
         </AvailableReferences>
       </Col>
+      {actionType !== EActionTypes.CREATE && (
+        <Col className='col-6'>
+          <p>{translate(TEXT.forms.ticketForms.CREATE.labels.references)}</p>
+          {currentReferencies.length > 0 ? (
+            <CurrentReferences>
+              {referenceOptions.map((option, key) => {
+                const refTicketPath = modalURL
+                  .replace(':projectId', projectId as string)
+                  .replace(':ticketId', option.id);
+                const isExists = currentReferencies.includes(option.id);
+                return (
+                  isExists && (
+                    <RefLink
+                      key={key}
+                      onClick={() => {
+                        navigate(refTicketPath);
+                        toggle && toggle();
+                      }}
+                      title={refTicketPath}
+                      aria-disabled={disabled}
+                    >{`${option.sequenceId} - ${option.title}`}</RefLink>
+                  )
+                );
+              })}
+            </CurrentReferences>
+          ) : (
+            <small>
+              {translate(TEXT.forms.ticketForms.CREATE.labels.noReferences)}
+            </small>
+          )}
+        </Col>
+      )}
     </ReferencesDiv>
   );
 };

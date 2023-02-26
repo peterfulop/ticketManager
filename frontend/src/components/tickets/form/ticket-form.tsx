@@ -177,7 +177,7 @@ export const TicketForm: FC<ITicketForm> = ({
           {actionType !== EActionTypes.CREATE && (
             <SequneceId sequenceId={values.sequenceId} title={values.title} />
           )}
-          <Row id='ticket-form-row' className='justify-content-center mb15'>
+          <Row id='ticket-form-row' className='justify-content-center mb-1'>
             <Col className='col-8'>
               <Form.Group className='mb-3 w-100'>
                 <Form.Label>
