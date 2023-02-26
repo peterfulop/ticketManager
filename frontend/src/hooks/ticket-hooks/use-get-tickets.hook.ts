@@ -18,7 +18,6 @@ export const useGetTickets = (props: IUseGetTickets) => {
     error: getTicketsError,
     refetch: refetchMyTickets,
   } = useGetMyTicketsQuery({
-    fetchPolicy: 'no-cache',
     variables: {
       input: {
         projectId,

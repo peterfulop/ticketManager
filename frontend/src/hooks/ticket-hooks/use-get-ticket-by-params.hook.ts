@@ -22,7 +22,6 @@ export const useGetTicketByParams = (props: IUseGetTicketByParams) => {
     loading: getTicketLoading,
     error: getTicketError,
   } = useGetTicketQuery({
-    fetchPolicy: 'no-cache',
     variables: {
       id: ticketId as string,
     },

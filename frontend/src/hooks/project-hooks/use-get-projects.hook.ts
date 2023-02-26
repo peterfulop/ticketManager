@@ -12,9 +12,7 @@ export const useGetProjects = () => {
     loading: getProjectsDataLoading,
     error: getProjectsError,
     refetch: refetchProjects,
-  } = useGetMyProjectsQuery({
-    fetchPolicy: 'no-cache',
-  });
+  } = useGetMyProjectsQuery();
 
   useEffect(() => {
     const data = projectsData?.getMyProjects.projects;
