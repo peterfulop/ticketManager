@@ -9,21 +9,21 @@ export type GetMyTicketsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetMyTicketsQuery = { __typename?: 'Query', getMyTickets: { __typename?: 'TicketsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, tickets?: Array<{ __typename?: 'Ticket', id: string, projectId: string, title: string, comment?: string | null, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null }> | null } };
+export type GetMyTicketsQuery = { __typename?: 'Query', getMyTickets: { __typename?: 'TicketsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, tickets?: Array<{ __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null }> | null } };
 
 export type GetTicketQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
 }>;
 
 
-export type GetTicketQuery = { __typename?: 'Query', getTicket: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, title: string, comment?: string | null, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type GetTicketQuery = { __typename?: 'Query', getTicket: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type TicketCreateMutationVariables = Types.Exact<{
   input: Types.TicketCreateInput;
 }>;
 
 
-export type TicketCreateMutation = { __typename?: 'Mutation', ticketCreate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, title: string, description?: string | null, comment?: string | null, priority: Types.TicketPriority, type: Types.TicketType, storyPoints?: number | null, status: Types.TicketStatus, sequenceId: string, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type TicketCreateMutation = { __typename?: 'Mutation', ticketCreate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, description?: string | null, priority: Types.TicketPriority, type: Types.TicketType, storyPoints?: number | null, status: Types.TicketStatus, sequenceId: string, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type TicketDeleteMutationVariables = Types.Exact<{
   id: Types.Scalars['ID'];
@@ -37,14 +37,14 @@ export type TicketUpdateMutationVariables = Types.Exact<{
 }>;
 
 
-export type TicketUpdateMutation = { __typename?: 'Mutation', ticketUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, title: string, description?: string | null, comment?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type TicketUpdateMutation = { __typename?: 'Mutation', ticketUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, description?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type TicketStatusUpdateMutationVariables = Types.Exact<{
   input: Types.TicketStatusUpdateInput;
 }>;
 
 
-export type TicketStatusUpdateMutation = { __typename?: 'Mutation', ticketStatusUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, title: string, description?: string | null, comment?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type TicketStatusUpdateMutation = { __typename?: 'Mutation', ticketStatusUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, description?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 
 export const GetMyTicketsDocument = gql`
@@ -57,8 +57,8 @@ export const GetMyTicketsDocument = gql`
     tickets {
       id
       projectId
+      sprintId
       title
-      comment
       priority
       storyPoints
       type
@@ -110,8 +110,8 @@ export const GetTicketDocument = gql`
     ticket {
       id
       projectId
+      sprintId
       title
-      comment
       priority
       storyPoints
       type
@@ -163,9 +163,9 @@ export const TicketCreateDocument = gql`
     ticket {
       id
       projectId
+      sprintId
       title
       description
-      comment
       priority
       type
       storyPoints
@@ -251,9 +251,9 @@ export const TicketUpdateDocument = gql`
     ticket {
       id
       projectId
+      sprintId
       title
       description
-      comment
       priority
       status
       references
@@ -299,9 +299,9 @@ export const TicketStatusUpdateDocument = gql`
     ticket {
       id
       projectId
+      sprintId
       title
       description
-      comment
       priority
       status
       references

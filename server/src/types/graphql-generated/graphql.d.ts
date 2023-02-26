@@ -41,6 +41,9 @@ export type Mutation = {
   projectUpdate: ProjectPayload;
   signin: SigninPayload;
   signup: AuthPayload;
+  sprintCreate: SprintPayload;
+  sprintDelete: SprintDeletePayload;
+  sprintUpdate: SprintPayload;
   ticketCreate: TicketPayload;
   ticketDelete: TicketDeletePayload;
   ticketStatusUpdate: TicketPayload;
@@ -80,6 +83,21 @@ export type MutationSigninArgs = {
 
 export type MutationSignupArgs = {
   input: SignupInput;
+};
+
+
+export type MutationSprintCreateArgs = {
+  input: SprintCreateInput;
+};
+
+
+export type MutationSprintDeleteArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationSprintUpdateArgs = {
+  input: SprintUpdateInput;
 };
 
 
@@ -155,6 +173,8 @@ export type Query = {
   getMyProjectIdByName: ProjectIdByNamePayload;
   getMyProjects: ProjectsPayload;
   getMyTickets: TicketsPayload;
+  getSprint: SprintPayload;
+  getSprints: SprintsPayload;
   getTicket: TicketPayload;
   getUser: GetUserPayload;
   verifyUser: VerifyPayload;
@@ -176,6 +196,16 @@ export type QueryGetMyTicketsArgs = {
 };
 
 
+export type QueryGetSprintArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetSprintsArgs = {
+  input: InputMaybe<SearchSprintInput>;
+};
+
+
 export type QueryGetTicketArgs = {
   id: Scalars['ID'];
 };
@@ -190,12 +220,18 @@ export type QueryVerifyUserArgs = {
   token: Scalars['String'];
 };
 
+export type SearchSprintInput = {
+  goal: InputMaybe<Scalars['String']>;
+  projectId: InputMaybe<Scalars['String']>;
+  title: InputMaybe<Scalars['String']>;
+};
+
 export type SearchTicketInput = {
-  comment: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['String']>;
   priority: InputMaybe<TicketPriority>;
   projectId: InputMaybe<Scalars['String']>;
+  sprintId: InputMaybe<Scalars['String']>;
   status: InputMaybe<TicketStatus>;
   title: InputMaybe<Scalars['String']>;
   type: InputMaybe<TicketType>;
@@ -214,6 +250,54 @@ export type SignupInput = {
   passwordConfirm: Scalars['String'];
 };
 
+export type Sprint = {
+  __typename?: 'Sprint';
+  createdAt: Maybe<Scalars['String']>;
+  endDate: Maybe<Scalars['String']>;
+  goal: Scalars['String'];
+  id: Scalars['ID'];
+  projectId: Scalars['String'];
+  sequenceId: Scalars['String'];
+  startDate: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  updatedAt: Maybe<Scalars['String']>;
+  userId: Scalars['String'];
+};
+
+export type SprintCreateInput = {
+  endDate: InputMaybe<Scalars['String']>;
+  goal: Scalars['String'];
+  projectId: Scalars['String'];
+  startDate: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+};
+
+export type SprintDeletePayload = {
+  __typename?: 'SprintDeletePayload';
+  success: Maybe<Scalars['Boolean']>;
+  userErrors: Array<UserError>;
+};
+
+export type SprintPayload = {
+  __typename?: 'SprintPayload';
+  sprint: Maybe<Sprint>;
+  userErrors: Array<UserError>;
+};
+
+export type SprintUpdateInput = {
+  endDate: InputMaybe<Scalars['String']>;
+  goal: Scalars['String'];
+  projectId: Scalars['String'];
+  startDate: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+};
+
+export type SprintsPayload = {
+  __typename?: 'SprintsPayload';
+  sprints: Maybe<Array<Sprint>>;
+  userErrors: Array<UserError>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   _: Maybe<Scalars['Boolean']>;
@@ -221,7 +305,6 @@ export type Subscription = {
 
 export type Ticket = {
   __typename?: 'Ticket';
-  comment: Maybe<Scalars['String']>;
   createdAt: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -229,6 +312,7 @@ export type Ticket = {
   projectId: Scalars['String'];
   references: Maybe<Array<Maybe<Scalars['String']>>>;
   sequenceId: Scalars['String'];
+  sprintId: Scalars['String'];
   status: TicketStatus;
   storyPoints: Maybe<Scalars['Int']>;
   title: Scalars['String'];
@@ -238,11 +322,11 @@ export type Ticket = {
 };
 
 export type TicketCreateInput = {
-  comment: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
   priority: TicketPriority;
   projectId: Scalars['String'];
   references: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  sprintId: Scalars['String'];
   status: TicketStatus;
   storyPoints: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
@@ -291,11 +375,11 @@ export enum TicketType {
 }
 
 export type TicketUpdateInput = {
-  comment: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
   priority: InputMaybe<TicketPriority>;
   projectId: InputMaybe<Scalars['String']>;
   references: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  sprintId: Scalars['String'];
   status: InputMaybe<TicketStatus>;
   storyPoints: InputMaybe<Scalars['Int']>;
   ticketId: Scalars['ID'];
@@ -417,9 +501,16 @@ export type ResolversTypes = {
   ProjectUpdateInput: ProjectUpdateInput;
   ProjectsPayload: ResolverTypeWrapper<ProjectsPayload>;
   Query: ResolverTypeWrapper<{}>;
+  SearchSprintInput: SearchSprintInput;
   SearchTicketInput: SearchTicketInput;
   SigninPayload: ResolverTypeWrapper<SigninPayload>;
   SignupInput: SignupInput;
+  Sprint: ResolverTypeWrapper<Sprint>;
+  SprintCreateInput: SprintCreateInput;
+  SprintDeletePayload: ResolverTypeWrapper<SprintDeletePayload>;
+  SprintPayload: ResolverTypeWrapper<SprintPayload>;
+  SprintUpdateInput: SprintUpdateInput;
+  SprintsPayload: ResolverTypeWrapper<SprintsPayload>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   Ticket: ResolverTypeWrapper<Ticket>;
@@ -454,9 +545,16 @@ export type ResolversParentTypes = {
   ProjectUpdateInput: ProjectUpdateInput;
   ProjectsPayload: ProjectsPayload;
   Query: {};
+  SearchSprintInput: SearchSprintInput;
   SearchTicketInput: SearchTicketInput;
   SigninPayload: SigninPayload;
   SignupInput: SignupInput;
+  Sprint: Sprint;
+  SprintCreateInput: SprintCreateInput;
+  SprintDeletePayload: SprintDeletePayload;
+  SprintPayload: SprintPayload;
+  SprintUpdateInput: SprintUpdateInput;
+  SprintsPayload: SprintsPayload;
   String: Scalars['String'];
   Subscription: {};
   Ticket: Ticket;
@@ -492,6 +590,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   projectUpdate: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<MutationProjectUpdateArgs, 'input'>>;
   signin: Resolver<ResolversTypes['SigninPayload'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'input'>>;
   signup: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'input'>>;
+  sprintCreate: Resolver<ResolversTypes['SprintPayload'], ParentType, ContextType, RequireFields<MutationSprintCreateArgs, 'input'>>;
+  sprintDelete: Resolver<ResolversTypes['SprintDeletePayload'], ParentType, ContextType, RequireFields<MutationSprintDeleteArgs, 'id'>>;
+  sprintUpdate: Resolver<ResolversTypes['SprintPayload'], ParentType, ContextType, RequireFields<MutationSprintUpdateArgs, 'input'>>;
   ticketCreate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketCreateArgs, 'input'>>;
   ticketDelete: Resolver<ResolversTypes['TicketDeletePayload'], ParentType, ContextType, RequireFields<MutationTicketDeleteArgs, 'id'>>;
   ticketStatusUpdate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketStatusUpdateArgs, 'input'>>;
@@ -541,6 +642,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getMyProjectIdByName: Resolver<ResolversTypes['ProjectIdByNamePayload'], ParentType, ContextType, RequireFields<QueryGetMyProjectIdByNameArgs, 'projectName'>>;
   getMyProjects: Resolver<ResolversTypes['ProjectsPayload'], ParentType, ContextType>;
   getMyTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, Partial<QueryGetMyTicketsArgs>>;
+  getSprint: Resolver<ResolversTypes['SprintPayload'], ParentType, ContextType, RequireFields<QueryGetSprintArgs, 'id'>>;
+  getSprints: Resolver<ResolversTypes['SprintsPayload'], ParentType, ContextType, Partial<QueryGetSprintsArgs>>;
   getTicket: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<QueryGetTicketArgs, 'id'>>;
   getUser: Resolver<ResolversTypes['GetUserPayload'], ParentType, ContextType, RequireFields<QueryGetUserArgs, 'id'>>;
   verifyUser: Resolver<ResolversTypes['VerifyPayload'], ParentType, ContextType, RequireFields<QueryVerifyUserArgs, 'token'>>;
@@ -553,12 +656,43 @@ export type SigninPayloadResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type SprintResolvers<ContextType = any, ParentType extends ResolversParentTypes['Sprint'] = ResolversParentTypes['Sprint']> = {
+  createdAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  endDate: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  goal: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  projectId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  sequenceId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  startDate: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SprintDeletePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SprintDeletePayload'] = ResolversParentTypes['SprintDeletePayload']> = {
+  success: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SprintPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SprintPayload'] = ResolversParentTypes['SprintPayload']> = {
+  sprint: Resolver<Maybe<ResolversTypes['Sprint']>, ParentType, ContextType>;
+  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type SprintsPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SprintsPayload'] = ResolversParentTypes['SprintsPayload']> = {
+  sprints: Resolver<Maybe<Array<ResolversTypes['Sprint']>>, ParentType, ContextType>;
+  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
   _: SubscriptionResolver<Maybe<ResolversTypes['Boolean']>, "_", ParentType, ContextType>;
 };
 
 export type TicketResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ticket'] = ResolversParentTypes['Ticket']> = {
-  comment: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -566,6 +700,7 @@ export type TicketResolvers<ContextType = any, ParentType extends ResolversParen
   projectId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   references: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   sequenceId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  sprintId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status: Resolver<ResolversTypes['TicketStatus'], ParentType, ContextType>;
   storyPoints: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -628,6 +763,10 @@ export type Resolvers<ContextType = any> = {
   ProjectsPayload: ProjectsPayloadResolvers<ContextType>;
   Query: QueryResolvers<ContextType>;
   SigninPayload: SigninPayloadResolvers<ContextType>;
+  Sprint: SprintResolvers<ContextType>;
+  SprintDeletePayload: SprintDeletePayloadResolvers<ContextType>;
+  SprintPayload: SprintPayloadResolvers<ContextType>;
+  SprintsPayload: SprintsPayloadResolvers<ContextType>;
   Subscription: SubscriptionResolvers<ContextType>;
   Ticket: TicketResolvers<ContextType>;
   TicketDeletePayload: TicketDeletePayloadResolvers<ContextType>;

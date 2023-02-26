@@ -14,12 +14,12 @@ export const ticketTypeDefs = `#graphql
   input SearchTicketInput {
     id: String
     projectId: String
+    sprintId: String
     title: String
     status: TicketStatus
     priority: TicketPriority
     type: TicketType
     description: String
-    comment: String
   }
 
   enum TicketStatus {
@@ -52,14 +52,15 @@ export const ticketTypeDefs = `#graphql
     status: TicketStatus!
     priority: TicketPriority!
     storyPoints: Int
+    sprintId: String!
     type: TicketType!
     description: String
-    comment: String
     references: [String]
   }
 
   input TicketUpdateInput {
     ticketId: ID!
+    sprintId: String!
     projectId: String
     title: String
     status: TicketStatus
@@ -67,7 +68,6 @@ export const ticketTypeDefs = `#graphql
     storyPoints: Int
     type: TicketType
     description: String
-    comment: String
     references: [String]
   }
 
@@ -86,8 +86,8 @@ export const ticketTypeDefs = `#graphql
     type: TicketType!
     storyPoints: Int
     description: String
-    comment: String
     sequenceId: String!
+    sprintId: String!
     references: [String]
     createdAt: String
     updatedAt: String

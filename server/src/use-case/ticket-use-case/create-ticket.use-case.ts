@@ -25,7 +25,6 @@ export const createTicketUseCase = async (
     storyPoints,
     projectId,
     description,
-    comment,
     references,
   } = input.args.input;
   const { user } = input.context;
@@ -131,9 +130,9 @@ export const createTicketUseCase = async (
         priority,
         type,
         storyPoints,
-        comment,
         description,
         references: references as string[],
+        sprintId: '',
       },
     });
 

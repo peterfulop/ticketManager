@@ -27,7 +27,6 @@ export const updateTicketUseCase = async (
     projectId,
     description,
     storyPoints,
-    comment,
     references,
     ticketId,
   } = input.args.input;
@@ -100,7 +99,6 @@ export const updateTicketUseCase = async (
     priority,
     type,
     projectId,
-    comment,
     references,
     storyPoints,
   });

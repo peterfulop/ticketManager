@@ -56,7 +56,7 @@ model Sprint {
   projectId String   @map("project_id")
   title     String
   goal      String
-  sequence  Int      @default(0)
+  sequence  Int      @default(1)
   startDate DateTime @default(now()) @map("start_date")
   endDate   DateTime @map("end_date")
   createdAt DateTime @default(now()) @map("created_at")
@@ -64,7 +64,7 @@ model Sprint {
   User      User     @relation(fields: [userId], references: [id])
   Project   Project  @relation(fields: [projectId], references: [id])
 
-  @@unique([userId, title], name: "sprintNameIdentifier")
+  @@unique([projectId, title], name: "sprintNameIdentifier")
   @@map("sprints")
 }
 
@@ -87,15 +87,15 @@ model Ticket {
   id          String         @id @default(uuid())
   userId      String         @map("user_id")
   projectId   String         @map("project_id")
+  sprintId    String         @map("sprint_id")
+  sequenceId  String?        @map("sequence_id")
   title       String
   description String?
   status      TicketStatus   @default(TO_DO)
   priority    TicketPriority @default(MEDIUM)
   type        TicketType     @default(TASK)
   storyPoints Int?           @default(0) @map("story_points")
-  sequenceId  String?
   references  String[]
-  comment     String?
   createdAt   DateTime       @default(now()) @map("created_at")
   updatedAt   DateTime       @default(now()) @updatedAt @map("updated_at")
   User        User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
