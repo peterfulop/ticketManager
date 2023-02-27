@@ -25,6 +25,7 @@ export const updateTicketUseCase = async (
     priority,
     type,
     projectId,
+    sprintId,
     description,
     storyPoints,
     references,
@@ -57,6 +58,20 @@ export const updateTicketUseCase = async (
     };
   }
 
+  if (
+    status &&
+    status !== TicketStatus.BACKLOG &&
+    status !== TicketStatus.ARCHIVED &&
+    !sprintId
+  ) {
+    return {
+      ...ticketPayload,
+      userErrors: [
+        { ...userError, message: 'Kötelező a sprintId adott státuszhoz' },
+      ],
+    };
+  }
+
   if (projectId) {
     const isProjectExists = await prisma.project.findFirst({
       where: {
@@ -79,6 +94,29 @@ export const updateTicketUseCase = async (
     }
   }
 
+  if (sprintId) {
+    const isSprintExists = await prisma.sprint.findFirst({
+      where: {
+        userId: user?.userId,
+        id: sprintId,
+        closed: false,
+      },
+    });
+
+    if (!isSprintExists) {
+      return {
+        ...ticketPayload,
+        userErrors: [
+          {
+            ...userError,
+            message: DBErrorMessages.MISSING_RECORD,
+            values: [sprintId],
+          },
+        ],
+      };
+    }
+  }
+
   const { userErrors } = await canUserMutateService({
     prisma,
     userId: user?.userId,
@@ -95,15 +133,18 @@ export const updateTicketUseCase = async (
 
   const reducedInputs = reduceObjectBy({
     title,
-    status,
     priority,
     type,
     projectId,
+    sprintId,
     references,
     storyPoints,
   });
 
   try {
+    const isBackup =
+      status === TicketStatus.BACKLOG || status === TicketStatus.ARCHIVED;
+
     const ticket = await prisma.ticket.update({
       where: {
         id: ticketId,
@@ -111,6 +152,8 @@ export const updateTicketUseCase = async (
       data: {
         ...reducedInputs,
         description,
+        sprintId: isBackup ? null : (reducedInputs.sprintId as string),
+        status: status ? status : ticketToUpdate.status,
         updatedAt: new Date(Date.now()),
       },
     });
@@ -119,7 +162,7 @@ export const updateTicketUseCase = async (
       ...ticketPayload,
       ticket: {
         ...ticket,
-        status: status ? TicketStatus[status] : TicketStatus.BACKLOG,
+        status: TicketStatus[ticket.status],
         priority: priority ? TicketPriority[priority] : TicketPriority.MEDIUM,
         type: ticket.type ? TicketType[ticket.type] : TicketType.TASK,
         storyPoints: ticket.storyPoints,

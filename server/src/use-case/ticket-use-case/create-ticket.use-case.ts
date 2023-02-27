@@ -6,6 +6,7 @@ import {
   MutationTicketCreateArgs,
   TicketPayload,
 } from '../../types/graphql-generated/graphql';
+import { TicketStatus } from '../../types/types';
 import { generateSequenceId } from '../../utils/generate-sequence-id';
 import { reduceObjectBy } from '../../utils/reduce-object';
 
@@ -19,11 +20,12 @@ export const createTicketUseCase = async (
 ): Promise<TicketPayload> => {
   const {
     title,
-    status,
     priority,
     type,
     storyPoints,
+    status,
     projectId,
+    sprintId,
     description,
     references,
   } = input.args.input;
@@ -57,7 +59,7 @@ export const createTicketUseCase = async (
     };
   }
 
-  if (!title || !status) {
+  if (!title || !projectId) {
     const missingFields = Object.keys(reduceObjectBy(input.args.input, true));
     return {
       ...ticketPayload,
@@ -126,13 +128,13 @@ export const createTicketUseCase = async (
         userId: user.userId,
         projectId,
         title,
-        status,
         priority,
         type,
         storyPoints,
         description,
+        status: status || TicketStatus.BACKLOG,
         references: references as string[],
-        sprintId: '',
+        sprintId,
       },
     });
 
@@ -169,11 +171,12 @@ export const createTicketUseCase = async (
       ...ticketPayload,
       ticket: {
         ...updatedTicket,
-        status,
         priority,
         type,
         storyPoints,
         sequenceId: nextSequence,
+        status: newTicket.status as TicketStatus,
+        sprintId: newTicket.sprintId,
         createdAt: newTicket.createdAt.toISOString(),
         updatedAt: newTicket.updatedAt.toISOString(),
       },

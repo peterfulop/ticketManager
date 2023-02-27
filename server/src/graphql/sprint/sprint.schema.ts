@@ -6,6 +6,7 @@ export const sprintTypeDefs = `#graphql
 
   extend type Mutation {
     sprintCreate(input: SprintCreateInput!): SprintPayload!
+    sprintClose(sprintId: ID!): SprintPayload!
     sprintUpdate(input: SprintUpdateInput!): SprintPayload!
     sprintDelete(id: ID!): SprintDeletePayload!
   }
@@ -20,14 +21,15 @@ export const sprintTypeDefs = `#graphql
     projectId: String!
     title: String!
     goal: String!
-    startDate: String
-    endDate: String
+    startDate: String!
+    endDate: String!
   }
 
   input SprintUpdateInput {
-    projectId: String!
-    title: String!
-    goal: String!
+    sprintId: ID!
+    projectId: String
+    title: String
+    goal: String
     startDate: String
     endDate: String
   }
@@ -38,7 +40,7 @@ export const sprintTypeDefs = `#graphql
     projectId: String!
     title: String!
     goal: String!
-    sequenceId: String!
+    closed: Boolean!
     startDate: String
     endDate: String
     createdAt: String

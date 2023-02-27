@@ -2,6 +2,7 @@ import { authGQLResolver } from './auth/auth.resolver';
 import { authTypeDefs } from './auth/auth.schema';
 import { projectGQLResolver } from './project/project.resolver';
 import { projectTypeDefs } from './project/project.schema';
+import { sprintGQLResolvers } from './sprint/sprint.resolver';
 import { sprintTypeDefs } from './sprint/sprint.schema';
 import { ticketGQLResolvers } from './ticket/ticket.resolver';
 import { ticketTypeDefs } from './ticket/ticket.schema';
@@ -37,12 +38,14 @@ export const typeDefs = [
   sprintTypeDefs,
 ];
 
-const { Query: ticketQueries, Mutations: ticketMutations } = ticketGQLResolvers;
 const {
   Query: projectQueries,
   Mutations: projectMutations,
   Project,
 } = projectGQLResolver;
+
+const { Query: sprintQueries, Mutations: sprintMutations } = sprintGQLResolvers;
+const { Query: ticketQueries, Mutations: ticketMutations } = ticketGQLResolvers;
 const { Query: userQueries, User } = userGQLResolver;
 const { Query: authQueries, Mutation: authMutations } = authGQLResolver;
 
@@ -50,13 +53,15 @@ export const resolvers = {
   Query: {
     ...userQueries,
     ...projectQueries,
+    ...sprintQueries,
     ...ticketQueries,
     ...authQueries,
   },
   Mutation: {
     ...authMutations,
-    ...ticketMutations,
     ...projectMutations,
+    ...sprintMutations,
+    ...ticketMutations,
   },
   User,
   Project,

@@ -1,4 +1,4 @@
-import { Project, Ticket } from '@prisma/client';
+import { Project, Sprint, Ticket } from '@prisma/client';
 import { ApolloContext } from '../../apollo';
 import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { PrismaTable } from '../../enum/prisma-tables.enum';
@@ -54,7 +54,7 @@ export const canUserMutateService = async (
     };
   }
 
-  let result: Project | Ticket | null = null;
+  let result: Project | Ticket | Sprint | null = null;
 
   switch (input.targetTable) {
     case PrismaTable.PROJECT: {
@@ -67,6 +67,14 @@ export const canUserMutateService = async (
     }
     case PrismaTable.TICKET: {
       result = await prisma[PrismaTable.TICKET].findUnique({
+        where: {
+          id,
+        },
+      });
+      break;
+    }
+    case PrismaTable.SPRINT: {
+      result = await prisma[PrismaTable.SPRINT].findUnique({
         where: {
           id,
         },

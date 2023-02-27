@@ -39,6 +39,7 @@ export type Mutation = {
   projectUpdate: ProjectPayload;
   signin: SigninPayload;
   signup: AuthPayload;
+  sprintClose: SprintPayload;
   sprintCreate: SprintPayload;
   sprintDelete: SprintDeletePayload;
   sprintUpdate: SprintPayload;
@@ -81,6 +82,11 @@ export type MutationSigninArgs = {
 
 export type MutationSignupArgs = {
   input: SignupInput;
+};
+
+
+export type MutationSprintCloseArgs = {
+  sprintId: Scalars['ID'];
 };
 
 
@@ -250,12 +256,12 @@ export type SignupInput = {
 
 export type Sprint = {
   __typename?: 'Sprint';
+  closed: Scalars['Boolean'];
   createdAt?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['String']>;
   goal: Scalars['String'];
   id: Scalars['ID'];
   projectId: Scalars['String'];
-  sequenceId: Scalars['String'];
   startDate?: Maybe<Scalars['String']>;
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
@@ -263,10 +269,10 @@ export type Sprint = {
 };
 
 export type SprintCreateInput = {
-  endDate?: InputMaybe<Scalars['String']>;
+  endDate: Scalars['String'];
   goal: Scalars['String'];
   projectId: Scalars['String'];
-  startDate?: InputMaybe<Scalars['String']>;
+  startDate: Scalars['String'];
   title: Scalars['String'];
 };
 
@@ -284,10 +290,11 @@ export type SprintPayload = {
 
 export type SprintUpdateInput = {
   endDate?: InputMaybe<Scalars['String']>;
-  goal: Scalars['String'];
-  projectId: Scalars['String'];
+  goal?: InputMaybe<Scalars['String']>;
+  projectId?: InputMaybe<Scalars['String']>;
+  sprintId: Scalars['ID'];
   startDate?: InputMaybe<Scalars['String']>;
-  title: Scalars['String'];
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type SprintsPayload = {
@@ -310,7 +317,7 @@ export type Ticket = {
   projectId: Scalars['String'];
   references?: Maybe<Array<Maybe<Scalars['String']>>>;
   sequenceId: Scalars['String'];
-  sprintId: Scalars['String'];
+  sprintId?: Maybe<Scalars['String']>;
   status: TicketStatus;
   storyPoints?: Maybe<Scalars['Int']>;
   title: Scalars['String'];
@@ -324,8 +331,8 @@ export type TicketCreateInput = {
   priority: TicketPriority;
   projectId: Scalars['String'];
   references?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  sprintId: Scalars['String'];
-  status: TicketStatus;
+  sprintId?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<TicketStatus>;
   storyPoints?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type: TicketType;
@@ -377,7 +384,7 @@ export type TicketUpdateInput = {
   priority?: InputMaybe<TicketPriority>;
   projectId?: InputMaybe<Scalars['String']>;
   references?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  sprintId: Scalars['String'];
+  sprintId?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<TicketStatus>;
   storyPoints?: InputMaybe<Scalars['Int']>;
   ticketId: Scalars['ID'];

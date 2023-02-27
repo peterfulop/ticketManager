@@ -49,21 +49,21 @@ export const ticketTypeDefs = `#graphql
   input TicketCreateInput {
     projectId: String!
     title: String!
-    status: TicketStatus!
     priority: TicketPriority!
-    storyPoints: Int
-    sprintId: String!
     type: TicketType!
+    sprintId: String
+    status: TicketStatus
+    storyPoints: Int
     description: String
     references: [String]
   }
 
   input TicketUpdateInput {
     ticketId: ID!
-    sprintId: String!
+    sprintId: String
+    status: TicketStatus
     projectId: String
     title: String
-    status: TicketStatus
     priority: TicketPriority
     storyPoints: Int
     type: TicketType
@@ -84,10 +84,10 @@ export const ticketTypeDefs = `#graphql
     status: TicketStatus!
     priority: TicketPriority!
     type: TicketType!
+    sequenceId: String!
     storyPoints: Int
     description: String
-    sequenceId: String!
-    sprintId: String!
+    sprintId: String
     references: [String]
     createdAt: String
     updatedAt: String
