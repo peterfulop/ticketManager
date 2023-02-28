@@ -3,7 +3,7 @@ import { useProjectCreateMutation } from '../../apollo/graphql/project/project.g
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useUserErrorHandler } from '../../hooks/use-user-errors-handler.hook';
-import { EServerSideError } from '../../types/enums/db-errors.enum';
+import { ServerSideError } from '../../types/enums/db-errors.enum';
 import { IMutationAlerts } from '../../types/interfaces/common.interface';
 
 export const useCreateProjectMutationHook = (props: IMutationAlerts) => {
@@ -35,12 +35,12 @@ export const useCreateProjectMutationHook = (props: IMutationAlerts) => {
       if (errorMessage) {
         setAlertMessageColor('danger');
         const translatedError = translateERR(errorMessage);
-        if (errorMessage === EServerSideError.MISSING_FIELDS) {
+        if (errorMessage === ServerSideError.MISSING_FIELDS) {
           return setAlertMessage(
             `${translatedError}${errorValues?.toString()}`
           );
         }
-        if (errorMessage === EServerSideError.UNIQUE_CONSTRAINT_FAIL) {
+        if (errorMessage === ServerSideError.UNIQUE_CONSTRAINT_FAIL) {
           setAlertMessage(`${translatedError}${errorValues?.toString()}`);
         } else {
           return setAlertMessage(translatedError);

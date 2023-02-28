@@ -111,7 +111,7 @@ export const Modal: FC<IModal> = ({
   maxWidth,
   callBackFn,
 }) => {
-  const keyDownHandler = (event: any) => {
+  const keyDownHandler = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       event.preventDefault();
       if (callBackFn) {

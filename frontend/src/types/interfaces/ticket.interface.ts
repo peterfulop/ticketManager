@@ -1,6 +1,6 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { Exact, TicketCreateInput } from '../../apollo/graphql-generated/types';
-import { GetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import { GetTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
 import { IMutationProps } from './common.interface';
 
 export interface ITicket {
@@ -14,7 +14,7 @@ export interface ITicket {
           }>
         >
       | undefined
-  ) => Promise<ApolloQueryResult<GetMyTicketsQuery>>;
+  ) => Promise<ApolloQueryResult<GetTicketsQuery>>;
 }
 
 export interface ITicketMutation extends IMutationProps {

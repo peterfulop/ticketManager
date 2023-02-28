@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { BiEdit } from 'react-icons/bi';
-import { RiTeamFill } from 'react-icons/ri';
+import { GrGroup } from 'react-icons/gr';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Project } from '../../apollo/graphql-generated/types';
@@ -81,10 +81,10 @@ export const ProjectListItem: FC<IProjectListItem> = ({ project }) => {
   return (
     <ListItem
       onClick={() =>
-        navigate(ERoutePath.TICKETS.replace(':projectId', project.id))
+        navigate(ERoutePath.DASHBOARD.replace(':projectId', project.id))
       }
     >
-      {project.shared && <RiTeamFill size={22} />}
+      {project.shared && <GrGroup size={22} />}
       <h5>{project.name}</h5>
       <small>
         {project.tickets.length}

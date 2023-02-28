@@ -7,11 +7,11 @@ import { UserError } from '../../types/graphql-generated/graphql';
 import { Role } from '../../types/types';
 
 export type CanUserMutateServiceInput = {
-  userId?: string;
   id: string;
-  role?: Role;
   targetTable: PrismaTable;
   prisma: ApolloContext['prisma'];
+  userId?: string;
+  role?: Role;
 };
 
 export type MutationPayload = {
@@ -93,19 +93,7 @@ export const canUserMutateService = async (
     }
   }
 
-  const userRoleInTheProject = (
-    await prisma.collaboration.findFirst({
-      where: {
-        inviterId: userId,
-      },
-    })
-  )?.role;
-
-  if (
-    result?.userId !== userId
-    // || (userRoleInTheProject !== Role.ADMIN &&
-    //   userRoleInTheProject !== Role.SUPER_ADMIN)
-  ) {
+  if (result?.userId !== userId) {
     authPayload = {
       ...authPayload,
       userErrors: [

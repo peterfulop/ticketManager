@@ -182,7 +182,7 @@ export type Project = {
 
 export type ProjectCreateInput = {
   name: Scalars['String'];
-  shared: InputMaybe<Scalars['Boolean']>;
+  shared: Scalars['Boolean'];
 };
 
 export type ProjectIdByNamePayload = {
@@ -200,7 +200,7 @@ export type ProjectPayload = {
 export type ProjectUpdateInput = {
   name: Scalars['String'];
   projectId: Scalars['String'];
-  shared: InputMaybe<Scalars['Boolean']>;
+  shared: Scalars['Boolean'];
 };
 
 export type ProjectsPayload = {

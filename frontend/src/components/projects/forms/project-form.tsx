@@ -1,6 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { GrGroup } from 'react-icons/gr';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   ProjectCreateInput,
@@ -15,8 +16,8 @@ import { createProjectMutation } from '../../../modules/project-modules/create-p
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
 import { EActionTypes } from '../../../types/enums/common.enum';
+import { ERoutePath } from '../../../types/enums/routes.enum';
 import { IProject } from '../../../types/interfaces/project.interface';
-import { DateFormat } from '../../../utils/date-format';
 import { FormActions } from '../../component-library/form-actions/form-actions';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
 import { Modal } from '../../modal/modal';
@@ -29,16 +30,20 @@ const FormDiv = styled.div({
   },
 });
 
-const Details = styled.div({
-  marginBottom: '1rem',
-  p: {
-    fontWeight: 'bold',
-  },
-  span: {
-    marginLeft: '5px',
-    fontWeight: 'lighter',
-  },
-});
+// const Details = styled.div({
+//   marginBottom: '1rem',
+//   p: {
+//     fontWeight: 'bold',
+//   },
+//   span: {
+//     marginLeft: '5px',
+//     fontWeight: 'lighter',
+//   },
+// });
+
+export const useFormHook = () => {
+  return null;
+};
 
 interface IProjectForm extends IProject {
   initialValues: ProjectCreateInput;
@@ -110,6 +115,15 @@ export const ProjectForm: FC<IProjectForm> = ({
     initialState: initialValues,
   });
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (actionType === EActionTypes.DELETE && success) {
+      setTimeout(() => {
+        navigate(ERoutePath.PROJECTS);
+      }, 1000);
+    }
+  }, [actionType, success]);
+
   return (
     <Modal
       toggle={() => toggle && toggle()}
@@ -141,7 +155,23 @@ export const ProjectForm: FC<IProjectForm> = ({
               autoFocus={true}
             />
           </Form.Group>
-          {(actionType === EActionTypes.UPDATE ||
+          <Form.Group className='d-flex align-items-center gap-2 mb-3'>
+            <GrGroup size={20} />
+            <Form.Check
+              name='shared'
+              type='switch'
+              id='custom-switch'
+              label={'Share project'}
+              onChange={(e) => {
+                const value = String(e.target.checked);
+                onChange(e, value);
+              }}
+              disabled={loading || actionType === EActionTypes.DELETE}
+              defaultValue={values.shared}
+              defaultChecked={values.shared}
+            />
+          </Form.Group>
+          {/* {(actionType === EActionTypes.UPDATE ||
             actionType === EActionTypes.DELETE) && (
             <Details>
               <p>
@@ -161,7 +191,7 @@ export const ProjectForm: FC<IProjectForm> = ({
                 <span>{DateFormat(values.createdAt || '')}</span>
               </p>
             </Details>
-          )}
+          )} */}
           {alertMessage && (
             <MyAlert variant={alertMessageColor} content={alertMessage} />
           )}
@@ -175,7 +205,7 @@ export const ProjectForm: FC<IProjectForm> = ({
             }}
             setAlertMessage={setAlertMessage}
             setActionType={setActionType}
-            success={success}
+            success={success || false}
           />
         </Form>
       </FormDiv>

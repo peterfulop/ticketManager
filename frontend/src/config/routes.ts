@@ -1,6 +1,7 @@
 import { NotFound } from '../pages/404';
 import { BacklogPage } from '../pages/backlog';
 import { ConfirmUser } from '../pages/confirm-user';
+import { DashboardPage } from '../pages/dashboard';
 import { HomePage } from '../pages/home';
 import { LoginPage } from '../pages/login';
 import { ProfilePage } from '../pages/profile';
@@ -67,11 +68,23 @@ const projectRoutes: IRoute[] = [
     name: 'Projects page',
   },
   {
+    path: ERoutePath.DASHBOARD,
+    auth: true,
+    component: DashboardPage,
+    name: 'Dashboard page',
+  },
+  {
     path: ERoutePath.PROJECTS_DETAILS,
     auth: true,
     component: ProjectsPage,
     name: 'Projects page',
   },
+  // {
+  //   path: ERoutePath.PROJECT_UPDATE,
+  //   auth: true,
+  //   component: DashboardPage,
+  //   name: 'Dashboard page',
+  // },
 ];
 
 const ticketRoutes: IRoute[] = [

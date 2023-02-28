@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ProjectCreateInput } from '../../apollo/graphql-generated/types';
 import { MainContainer } from '../../components/main-content/main-content';
 
+import { AiOutlineFundProjectionScreen } from 'react-icons/ai';
 import { GrAdd } from 'react-icons/gr';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MainButton } from '../../components/component-library/main-button/main-button';
@@ -17,21 +18,17 @@ import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 import { NotFound } from '../404';
 
-const PROJECT_INITIAL_VALUES: ProjectCreateInput = { name: '' };
+const PROJECT_INITIAL_VALUES: ProjectCreateInput = { name: '', shared: false };
 
 export const ProjectsPage = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { isOpen, toggle } = useModal();
-  const [actionType, setActionType] = useState<EActionTypes>(
-    EActionTypes.CREATE
-  );
 
   const [projectInitialValues, setProjectInitialValues] =
     useState<ProjectCreateInput>(PROJECT_INITIAL_VALUES);
 
   const toggleCallBackFn = () => {
-    setActionType(EActionTypes.CREATE);
     setProjectInitialValues(PROJECT_INITIAL_VALUES);
     navigate(ERoutePath.PROJECTS);
   };
@@ -44,7 +41,6 @@ export const ProjectsPage = () => {
 
   const { notFound } = useGetProjectByParams({
     projectId: projectId,
-    setActionType,
     setProjectInitialValues,
     callBackFn: () => {
       if (!isOpen) {
@@ -57,26 +53,26 @@ export const ProjectsPage = () => {
     return <NotFound />;
   }
 
-  console.log(projectCollabs);
-
   return (
     <>
       {isOpen && (
         <ProjectForm
           toggle={toggle}
           refetch={refetchProjects}
-          action={actionType}
+          action={EActionTypes.CREATE}
           initialValues={projectInitialValues}
           toggleCallBackFn={toggleCallBackFn}
         />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <h3 className='mb-3'>{translate(TEXT.pages.projects.name)}</h3>
+        <h3 className='d-flex justify-content-start align-items-center gap-2 mb-3'>
+          <AiOutlineFundProjectionScreen />
+          {translate(TEXT.pages.projects.name)}
+        </h3>
         <MainButton
           label={translate(TEXT.forms.projectForms.CREATE.buttons.submitBtn)}
-          toggle={toggle}
           handleClick={() => {
-            setActionType(EActionTypes.CREATE);
+            toggle();
             setProjectInitialValues(PROJECT_INITIAL_VALUES);
           }}
         >

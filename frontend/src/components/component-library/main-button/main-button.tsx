@@ -27,7 +27,6 @@ const MainBtn = styled.button({
 
 interface ICreateNewButton extends IReact {
   label: string;
-  toggle?: () => void;
   handleClick: () => void;
   disabled?: boolean;
   type?: 'button' | 'reset' | 'submit';
@@ -38,7 +37,6 @@ export const MainButton: FC<ICreateNewButton> = ({
   children,
   disabled,
   type,
-  toggle,
   handleClick,
 }) => {
   return (
@@ -47,7 +45,6 @@ export const MainButton: FC<ICreateNewButton> = ({
       disabled={disabled}
       onClick={() => {
         handleClick();
-        if (toggle) toggle();
       }}
     >
       {children}

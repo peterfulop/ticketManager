@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ProjectCreateInput } from '../../apollo/graphql-generated/types';
 import { useGetProjectQuery } from '../../apollo/graphql/project/project.generated';
 import { EActionTypes } from '../../types/enums/common.enum';
@@ -6,14 +7,15 @@ import { useUserErrorHandler } from '../use-user-errors-handler.hook';
 
 interface IUseGetProjectByParams {
   projectId?: string;
-  setActionType: React.Dispatch<React.SetStateAction<EActionTypes>>;
-  setProjectInitialValues: React.Dispatch<
+  setActionType?: React.Dispatch<React.SetStateAction<EActionTypes>>;
+  setProjectInitialValues?: React.Dispatch<
     React.SetStateAction<ProjectCreateInput>
   >;
   callBackFn?: () => void;
 }
 
 export const useGetProjectByParams = (props: IUseGetProjectByParams) => {
+  const location = useLocation();
   const { projectId, setActionType, setProjectInitialValues, callBackFn } =
     props;
 
@@ -21,9 +23,10 @@ export const useGetProjectByParams = (props: IUseGetProjectByParams) => {
 
   const {
     data: projectData,
+    loading: getProjectLoading,
     error: getProjectError,
-    loading: getProjectDataLoading,
   } = useGetProjectQuery({
+    fetchPolicy: 'no-cache',
     variables: {
       id: projectId as string,
     },
@@ -31,21 +34,21 @@ export const useGetProjectByParams = (props: IUseGetProjectByParams) => {
   });
 
   useEffect(() => {
-    if (projectId) {
+    if (location.pathname.includes('update')) {
       const data = projectData?.getProject.project;
-      if (!getProjectDataLoading) {
+      if (!getProjectLoading) {
         checkErrorMessage({
           userErrors: projectData?.getProject.userErrors,
           graphqlError: getProjectError,
         });
         if (data) {
-          setActionType(EActionTypes.UPDATE);
-          setProjectInitialValues(data);
+          setActionType && setActionType(EActionTypes.UPDATE);
+          setProjectInitialValues && setProjectInitialValues(data);
           callBackFn && callBackFn();
         }
       }
     }
-  }, [projectData, getProjectError]);
+  }, [location, projectData, getProjectError]);
 
   return { notFound, getProjectError };
 };

@@ -20,7 +20,7 @@ import { TicketForm } from '../../components/tickets/form/ticket-form';
 import { TicketColumns } from '../../components/tickets/ticket-list/ticket-columns';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { useGetProjectData } from '../../hooks/ticket-hooks/use-get-project-data.hook';
+import { useGetProjectData } from '../../hooks/project-hooks/use-get-project-data.hook';
 import { useGetTicketByParams } from '../../hooks/ticket-hooks/use-get-ticket-by-params.hook';
 import { useGetTickets } from '../../hooks/ticket-hooks/use-get-tickets.hook';
 import { useModal } from '../../hooks/use-modal.hook';
@@ -33,7 +33,6 @@ export const TicketsPage = () => {
   const { projectId, ticketId } = useParams();
 
   const TICKET_INITIAL_INPUT: TicketCreateInput = {
-    comment: '',
     description: '',
     priority: TicketPriority.MEDIUM,
     projectId: projectId || '',
@@ -58,7 +57,7 @@ export const TicketsPage = () => {
     navigate(ERoutePath.TICKETS.replace(':projectId', projectId as string));
   };
 
-  const { projectName } = useGetProjectData({ projectId: projectId as string });
+  const { project } = useGetProjectData({ projectId: projectId as string });
 
   const { tickets, getTicketsLoading, refetchMyTickets } = useGetTickets({
     projectId: projectId as string,
@@ -85,7 +84,7 @@ export const TicketsPage = () => {
         <TicketForm
           tickets={tickets}
           action={actionType}
-          projectName={projectName}
+          projectName={project?.name as string}
           initialValues={ticketInitialValues}
           toggle={toggle}
           refetch={refetchMyTickets}
@@ -94,7 +93,7 @@ export const TicketsPage = () => {
         />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <h3 className='mb-3'>{projectName} - active tickets</h3>
+        <h3 className='mb-3'>{project?.name} - active tickets</h3>
         <div className='d-flex justify-content-between gap-2'>
           <Col className='d-flex gap-3'>
             <MainButton
@@ -107,8 +106,9 @@ export const TicketsPage = () => {
             </MainButton>
             <MainButton
               label={translate(TEXT.forms.ticketForms.CREATE.buttons.submitBtn)}
-              toggle={toggle}
+              // toggle={toggle}
               handleClick={() => {
+                toggle();
                 setActionType(EActionTypes.CREATE);
                 setTicketInitialValues(TICKET_INITIAL_INPUT);
               }}
@@ -125,8 +125,9 @@ export const TicketsPage = () => {
             </MainSelect>
             <MainButton
               label={'Backlog'}
-              toggle={toggle}
+              // toggle={toggle}
               handleClick={() => {
+                toggle();
                 navigate(
                   ERoutePath.BACKLOG.replace(':projectId', projectId as string)
                 );

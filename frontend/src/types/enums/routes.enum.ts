@@ -14,8 +14,8 @@ export enum ERoutePath {
   BACKLOG_TICKET_DETAILS = '/projects/:projectId/backlog/:ticketId',
 
   DASHBOARD = '/projects/:projectId/dashboard',
-  DASHBOARD_TICKET_DETAILS = '/projects/:projectId/dashboard/:ticketId/ticket',
-  DASHBOARD_PROJECT_DETAILS = '/projects/:projectId/dashboard/:ticketId/project',
+  PROJECT_UPDATE = '/projects/:projectId/update',
+  DASHBOARD_PROJECT_DETAILS = '/projects/:projectId/dashboard',
   DASHBOARD_SPRINT_DETAILS = '/projects/:projectId/dashboard/:sprintId/sprint',
 
   // TICKETS = '/projects/:projectId/tickets',

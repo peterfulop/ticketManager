@@ -38,7 +38,9 @@ export const useProjectMutations = (props: IProject) => {
     if (!loading) {
       checkErrorMessage({ userErrors, graphqlError });
       if (data) {
-        refetch();
+        if (!deleteData) {
+          refetch();
+        }
       }
     }
   }, [data, graphqlError]);

@@ -12,9 +12,14 @@ export const useForm = (props: IUseForm) => {
   const onChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
+    value?: string
   ) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
+    const boolOutput = value === 'true';
+    setValues({
+      ...values,
+      [event.target.name]: value ? boolOutput : event.target.value,
+    });
   };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {

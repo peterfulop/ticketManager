@@ -66,6 +66,7 @@ export const createProjectUseCase = async (
       data: {
         name,
         userId: user.userId,
+        shared,
       },
     });
 

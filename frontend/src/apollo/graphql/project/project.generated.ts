@@ -14,21 +14,21 @@ export type GetProjectQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', getProject: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, sequence: number, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, status: Types.TicketStatus }> } | null } };
+export type GetProjectQuery = { __typename?: 'Query', getProject: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, shared: boolean, sequence: number, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, status: Types.TicketStatus }> } | null } };
 
 export type ProjectCreateMutationVariables = Types.Exact<{
   input: Types.ProjectCreateInput;
 }>;
 
 
-export type ProjectCreateMutation = { __typename?: 'Mutation', projectCreate: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type ProjectCreateMutation = { __typename?: 'Mutation', projectCreate: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, shared: boolean, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type ProjectUpdateMutationVariables = Types.Exact<{
   input: Types.ProjectUpdateInput;
 }>;
 
 
-export type ProjectUpdateMutation = { __typename?: 'Mutation', projectUpdate: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type ProjectUpdateMutation = { __typename?: 'Mutation', projectUpdate: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, shared: boolean, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type ProjectDeleteMutationVariables = Types.Exact<{
   id: Types.Scalars['ID'];
@@ -96,6 +96,7 @@ export const GetProjectDocument = gql`
     project {
       id
       name
+      shared
       sequence
       createdAt
       updatedAt
@@ -145,6 +146,7 @@ export const ProjectCreateDocument = gql`
     project {
       id
       name
+      shared
       createdAt
       updatedAt
     }
@@ -187,6 +189,7 @@ export const ProjectUpdateDocument = gql`
     project {
       id
       name
+      shared
       createdAt
       updatedAt
     }

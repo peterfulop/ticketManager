@@ -12,7 +12,7 @@ import { createCollaborationUseCase } from '../../use-case/collaboration-use-cas
 import { deleteCollaborationUseCase } from '../../use-case/collaboration-use-case/delete-collaboration.use-case';
 
 import { getMyProjectsUseCase } from '../../use-case/project-use-case/get-my-projects.use-case';
-import { getMyProjectUseCase } from '../../use-case/project-use-case/get-project.use-case';
+import { getProjectUseCase } from '../../use-case/project-use-case/get-project.use-case';
 
 export const collaborationGQLResolvers = {
   Query: {
@@ -22,7 +22,7 @@ export const collaborationGQLResolvers = {
       context: ApolloContext
     ): Promise<ProjectPayload> => {
       authMiddleware(context);
-      return await getMyProjectUseCase({ args, context });
+      return await getProjectUseCase({ args, context });
     },
     getCollaborations: async (
       _parent: unknown,

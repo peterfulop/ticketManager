@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql';
 import { useContext, useEffect, useState } from 'react';
 import { UserError } from '../apollo/graphql-generated/types';
 import UserContext, { initialUserState } from '../context/user';
-import { EServerSideError } from '../types/enums/db-errors.enum';
+import { ServerSideError } from '../types/enums/db-errors.enum';
 
 export const useUserErrorHandler = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -28,10 +28,10 @@ export const useUserErrorHandler = () => {
 
   useEffect(() => {
     switch (errorMessage) {
-      case EServerSideError.AUTHORIZATION_FAILED:
+      case ServerSideError.AUTHORIZATION_FAILED:
         logout();
         break;
-      case EServerSideError.MISSING_RECORD:
+      case ServerSideError.MISSING_RECORD:
         setNotFound(true);
         break;
     }

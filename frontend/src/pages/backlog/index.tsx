@@ -13,7 +13,7 @@ import { TicketForm } from '../../components/tickets/form/ticket-form';
 import { TicketBacklogList } from '../../components/tickets/ticket-backlog-list/ticket-backlog';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { useGetProjectData } from '../../hooks/ticket-hooks/use-get-project-data.hook';
+import { useGetProjectData } from '../../hooks/project-hooks/use-get-project-data.hook';
 import { useGetTicketByParams } from '../../hooks/ticket-hooks/use-get-ticket-by-params.hook';
 import { useGetTickets } from '../../hooks/ticket-hooks/use-get-tickets.hook';
 import { useModal } from '../../hooks/use-modal.hook';

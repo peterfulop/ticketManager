@@ -3,7 +3,7 @@ import {
   EProjectInputs,
   ETicketInputs,
 } from '../../types/enums/common.enum';
-import { EServerSideError } from '../../types/enums/db-errors.enum';
+import { ServerSideError } from '../../types/enums/db-errors.enum';
 
 export enum Languages {
   ENG = 'ENG',
@@ -71,6 +71,9 @@ export type Text = {
         createdAt: Content;
         updatedAt: Content;
       };
+    };
+    dashboard: {
+      name: Content;
     };
     tickets: {
       name: Content;
@@ -156,6 +159,6 @@ export type Text = {
 };
 
 export type ServerSideErrorObject = Record<
-  keyof typeof EServerSideError,
+  keyof typeof ServerSideError,
   Content
 >;

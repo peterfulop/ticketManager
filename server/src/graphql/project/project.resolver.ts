@@ -20,7 +20,7 @@ import { getMyProjectsUseCase } from '../../use-case/project-use-case/get-my-pro
 import { getProjectCollaborationsUseCase } from '../../use-case/project-use-case/get-project-collaborations.use-case';
 import { getProjectByNameUseCase } from '../../use-case/project-use-case/get-project-id-by-name.use-case';
 import { getProjectWithTicketsUseCase } from '../../use-case/project-use-case/get-project-with-tickets.use-case';
-import { getMyProjectUseCase } from '../../use-case/project-use-case/get-project.use-case';
+import { getProjectUseCase } from '../../use-case/project-use-case/get-project.use-case';
 import { updateProjectUseCase } from '../../use-case/project-use-case/update-project.use-case';
 
 export const projectGQLResolver = {
@@ -31,7 +31,7 @@ export const projectGQLResolver = {
       context: ApolloContext
     ): Promise<ProjectPayload> => {
       authMiddleware(context);
-      return await getMyProjectUseCase({ args, context });
+      return await getProjectUseCase({ args, context });
     },
     getMyProjects: async (
       _parent: unknown,

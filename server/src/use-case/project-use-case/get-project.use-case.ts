@@ -5,14 +5,15 @@ import {
   ProjectPayload,
   QueryGetProjectArgs,
 } from '../../types/graphql-generated/graphql';
+import { Role } from '../../types/types';
 
-export type GetMyProjectInput = {
+export type GetProjectInput = {
   args: QueryGetProjectArgs;
   context: ApolloContext;
 };
 
-export const getMyProjectUseCase = async (
-  input: GetMyProjectInput
+export const getProjectUseCase = async (
+  input: GetProjectInput
 ): Promise<ProjectPayload> => {
   const { prisma, user } = input.context;
   const { id } = input.args;
@@ -33,7 +34,6 @@ export const getMyProjectUseCase = async (
 
   const project = await prisma.project.findFirst({
     where: {
-      userId: user.userId,
       id,
     },
   });
@@ -43,6 +43,37 @@ export const getMyProjectUseCase = async (
       ...projectPayload,
       userErrors: [{ ...userError, message: DBErrorMessages.MISSING_RECORD }],
     };
+  }
+
+  if (project.userId !== user.userId) {
+    const userRoleInTheProject = (
+      await prisma.collaboration.findFirst({
+        where: {
+          userId: user.userId,
+          projectId: id,
+        },
+      })
+    )?.role;
+
+    if (!userRoleInTheProject) {
+      return {
+        ...projectPayload,
+        userErrors: [
+          { ...userError, message: DBErrorMessages.PERMISSION_DENIED },
+        ],
+      };
+    }
+
+    if (userRoleInTheProject !== Role.SUPER_ADMIN) {
+      if (!project.shared) {
+        return {
+          ...projectPayload,
+          userErrors: [
+            { ...userError, message: DBErrorMessages.UNSHARED_PROJECT },
+          ],
+        };
+      }
+    }
   }
 
   const projectsWithDate = {

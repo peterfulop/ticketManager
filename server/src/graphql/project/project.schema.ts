@@ -14,13 +14,13 @@ export const projectTypeDefs = `#graphql
 
   input ProjectCreateInput {
     name: String!
-    shared: Boolean
+    shared: Boolean!
   }
 
   input ProjectUpdateInput {
     projectId: String!
     name: String!
-    shared: Boolean
+    shared: Boolean!
   }
 
   type Project {

@@ -13,7 +13,7 @@ import UserContext from '../../context/user';
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useForm } from '../../hooks/use-form.hook';
-import { EServerSideError } from '../../types/enums/db-errors.enum';
+import { ServerSideError } from '../../types/enums/db-errors.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 
 const FormContainer = styled.div({
@@ -67,7 +67,7 @@ export const LoginPage = () => {
       if (res.data?.signin.userErrors.length) {
         const errorMessage = res.data.signin.userErrors[0].message;
         const translatedError = translateERR(errorMessage);
-        if (errorMessage === EServerSideError.UNCONFIRMED_USER) {
+        if (errorMessage === ServerSideError.UNCONFIRMED_USER) {
           setAlertMessageColor('warning');
           setUserConfirmError(true);
           return setAlertMessage(translate(TEXT.ERRORS.UNCONFIRMED_USER));

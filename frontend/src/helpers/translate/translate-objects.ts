@@ -68,6 +68,9 @@ export const TEXT: Text = {
         updatedAt: { ENG: 'Updated at:' },
       },
     },
+    dashboard: {
+      name: { ENG: 'Dashboard' },
+    },
     tickets: {
       name: { ENG: 'Tickets' },
       labels: {
@@ -277,6 +280,24 @@ export const TEXT: Text = {
     MISSING_FIELDS: { ENG: 'The following values as required: ' },
     UNIQUE_CONSTRAINT_FAIL: {
       ENG: 'Duplicated values! The following inputs must be unique: ',
+    },
+    PERMISSION_DENIED: {
+      ENG: 'Permission denied! You have no permission to the mutation!',
+    },
+    MUTATION_DISABLED: {
+      ENG: 'Mutation disabled!',
+    },
+    RECORD_ARCHIVED: {
+      ENG: 'Record archived!',
+    },
+    RECORD_ALREADY_EXISTS: {
+      ENG: 'Record alreary exists!',
+    },
+    UNSHARED_PROJECT: {
+      ENG: 'Unshared project! You have to share the project first to invite members.',
+    },
+    ALREADY_SUCCESS: {
+      ENG: 'The mutation has already succeeded!',
     },
   },
 };

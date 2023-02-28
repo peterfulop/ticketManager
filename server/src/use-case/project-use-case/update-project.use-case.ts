@@ -72,7 +72,7 @@ export const updateProjectUseCase = async (
       },
       data: {
         ...reducedInputs,
-        shared: shared ? shared : projectToUpdate.shared,
+        shared,
         updatedAt: new Date(Date.now()),
       },
     });

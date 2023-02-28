@@ -27,6 +27,7 @@ query GetProject($id: ID!) {
     project {
       id
       name
+      shared
       sequence
       createdAt
       updatedAt
@@ -47,6 +48,7 @@ mutation ProjectCreate($input: ProjectCreateInput!) {
     project {
       id
       name
+      shared
       createdAt
       updatedAt
     }
@@ -62,6 +64,7 @@ mutation ProjectUpdate($input: ProjectUpdateInput!) {
     project {
       id
       name
+      shared
       createdAt
       updatedAt
     }
