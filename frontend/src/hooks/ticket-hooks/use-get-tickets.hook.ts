@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Ticket } from '../../apollo/graphql-generated/types';
-import { useGetMyTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import { useGetTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
 import { useUserErrorHandler } from '../use-user-errors-handler.hook';
 
 interface IUseGetTickets {
@@ -17,8 +17,9 @@ export const useGetTickets = (props: IUseGetTickets) => {
     loading: getTicketsLoading,
     error: getTicketsError,
     refetch: refetchMyTickets,
-  } = useGetMyTicketsQuery({
+  } = useGetTicketsQuery({
     variables: {
+      projectId: projectId,
       input: {
         projectId,
       },
@@ -27,10 +28,10 @@ export const useGetTickets = (props: IUseGetTickets) => {
   });
 
   useEffect(() => {
-    const data = myTickets?.getMyTickets.tickets;
+    const data = myTickets?.getTickets.tickets;
     if (!getTicketsLoading) {
       checkErrorMessage({
-        userErrors: myTickets?.getMyTickets.userErrors,
+        userErrors: myTickets?.getTickets.userErrors,
         graphqlError: getTicketsError,
       });
     }

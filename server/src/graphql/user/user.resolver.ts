@@ -43,5 +43,12 @@ export const userGQLResolver = {
     ): Promise<Ticket> => {
       return await getTicketssByUserIdUseCase({ parent, context });
     },
+    // collaborations: async (
+    //   parent: ResolversParentTypes['Collaboration'],
+    //   _args: unknown,
+    //   context: ApolloContext
+    // ): Promise<Ticket> => {
+    //   return await getTicketssByUserIdUseCase({ parent, context });
+    // },
   },
 };

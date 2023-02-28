@@ -3,4 +3,5 @@ export enum PrismaTable {
   TICKET = 'ticket',
   SPRINT = 'sprint',
   USER = 'user',
+  COLLABORATION = 'collaboration',
 }

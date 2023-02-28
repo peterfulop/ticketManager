@@ -13,9 +13,38 @@ export type Scalars = {
   Float: number;
 };
 
-export type AuthPayload = {
-  __typename?: 'AuthPayload';
+export type BooleanPayload = {
+  __typename?: 'BooleanPayload';
   success?: Maybe<Scalars['Boolean']>;
+  userErrors: Array<UserError>;
+};
+
+export type Collaboration = {
+  __typename?: 'Collaboration';
+  createdAt?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  inviterId: Scalars['String'];
+  projectId: Scalars['String'];
+  role: Role;
+  updatedAt?: Maybe<Scalars['String']>;
+  userId: Scalars['String'];
+};
+
+export type CollaborationCreateInput = {
+  projectId: Scalars['String'];
+  role: Role;
+  userId: Scalars['String'];
+};
+
+export type CollaborationPayload = {
+  __typename?: 'CollaborationPayload';
+  collaboration?: Maybe<Collaboration>;
+  userErrors: Array<UserError>;
+};
+
+export type CollaborationsPayload = {
+  __typename?: 'CollaborationsPayload';
+  collaboration: Array<Collaboration>;
   userErrors: Array<UserError>;
 };
 
@@ -33,20 +62,33 @@ export type GetUserPayload = {
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']>;
-  confirmResend: AuthPayload;
-  confirmUser: AuthPayload;
+  collaborationCreate: BooleanPayload;
+  collaborationDelete: BooleanPayload;
+  confirmResend: BooleanPayload;
+  confirmUser: BooleanPayload;
   projectCreate: ProjectPayload;
-  projectDelete: ProjectDeletePayload;
+  projectDelete: BooleanPayload;
   projectUpdate: ProjectPayload;
   signin: SigninPayload;
-  signup: AuthPayload;
+  signup: BooleanPayload;
+  sprintClose: SprintPayload;
   sprintCreate: SprintPayload;
-  sprintDelete: SprintDeletePayload;
+  sprintDelete: BooleanPayload;
   sprintUpdate: SprintPayload;
   ticketCreate: TicketPayload;
-  ticketDelete: TicketDeletePayload;
+  ticketDelete: BooleanPayload;
   ticketStatusUpdate: TicketPayload;
   ticketUpdate: TicketPayload;
+};
+
+
+export type MutationCollaborationCreateArgs = {
+  input: CollaborationCreateInput;
+};
+
+
+export type MutationCollaborationDeleteArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -82,6 +124,11 @@ export type MutationSigninArgs = {
 
 export type MutationSignupArgs = {
   input: SignupInput;
+};
+
+
+export type MutationSprintCloseArgs = {
+  sprintId: Scalars['ID'];
 };
 
 
@@ -125,6 +172,7 @@ export type Project = {
   id: Scalars['ID'];
   name: Scalars['String'];
   sequence: Scalars['Int'];
+  shared: Scalars['Boolean'];
   tickets: Array<Ticket>;
   updatedAt?: Maybe<Scalars['String']>;
   user: User;
@@ -133,12 +181,7 @@ export type Project = {
 
 export type ProjectCreateInput = {
   name: Scalars['String'];
-};
-
-export type ProjectDeletePayload = {
-  __typename?: 'ProjectDeletePayload';
-  success?: Maybe<Scalars['Boolean']>;
-  userErrors: Array<UserError>;
+  shared?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ProjectIdByNamePayload = {
@@ -156,6 +199,7 @@ export type ProjectPayload = {
 export type ProjectUpdateInput = {
   name: Scalars['String'];
   projectId: Scalars['String'];
+  shared?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ProjectsPayload = {
@@ -167,31 +211,34 @@ export type ProjectsPayload = {
 export type Query = {
   __typename?: 'Query';
   _?: Maybe<Scalars['Boolean']>;
+  getCollaboration: CollaborationPayload;
+  getCollaborations: CollaborationsPayload;
   getMyProfile: GetUserPayload;
-  getMyProject: ProjectPayload;
-  getMyProjectIdByName: ProjectIdByNamePayload;
   getMyProjects: ProjectsPayload;
-  getMyTickets: TicketsPayload;
+  getProject: ProjectPayload;
+  getProjectCollaborations: ProjectsPayload;
+  getProjectIdByName: ProjectIdByNamePayload;
   getSprint: SprintPayload;
   getSprints: SprintsPayload;
   getTicket: TicketPayload;
+  getTickets: TicketsPayload;
   getUser: GetUserPayload;
   verifyUser: VerifyPayload;
 };
 
 
-export type QueryGetMyProjectArgs = {
+export type QueryGetCollaborationArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryGetMyProjectIdByNameArgs = {
-  projectName: Scalars['String'];
+export type QueryGetProjectArgs = {
+  id: Scalars['ID'];
 };
 
 
-export type QueryGetMyTicketsArgs = {
-  input?: InputMaybe<SearchTicketInput>;
+export type QueryGetProjectIdByNameArgs = {
+  projectName: Scalars['String'];
 };
 
 
@@ -207,6 +254,13 @@ export type QueryGetSprintsArgs = {
 
 export type QueryGetTicketArgs = {
   id: Scalars['ID'];
+  projectId: Scalars['ID'];
+};
+
+
+export type QueryGetTicketsArgs = {
+  input?: InputMaybe<SearchTicketInput>;
+  projectId: Scalars['ID'];
 };
 
 
@@ -218,6 +272,14 @@ export type QueryGetUserArgs = {
 export type QueryVerifyUserArgs = {
   token: Scalars['String'];
 };
+
+export enum Role {
+  ADMIN = 'ADMIN',
+  DEVELOPER = 'DEVELOPER',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  TEAMLEAD = 'TEAMLEAD',
+  USER = 'USER'
+}
 
 export type SearchSprintInput = {
   goal?: InputMaybe<Scalars['String']>;
@@ -251,12 +313,12 @@ export type SignupInput = {
 
 export type Sprint = {
   __typename?: 'Sprint';
+  closed: Scalars['Boolean'];
   createdAt?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['String']>;
   goal: Scalars['String'];
   id: Scalars['ID'];
   projectId: Scalars['String'];
-  sequenceId: Scalars['String'];
   startDate?: Maybe<Scalars['String']>;
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
@@ -264,17 +326,11 @@ export type Sprint = {
 };
 
 export type SprintCreateInput = {
-  endDate?: InputMaybe<Scalars['String']>;
+  endDate: Scalars['String'];
   goal: Scalars['String'];
   projectId: Scalars['String'];
-  startDate?: InputMaybe<Scalars['String']>;
+  startDate: Scalars['String'];
   title: Scalars['String'];
-};
-
-export type SprintDeletePayload = {
-  __typename?: 'SprintDeletePayload';
-  success?: Maybe<Scalars['Boolean']>;
-  userErrors: Array<UserError>;
 };
 
 export type SprintPayload = {
@@ -285,10 +341,11 @@ export type SprintPayload = {
 
 export type SprintUpdateInput = {
   endDate?: InputMaybe<Scalars['String']>;
-  goal: Scalars['String'];
-  projectId: Scalars['String'];
+  goal?: InputMaybe<Scalars['String']>;
+  projectId?: InputMaybe<Scalars['String']>;
+  sprintId: Scalars['ID'];
   startDate?: InputMaybe<Scalars['String']>;
-  title: Scalars['String'];
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type SprintsPayload = {
@@ -311,7 +368,7 @@ export type Ticket = {
   projectId: Scalars['String'];
   references?: Maybe<Array<Maybe<Scalars['String']>>>;
   sequenceId: Scalars['String'];
-  sprintId: Scalars['String'];
+  sprintId?: Maybe<Scalars['String']>;
   status: TicketStatus;
   storyPoints?: Maybe<Scalars['Int']>;
   title: Scalars['String'];
@@ -325,17 +382,11 @@ export type TicketCreateInput = {
   priority: TicketPriority;
   projectId: Scalars['String'];
   references?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  sprintId: Scalars['String'];
-  status: TicketStatus;
+  sprintId?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<TicketStatus>;
   storyPoints?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type: TicketType;
-};
-
-export type TicketDeletePayload = {
-  __typename?: 'TicketDeletePayload';
-  success?: Maybe<Scalars['Boolean']>;
-  userErrors: Array<UserError>;
 };
 
 export type TicketPayload = {
@@ -378,7 +429,7 @@ export type TicketUpdateInput = {
   priority?: InputMaybe<TicketPriority>;
   projectId?: InputMaybe<Scalars['String']>;
   references?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  sprintId: Scalars['String'];
+  sprintId?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<TicketStatus>;
   storyPoints?: InputMaybe<Scalars['Int']>;
   ticketId: Scalars['ID'];

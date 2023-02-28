@@ -1,32 +1,33 @@
 import { ApolloContext } from '../../apollo';
 import { authMiddleware } from '../../middlewares/auth-middleware';
 import {
+  BooleanPayload,
   MutationProjectCreateArgs,
   MutationProjectDeleteArgs,
   MutationProjectUpdateArgs,
-  ProjectDeletePayload,
   ProjectIdByNamePayload,
   ProjectPayload,
   ProjectsPayload,
-  QueryGetMyProjectArgs,
-  QueryGetMyProjectIdByNameArgs,
+  QueryGetProjectArgs,
+  QueryGetProjectIdByNameArgs,
   ResolversParentTypes,
   Ticket,
 } from '../../types/graphql-generated/graphql';
 
 import { createProjectUseCase } from '../../use-case/project-use-case/create-project.use-case';
 import { deleteProjectUseCase } from '../../use-case/project-use-case/delete-project.use-case';
-import { getMyProjectByNameUseCase } from '../../use-case/project-use-case/get-my-project-id-by-name.use-case';
-import { getMyProjectUseCase } from '../../use-case/project-use-case/get-my-project.use-case';
 import { getMyProjectsUseCase } from '../../use-case/project-use-case/get-my-projects.use-case';
+import { getProjectCollaborationsUseCase } from '../../use-case/project-use-case/get-project-collaborations.use-case';
+import { getProjectByNameUseCase } from '../../use-case/project-use-case/get-project-id-by-name.use-case';
 import { getProjectWithTicketsUseCase } from '../../use-case/project-use-case/get-project-with-tickets.use-case';
+import { getMyProjectUseCase } from '../../use-case/project-use-case/get-project.use-case';
 import { updateProjectUseCase } from '../../use-case/project-use-case/update-project.use-case';
 
 export const projectGQLResolver = {
   Query: {
-    getMyProject: async (
+    getProject: async (
       _parent: unknown,
-      args: QueryGetMyProjectArgs,
+      args: QueryGetProjectArgs,
       context: ApolloContext
     ): Promise<ProjectPayload> => {
       authMiddleware(context);
@@ -40,13 +41,21 @@ export const projectGQLResolver = {
       authMiddleware(context);
       return await getMyProjectsUseCase({ context });
     },
-    getMyProjectIdByName: async (
+    getProjectCollaborations: async (
       _parent: unknown,
-      args: QueryGetMyProjectIdByNameArgs,
+      _args: unknown,
+      context: ApolloContext
+    ): Promise<ProjectsPayload> => {
+      authMiddleware(context);
+      return await getProjectCollaborationsUseCase({ context });
+    },
+    getProjectIdByName: async (
+      _parent: unknown,
+      args: QueryGetProjectIdByNameArgs,
       context: ApolloContext
     ): Promise<ProjectIdByNamePayload> => {
       authMiddleware(context);
-      return await getMyProjectByNameUseCase({ args, context });
+      return await getProjectByNameUseCase({ args, context });
     },
   },
   Mutations: {
@@ -70,7 +79,7 @@ export const projectGQLResolver = {
       _parent: unknown,
       args: MutationProjectDeleteArgs,
       context: ApolloContext
-    ): Promise<ProjectDeletePayload> => {
+    ): Promise<BooleanPayload> => {
       authMiddleware(context);
       return await deleteProjectUseCase({ args, context });
     },

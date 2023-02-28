@@ -1,0 +1,39 @@
+query GetProjectCollaborations {
+  getProjectCollaborations {
+    userErrors {
+      message
+      values
+    }
+    projects {
+      id
+      name
+      shared
+      createdAt
+      updatedAt
+      tickets {
+        id
+        status
+      }
+    }
+  }
+}
+
+mutation CollaborationCreate($input: CollaborationCreateInput!) {
+  collaborationCreate(input: $input) {
+    userErrors {
+      message
+      values
+    }
+    success
+  }
+}
+
+mutation CollaborationDelete($id: ID!) {
+  collaborationDelete(id: $id) {
+    userErrors {
+      message
+      values
+    }
+    success
+  }
+}

@@ -42,14 +42,18 @@ export const updateSprintUseCase = async (
   if (!sprintId || !SprintToUpdate) {
     return {
       ...sprintPayload,
-      userErrors: [{ ...userError, message: DBErrorMessages.MISSING_RECORD }],
+      userErrors: [
+        { ...userError, message: DBErrorMessages.MUTATION_DISABLED },
+      ],
     };
   }
 
   if (SprintToUpdate.closed) {
     return {
       ...sprintPayload,
-      userErrors: [{ ...userError, message: DBErrorMessages.RECORD_DISABLED }],
+      userErrors: [
+        { ...userError, message: DBErrorMessages.MUTATION_DISABLED },
+      ],
     };
   }
 

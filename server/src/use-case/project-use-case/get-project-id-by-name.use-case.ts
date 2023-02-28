@@ -3,15 +3,15 @@ import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { userError } from '../../helpers/user-error';
 import {
   ProjectIdByNamePayload,
-  QueryGetMyProjectIdByNameArgs,
+  QueryGetProjectIdByNameArgs,
 } from '../../types/graphql-generated/graphql';
 
 export type GetProjectsByUserInput = {
-  args: QueryGetMyProjectIdByNameArgs;
+  args: QueryGetProjectIdByNameArgs;
   context: ApolloContext;
 };
 
-export const getMyProjectByNameUseCase = async (
+export const getProjectByNameUseCase = async (
   input: GetProjectsByUserInput
 ): Promise<ProjectIdByNamePayload> => {
   const { projectName } = input.args;

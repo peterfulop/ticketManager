@@ -8,6 +8,7 @@ import {
   MutationProjectUpdateArgs,
   ProjectPayload,
 } from '../../types/graphql-generated/graphql';
+import { Role } from '../../types/types';
 import { reduceObjectBy } from '../../utils/reduce-object';
 
 export type UpdateProjectInput = {
@@ -18,7 +19,7 @@ export type UpdateProjectInput = {
 export const updateProjectUseCase = async (
   input: UpdateProjectInput
 ): Promise<ProjectPayload> => {
-  const { name, projectId } = input.args.input;
+  const { name, projectId, shared } = input.args.input;
   const { prisma, user } = input.context;
 
   const projectPayload: ProjectPayload = {
@@ -35,11 +36,11 @@ export const updateProjectUseCase = async (
     };
   }
 
-  const ProjectToUpdate = await prisma.project.findUnique({
+  const projectToUpdate = await prisma.project.findUnique({
     where: { id: projectId },
   });
 
-  if (!projectId || !ProjectToUpdate) {
+  if (!projectId || !projectToUpdate) {
     return {
       ...projectPayload,
       userErrors: [{ ...userError, message: DBErrorMessages.MISSING_RECORD }],
@@ -49,7 +50,7 @@ export const updateProjectUseCase = async (
   const { userErrors } = await canUserMutateService({
     prisma,
     userId: user?.userId,
-    id: ProjectToUpdate.id,
+    id: projectToUpdate.id,
     targetTable: PrismaTable.PROJECT,
   });
 
@@ -71,9 +72,22 @@ export const updateProjectUseCase = async (
       },
       data: {
         ...reducedInputs,
+        shared: shared ? shared : projectToUpdate.shared,
         updatedAt: new Date(Date.now()),
       },
     });
+
+    if (shared) {
+      await prisma.collaboration.create({
+        data: {
+          userId: user.userId,
+          inviterId: user.userId,
+          projectId: project.id,
+          role: Role.SUPER_ADMIN,
+        },
+      });
+    }
+
     return {
       ...projectPayload,
       project: {

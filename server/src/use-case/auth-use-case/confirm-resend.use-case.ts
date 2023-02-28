@@ -4,7 +4,7 @@ import { prismaRequestErrorHandler } from '../../helpers/prisma-request-error-ha
 import { sendEmail } from '../../helpers/send-email';
 import { userError } from '../../helpers/user-error';
 import {
-  AuthPayload,
+  BooleanPayload,
   MutationConfirmResendArgs,
 } from '../../types/graphql-generated/graphql';
 import { createConfirmationUrl } from '../../utils/create-confirmation-url';
@@ -16,11 +16,11 @@ export type ConfirmResendInput = {
 
 export const confirmResendUseCase = async (
   input: ConfirmResendInput
-): Promise<AuthPayload> => {
+): Promise<BooleanPayload> => {
   const { email } = input.args;
   const { prisma } = input.context;
 
-  const authPayload: AuthPayload = {
+  const authPayload: BooleanPayload = {
     success: false,
     userErrors: [],
   };

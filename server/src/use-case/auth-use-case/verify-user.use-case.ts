@@ -53,8 +53,8 @@ export const verifyUserUseCase = async (
       ...userById,
       createdAt: userById.createdAt.toISOString(),
       updatedAt: userById.updatedAt.toISOString(),
-      tickets: [], // Update later!
-      projects: [], // Update later!
+      tickets: [],
+      projects: [],
     },
   };
 };

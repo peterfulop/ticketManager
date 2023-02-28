@@ -10,6 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  TEAMLEAD
+  DEVELOPER
+  USER
+}
+
 enum TicketStatus {
   TO_DO
   IN_PROGRESS
@@ -35,17 +43,19 @@ enum TicketType {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
+  id        String   @id @default(uuid())
+  email     String   @unique
   name      String
   password  String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
-  deleted   Boolean   @default(false)
-  confirmed Boolean   @default(false)
-  Ticket    Ticket[]
-  Project   Project[]
-  Sprint    Sprint[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  deleted   Boolean  @default(false)
+  confirmed Boolean  @default(false)
+
+  Ticket        Ticket[]
+  Project       Project[]
+  Sprint        Sprint[]
+  Collaboration Collaboration[]
 
   @@map("users")
 }
@@ -69,18 +79,36 @@ model Sprint {
 }
 
 model Project {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  name      String
-  sequence  Int      @default(0)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-  sprints   Sprint[]
-  Ticket    Ticket[]
-  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id            String          @id @default(uuid())
+  userId        String          @map("user_id")
+  name          String
+  sequence      Int             @default(0)
+  shared        Boolean         @default(false)
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @updatedAt @map("updated_at")
+  sprints       Sprint[]
+  Ticket        Ticket[]
+  User          User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Collaboration Collaboration[]
 
   @@unique([userId, name], name: "projectNameIdentifier")
   @@map("projects")
+}
+
+model Collaboration {
+  id        String @id @default(uuid())
+  userId    String @map("user_id")
+  projectId String @map("project_id")
+  inviterId String @map("inviter_id")
+  role      Role   @default(USER)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Project Project @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("collaborations")
 }
 
 model Ticket {

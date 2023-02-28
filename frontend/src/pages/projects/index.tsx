@@ -9,8 +9,9 @@ import { ProjectForm } from '../../components/projects/forms/project-form';
 import { ProjectList } from '../../components/projects/project-list';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
+import { useGetProjectCollabroations } from '../../hooks/collabortation/use-get-project-collaborations.hook';
+import { useGetProjects } from '../../hooks/project-hooks/use-get-my-projects.hook';
 import { useGetProjectByParams } from '../../hooks/project-hooks/use-get-project-by-params.hook';
-import { useGetProjects } from '../../hooks/project-hooks/use-get-projects.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
@@ -38,6 +39,9 @@ export const ProjectsPage = () => {
   const { projects, getProjectsDataLoading, refetchProjects } =
     useGetProjects();
 
+  const { projectCollabs, getProjectCollabDataLoading } =
+    useGetProjectCollabroations();
+
   const { notFound } = useGetProjectByParams({
     projectId: projectId,
     setActionType,
@@ -52,6 +56,8 @@ export const ProjectsPage = () => {
   if (notFound) {
     return <NotFound />;
   }
+
+  console.log(projectCollabs);
 
   return (
     <>
@@ -77,7 +83,17 @@ export const ProjectsPage = () => {
           <GrAdd />
         </MainButton>
         {getProjectsDataLoading && <p>{translate(TEXT.general.loading)}</p>}
-        {!getProjectsDataLoading && <ProjectList projects={projects} />}
+        {!getProjectsDataLoading && (
+          <>
+            <ProjectList projects={projects} title={'Your projects:'} />
+          </>
+        )}
+        {!getProjectCollabDataLoading && (
+          <ProjectList
+            projects={projectCollabs}
+            title={'Project collaborations:'}
+          />
+        )}
       </MainContainer>
     </>
   );

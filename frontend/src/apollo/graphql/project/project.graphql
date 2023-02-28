@@ -7,6 +7,7 @@ query GetMyProjects {
     projects {
       id
       name
+      shared
       createdAt
       updatedAt
       tickets {
@@ -17,8 +18,8 @@ query GetMyProjects {
   }
 }
 
-query GetMyProject($id: ID!) {
-  getMyProject(id: $id) {
+query GetProject($id: ID!) {
+  getProject(id: $id) {
     userErrors {
       message
       values

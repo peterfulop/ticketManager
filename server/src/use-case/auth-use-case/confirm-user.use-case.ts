@@ -4,7 +4,7 @@ import { JWTVerify } from '../../helpers/jwt';
 import { prismaRequestErrorHandler } from '../../helpers/prisma-request-error-handler.helper';
 import { userError } from '../../helpers/user-error';
 import {
-  AuthPayload,
+  BooleanPayload,
   MutationConfirmUserArgs,
 } from '../../types/graphql-generated/graphql';
 
@@ -15,11 +15,11 @@ export type ConfirmUserInput = {
 
 export const confirmUserUseCase = async (
   input: ConfirmUserInput
-): Promise<AuthPayload> => {
+): Promise<BooleanPayload> => {
   const { token } = input.args;
   const { prisma } = input.context;
 
-  const authPayload: AuthPayload = {
+  const authPayload: BooleanPayload = {
     success: false,
     userErrors: [],
   };

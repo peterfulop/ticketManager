@@ -4,52 +4,54 @@ import * as Types from '../../graphql-generated/types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
-export type GetMyTicketsQueryVariables = Types.Exact<{
+export type GetTicketsQueryVariables = Types.Exact<{
+  projectId: Types.Scalars['ID'];
   input?: Types.InputMaybe<Types.SearchTicketInput>;
 }>;
 
 
-export type GetMyTicketsQuery = { __typename?: 'Query', getMyTickets: { __typename?: 'TicketsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, tickets?: Array<{ __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null }> | null } };
+export type GetTicketsQuery = { __typename?: 'Query', getTickets: { __typename?: 'TicketsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, tickets?: Array<{ __typename?: 'Ticket', id: string, projectId: string, sprintId?: string | null, title: string, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null }> | null } };
 
 export type GetTicketQueryVariables = Types.Exact<{
+  projectId: Types.Scalars['ID'];
   id: Types.Scalars['ID'];
 }>;
 
 
-export type GetTicketQuery = { __typename?: 'Query', getTicket: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type GetTicketQuery = { __typename?: 'Query', getTicket: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId?: string | null, title: string, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type TicketCreateMutationVariables = Types.Exact<{
   input: Types.TicketCreateInput;
 }>;
 
 
-export type TicketCreateMutation = { __typename?: 'Mutation', ticketCreate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, description?: string | null, priority: Types.TicketPriority, type: Types.TicketType, storyPoints?: number | null, status: Types.TicketStatus, sequenceId: string, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type TicketCreateMutation = { __typename?: 'Mutation', ticketCreate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId?: string | null, title: string, description?: string | null, priority: Types.TicketPriority, type: Types.TicketType, storyPoints?: number | null, status: Types.TicketStatus, sequenceId: string, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type TicketDeleteMutationVariables = Types.Exact<{
   id: Types.Scalars['ID'];
 }>;
 
 
-export type TicketDeleteMutation = { __typename?: 'Mutation', ticketDelete: { __typename?: 'TicketDeletePayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
+export type TicketDeleteMutation = { __typename?: 'Mutation', ticketDelete: { __typename?: 'BooleanPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
 
 export type TicketUpdateMutationVariables = Types.Exact<{
   input: Types.TicketUpdateInput;
 }>;
 
 
-export type TicketUpdateMutation = { __typename?: 'Mutation', ticketUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, description?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type TicketUpdateMutation = { __typename?: 'Mutation', ticketUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId?: string | null, title: string, description?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 export type TicketStatusUpdateMutationVariables = Types.Exact<{
   input: Types.TicketStatusUpdateInput;
 }>;
 
 
-export type TicketStatusUpdateMutation = { __typename?: 'Mutation', ticketStatusUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId: string, title: string, description?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
+export type TicketStatusUpdateMutation = { __typename?: 'Mutation', ticketStatusUpdate: { __typename?: 'TicketPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, ticket?: { __typename?: 'Ticket', id: string, projectId: string, sprintId?: string | null, title: string, description?: string | null, priority: Types.TicketPriority, status: Types.TicketStatus, references?: Array<string | null> | null, createdAt?: string | null, updatedAt?: string | null } | null } };
 
 
-export const GetMyTicketsDocument = gql`
-    query GetMyTickets($input: SearchTicketInput) {
-  getMyTickets(input: $input) {
+export const GetTicketsDocument = gql`
+    query GetTickets($projectId: ID!, $input: SearchTicketInput) {
+  getTickets(projectId: $projectId, input: $input) {
     userErrors {
       message
       values
@@ -74,35 +76,36 @@ export const GetMyTicketsDocument = gql`
     `;
 
 /**
- * __useGetMyTicketsQuery__
+ * __useGetTicketsQuery__
  *
- * To run a query within a React component, call `useGetMyTicketsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMyTicketsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTicketsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTicketsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMyTicketsQuery({
+ * const { data, loading, error } = useGetTicketsQuery({
  *   variables: {
+ *      projectId: // value for 'projectId'
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetMyTicketsQuery(baseOptions?: Apollo.QueryHookOptions<GetMyTicketsQuery, GetMyTicketsQueryVariables>) {
+export function useGetTicketsQuery(baseOptions: Apollo.QueryHookOptions<GetTicketsQuery, GetTicketsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMyTicketsQuery, GetMyTicketsQueryVariables>(GetMyTicketsDocument, options);
+        return Apollo.useQuery<GetTicketsQuery, GetTicketsQueryVariables>(GetTicketsDocument, options);
       }
-export function useGetMyTicketsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyTicketsQuery, GetMyTicketsQueryVariables>) {
+export function useGetTicketsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTicketsQuery, GetTicketsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMyTicketsQuery, GetMyTicketsQueryVariables>(GetMyTicketsDocument, options);
+          return Apollo.useLazyQuery<GetTicketsQuery, GetTicketsQueryVariables>(GetTicketsDocument, options);
         }
-export type GetMyTicketsQueryHookResult = ReturnType<typeof useGetMyTicketsQuery>;
-export type GetMyTicketsLazyQueryHookResult = ReturnType<typeof useGetMyTicketsLazyQuery>;
-export type GetMyTicketsQueryResult = Apollo.QueryResult<GetMyTicketsQuery, GetMyTicketsQueryVariables>;
+export type GetTicketsQueryHookResult = ReturnType<typeof useGetTicketsQuery>;
+export type GetTicketsLazyQueryHookResult = ReturnType<typeof useGetTicketsLazyQuery>;
+export type GetTicketsQueryResult = Apollo.QueryResult<GetTicketsQuery, GetTicketsQueryVariables>;
 export const GetTicketDocument = gql`
-    query GetTicket($id: ID!) {
-  getTicket(id: $id) {
+    query GetTicket($projectId: ID!, $id: ID!) {
+  getTicket(projectId: $projectId, id: $id) {
     userErrors {
       message
       values
@@ -138,6 +141,7 @@ export const GetTicketDocument = gql`
  * @example
  * const { data, loading, error } = useGetTicketQuery({
  *   variables: {
+ *      projectId: // value for 'projectId'
  *      id: // value for 'id'
  *   },
  * });

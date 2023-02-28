@@ -49,7 +49,9 @@ export const closeSprintUseCase = async (
   if (sprintToUpdate.closed) {
     return {
       ...sprintPayload,
-      userErrors: [{ ...userError, message: DBErrorMessages.RECORD_DISABLED }],
+      userErrors: [
+        { ...userError, message: DBErrorMessages.MUTATION_DISABLED },
+      ],
     };
   }
 

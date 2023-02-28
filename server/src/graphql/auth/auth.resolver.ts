@@ -1,6 +1,6 @@
 import { ApolloContext } from '../../apollo';
 import {
-  AuthPayload,
+  BooleanPayload,
   MutationConfirmResendArgs,
   MutationConfirmUserArgs,
   MutationSigninArgs,
@@ -30,7 +30,7 @@ export const authGQLResolver = {
       _parent: unknown,
       args: MutationSignupArgs,
       context: ApolloContext
-    ): Promise<AuthPayload> => {
+    ): Promise<BooleanPayload> => {
       return await signupUseCase({ args, context });
     },
     signin: async (
@@ -44,14 +44,14 @@ export const authGQLResolver = {
       _parent: unknown,
       args: MutationConfirmUserArgs,
       context: ApolloContext
-    ): Promise<AuthPayload> => {
+    ): Promise<BooleanPayload> => {
       return await confirmUserUseCase({ args, context });
     },
     confirmResend: async (
       _parent: unknown,
       args: MutationConfirmResendArgs,
       context: ApolloContext
-    ): Promise<AuthPayload> => {
+    ): Promise<BooleanPayload> => {
       return await confirmResendUseCase({ args, context });
     },
   },

@@ -1,5 +1,5 @@
-query GetMyTickets($input: SearchTicketInput) {
-  getMyTickets(input: $input) {
+query GetTickets($projectId: ID!, $input: SearchTicketInput) {
+  getTickets(projectId: $projectId, input: $input) {
     userErrors {
       message
       values
@@ -22,8 +22,8 @@ query GetMyTickets($input: SearchTicketInput) {
   }
 }
 
-query GetTicket($id: ID!) {
-  getTicket(id: $id) {
+query GetTicket($projectId: ID!, $id: ID!) {
+  getTicket(projectId: $projectId, id: $id) {
     userErrors {
       message
       values

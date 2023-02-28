@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { ProjectCreateInput } from '../../apollo/graphql-generated/types';
-import { useGetMyProjectQuery } from '../../apollo/graphql/project/project.generated';
+import { useGetProjectQuery } from '../../apollo/graphql/project/project.generated';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { useUserErrorHandler } from '../use-user-errors-handler.hook';
 
@@ -23,7 +23,7 @@ export const useGetProjectByParams = (props: IUseGetProjectByParams) => {
     data: projectData,
     error: getProjectError,
     loading: getProjectDataLoading,
-  } = useGetMyProjectQuery({
+  } = useGetProjectQuery({
     variables: {
       id: projectId as string,
     },
@@ -32,10 +32,10 @@ export const useGetProjectByParams = (props: IUseGetProjectByParams) => {
 
   useEffect(() => {
     if (projectId) {
-      const data = projectData?.getMyProject.project;
+      const data = projectData?.getProject.project;
       if (!getProjectDataLoading) {
         checkErrorMessage({
-          userErrors: projectData?.getMyProject.userErrors,
+          userErrors: projectData?.getProject.userErrors,
           graphqlError: getProjectError,
         });
         if (data) {

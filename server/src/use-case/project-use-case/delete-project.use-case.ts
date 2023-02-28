@@ -5,8 +5,8 @@ import { prismaRequestErrorHandler } from '../../helpers/prisma-request-error-ha
 import { userError } from '../../helpers/user-error';
 import { canUserMutateService } from '../../service/can-user-mutate/can-user-mutate.service';
 import {
+  BooleanPayload,
   MutationProjectDeleteArgs,
-  ProjectDeletePayload,
 } from '../../types/graphql-generated/graphql';
 
 export type DeleteProjectInput = {
@@ -16,11 +16,11 @@ export type DeleteProjectInput = {
 
 export const deleteProjectUseCase = async (
   input: DeleteProjectInput
-): Promise<ProjectDeletePayload> => {
+): Promise<BooleanPayload> => {
   const { id } = input.args;
   const { prisma, user } = input.context;
 
-  const projectDeletePayload: ProjectDeletePayload = {
+  const projectDeletePayload: BooleanPayload = {
     success: false,
     userErrors: [],
   };

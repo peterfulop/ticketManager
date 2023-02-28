@@ -1,13 +1,15 @@
-import { Project, Sprint, Ticket } from '@prisma/client';
+import { Collaboration, Project, Sprint, Ticket } from '@prisma/client';
 import { ApolloContext } from '../../apollo';
 import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { PrismaTable } from '../../enum/prisma-tables.enum';
 import { userError } from '../../helpers/user-error';
 import { UserError } from '../../types/graphql-generated/graphql';
+import { Role } from '../../types/types';
 
 export type CanUserMutateServiceInput = {
   userId?: string;
   id: string;
+  role?: Role;
   targetTable: PrismaTable;
   prisma: ApolloContext['prisma'];
 };
@@ -54,7 +56,7 @@ export const canUserMutateService = async (
     };
   }
 
-  let result: Project | Ticket | Sprint | null = null;
+  let result: Project | Ticket | Sprint | Collaboration | null = null;
 
   switch (input.targetTable) {
     case PrismaTable.PROJECT: {
@@ -81,15 +83,35 @@ export const canUserMutateService = async (
       });
       break;
     }
+    case PrismaTable.COLLABORATION: {
+      result = await prisma[PrismaTable.COLLABORATION].findUnique({
+        where: {
+          id,
+        },
+      });
+      break;
+    }
   }
 
-  if (result?.userId !== userId) {
+  const userRoleInTheProject = (
+    await prisma.collaboration.findFirst({
+      where: {
+        inviterId: userId,
+      },
+    })
+  )?.role;
+
+  if (
+    result?.userId !== userId
+    // || (userRoleInTheProject !== Role.ADMIN &&
+    //   userRoleInTheProject !== Role.SUPER_ADMIN)
+  ) {
     authPayload = {
       ...authPayload,
       userErrors: [
         {
           ...userError,
-          message: DBErrorMessages.USER_UNAUTHORIZED,
+          message: DBErrorMessages.PERMISSION_DENIED,
         },
       ],
     };

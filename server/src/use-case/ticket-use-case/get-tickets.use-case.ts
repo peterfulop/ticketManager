@@ -2,21 +2,21 @@ import { ApolloContext } from '../../apollo';
 import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { userError } from '../../helpers/user-error';
 import {
-  QueryGetMyTicketsArgs,
+  QueryGetTicketsArgs,
   TicketsPayload,
 } from '../../types/graphql-generated/graphql';
 import { TicketPriority, TicketStatus, TicketType } from '../../types/types';
 
-export type GetMyTicketsInput = {
+export type GetTicketsInput = {
   context: ApolloContext;
-  args: QueryGetMyTicketsArgs;
+  args: QueryGetTicketsArgs;
 };
 
-export const getMyTicketsUseCase = async (
-  input: GetMyTicketsInput
+export const getTicketsUseCase = async (
+  input: GetTicketsInput
 ): Promise<TicketsPayload> => {
   const { prisma, user } = input.context;
-
+  const { projectId } = input.args;
   const searchParams = input.args.input || {};
 
   if (!user) {
@@ -30,7 +30,7 @@ export const getMyTicketsUseCase = async (
 
   const tickets = await prisma.ticket.findMany({
     where: {
-      userId: user?.userId,
+      projectId,
       ...searchParams,
     },
     orderBy: [

@@ -6,6 +6,7 @@ import {
   MutationProjectCreateArgs,
   ProjectPayload,
 } from '../../types/graphql-generated/graphql';
+import { Role } from '../../types/types';
 
 export type CreateProjectInput = {
   args: MutationProjectCreateArgs;
@@ -15,7 +16,7 @@ export type CreateProjectInput = {
 export const createProjectUseCase = async (
   input: CreateProjectInput
 ): Promise<ProjectPayload> => {
-  const { name } = input.args.input;
+  const { name, shared } = input.args.input;
   const { user } = input.context;
   const { prisma } = input.context;
 
@@ -67,6 +68,18 @@ export const createProjectUseCase = async (
         userId: user.userId,
       },
     });
+
+    if (shared) {
+      await prisma.collaboration.create({
+        data: {
+          userId: user.userId,
+          inviterId: user.userId,
+          projectId: project.id,
+          role: Role.SUPER_ADMIN,
+        },
+      });
+    }
+
     return {
       ...projectPayload,
       project: {

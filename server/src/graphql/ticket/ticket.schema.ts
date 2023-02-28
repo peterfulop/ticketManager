@@ -1,13 +1,13 @@
 export const ticketTypeDefs = `#graphql
   extend type Query {
-    getTicket(id: ID!): TicketPayload!
-    getMyTickets(input:SearchTicketInput): TicketsPayload!
+    getTicket(projectId: ID!, id: ID!): TicketPayload!
+    getTickets(projectId: ID!, input:SearchTicketInput): TicketsPayload!
   }
 
   extend type Mutation {
     ticketCreate(input: TicketCreateInput!): TicketPayload!
     ticketUpdate(input: TicketUpdateInput!): TicketPayload!
-    ticketDelete(id: ID!): TicketDeletePayload!
+    ticketDelete(id: ID!): BooleanPayload!
     ticketStatusUpdate(input:TicketStatusUpdateInput!):TicketPayload!
   }
 
@@ -101,11 +101,6 @@ export const ticketTypeDefs = `#graphql
   type TicketsPayload {
     userErrors: [UserError!]!
     tickets: [Ticket!]
-  }
-
-  type TicketDeletePayload {
-    userErrors: [UserError!]!
-    success: Boolean
-  }
+  } 
 
 `;

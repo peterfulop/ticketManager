@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { BiEdit } from 'react-icons/bi';
+import { RiTeamFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Project } from '../../apollo/graphql-generated/types';
@@ -12,10 +13,10 @@ const ListItem = styled.div({
   justifyContent: 'space-between',
   alignItems: 'center',
   backgroundColor: 'rgb(255, 255, 255)',
-  maxWidth: '220px',
-  minWidth: '220px',
+  maxWidth: '320px',
+  minWidth: '320px',
   width: '100%',
-  maxHeight: '150px',
+  height: '150px',
   paddingTop: '30px',
   borderRadius: '5px',
   boxShadow: '0 1px 5px 0 rgba(9, 30, 66, 0.25)',
@@ -83,6 +84,7 @@ export const ProjectListItem: FC<IProjectListItem> = ({ project }) => {
         navigate(ERoutePath.TICKETS.replace(':projectId', project.id))
       }
     >
+      {project.shared && <RiTeamFill size={22} />}
       <h5>{project.name}</h5>
       <small>
         {project.tickets.length}

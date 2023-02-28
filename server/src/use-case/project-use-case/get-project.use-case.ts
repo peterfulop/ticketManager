@@ -3,11 +3,11 @@ import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { userError } from '../../helpers/user-error';
 import {
   ProjectPayload,
-  QueryGetMyProjectArgs,
+  QueryGetProjectArgs,
 } from '../../types/graphql-generated/graphql';
 
 export type GetMyProjectInput = {
-  args: QueryGetMyProjectArgs;
+  args: QueryGetProjectArgs;
   context: ApolloContext;
 };
 

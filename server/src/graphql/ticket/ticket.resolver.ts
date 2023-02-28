@@ -1,21 +1,21 @@
 import { ApolloContext } from '../../apollo';
 import { authMiddleware } from '../../middlewares/auth-middleware';
 import {
+  BooleanPayload,
   MutationTicketCreateArgs,
   MutationTicketDeleteArgs,
   MutationTicketStatusUpdateArgs,
   MutationTicketUpdateArgs,
-  QueryGetMyTicketsArgs,
   QueryGetTicketArgs,
-  TicketDeletePayload,
+  QueryGetTicketsArgs,
   TicketPayload,
   TicketsPayload,
 } from '../../types/graphql-generated/graphql';
 
 import { createTicketUseCase } from '../../use-case/ticket-use-case/create-ticket.use-case';
 import { deleteTicketUseCase } from '../../use-case/ticket-use-case/delete-ticket.use-case';
-import { getMyTicketUseCase } from '../../use-case/ticket-use-case/get-my-ticket.use-case';
-import { getMyTicketsUseCase } from '../../use-case/ticket-use-case/get-my-tickets.use-case';
+import { getTicketUseCase } from '../../use-case/ticket-use-case/get-ticket.use-case';
+import { getTicketsUseCase } from '../../use-case/ticket-use-case/get-tickets.use-case';
 import { updateTicketStatusUseCase } from '../../use-case/ticket-use-case/update-ticket-status.use-case';
 import { updateTicketUseCase } from '../../use-case/ticket-use-case/update-ticket.use-case';
 
@@ -27,15 +27,15 @@ export const ticketGQLResolvers = {
       context: ApolloContext
     ): Promise<TicketPayload> => {
       authMiddleware(context);
-      return await getMyTicketUseCase({ args, context });
+      return await getTicketUseCase({ args, context });
     },
-    getMyTickets: async (
+    getTickets: async (
       _parent: unknown,
-      args: QueryGetMyTicketsArgs,
+      args: QueryGetTicketsArgs,
       context: ApolloContext
     ): Promise<TicketsPayload> => {
       authMiddleware(context);
-      return await getMyTicketsUseCase({ args, context });
+      return await getTicketsUseCase({ args, context });
     },
   },
   Mutations: {
@@ -67,7 +67,7 @@ export const ticketGQLResolvers = {
       _parent: unknown,
       args: MutationTicketDeleteArgs,
       context: ApolloContext
-    ): Promise<TicketDeletePayload> => {
+    ): Promise<BooleanPayload> => {
       authMiddleware(context);
       return await deleteTicketUseCase({ args, context });
     },

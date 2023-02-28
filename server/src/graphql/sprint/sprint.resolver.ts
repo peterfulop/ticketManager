@@ -1,10 +1,10 @@
 import { ApolloContext } from '../../apollo';
 import { authMiddleware } from '../../middlewares/auth-middleware';
 import {
+  BooleanPayload,
   MutationSprintCloseArgs,
   MutationSprintCreateArgs,
   MutationSprintDeleteArgs,
-  SprintDeletePayload,
   SprintPayload,
 } from '../../types/types';
 import { closeSprintUseCase } from '../../use-case/sprint-use-case/close-sprint.use-case';
@@ -26,7 +26,7 @@ export const sprintGQLResolvers = {
       _parent: unknown,
       args: MutationSprintDeleteArgs,
       context: ApolloContext
-    ): Promise<SprintDeletePayload> => {
+    ): Promise<BooleanPayload> => {
       authMiddleware(context);
       return await deleteSprintUseCase({ args, context });
     },

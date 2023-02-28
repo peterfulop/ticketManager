@@ -9,7 +9,7 @@ export type ConfirmUserMutationVariables = Types.Exact<{
 }>;
 
 
-export type ConfirmUserMutation = { __typename?: 'Mutation', confirmUser: { __typename?: 'AuthPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string }> } };
+export type ConfirmUserMutation = { __typename?: 'Mutation', confirmUser: { __typename?: 'BooleanPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string }> } };
 
 export type VerifyUserQueryVariables = Types.Exact<{
   token: Types.Scalars['String'];
@@ -23,7 +23,7 @@ export type SignupMutationVariables = Types.Exact<{
 }>;
 
 
-export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'AuthPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
+export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'BooleanPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
 
 export type SigninMutationVariables = Types.Exact<{
   input: Types.CredentialsInput;
@@ -37,7 +37,7 @@ export type ConfirmResendMutationVariables = Types.Exact<{
 }>;
 
 
-export type ConfirmResendMutation = { __typename?: 'Mutation', confirmResend: { __typename?: 'AuthPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
+export type ConfirmResendMutation = { __typename?: 'Mutation', confirmResend: { __typename?: 'BooleanPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
 
 
 export const ConfirmUserDocument = gql`

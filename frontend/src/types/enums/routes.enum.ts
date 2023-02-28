@@ -12,4 +12,12 @@ export enum ERoutePath {
   TICKETS = '/projects/:projectId/tickets',
   BACKLOG = '/projects/:projectId/backlog',
   BACKLOG_TICKET_DETAILS = '/projects/:projectId/backlog/:ticketId',
+
+  DASHBOARD = '/projects/:projectId/dashboard',
+  DASHBOARD_TICKET_DETAILS = '/projects/:projectId/dashboard/:ticketId/ticket',
+  DASHBOARD_PROJECT_DETAILS = '/projects/:projectId/dashboard/:ticketId/project',
+  DASHBOARD_SPRINT_DETAILS = '/projects/:projectId/dashboard/:sprintId/sprint',
+
+  // TICKETS = '/projects/:projectId/tickets',
+  // TICKET_DETAILS = '/projects/:projectId/tickets/:sprintId/:ticketId',
 }

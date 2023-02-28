@@ -7,13 +7,13 @@ import {
 } from '../../types/graphql-generated/graphql';
 import { TicketPriority, TicketStatus, TicketType } from '../../types/types';
 
-export type GetMyTicketInput = {
+export type GetTicketInput = {
   args: QueryGetTicketArgs;
   context: ApolloContext;
 };
 
-export const getMyTicketUseCase = async (
-  input: GetMyTicketInput
+export const getTicketUseCase = async (
+  input: GetTicketInput
 ): Promise<TicketPayload> => {
   const { prisma, user } = input.context;
   const { id } = input.args;

@@ -6,7 +6,7 @@ import { DBErrorMessages } from '../../enum/db-error-messages.enum';
 import { sendEmail } from '../../helpers/send-email';
 import { userError } from '../../helpers/user-error';
 import {
-  AuthPayload,
+  BooleanPayload,
   MutationSignupArgs,
 } from '../../types/graphql-generated/graphql';
 import { createConfirmationUrl } from '../../utils/create-confirmation-url';
@@ -18,12 +18,12 @@ export type SignupInput = {
 
 export const signupUseCase = async (
   input: SignupInput
-): Promise<AuthPayload> => {
+): Promise<BooleanPayload> => {
   const { name, credentials, passwordConfirm } = input.args.input;
   const { email, password } = credentials;
   const { prisma } = input.context;
 
-  const authPayload: AuthPayload = {
+  const authPayload: BooleanPayload = {
     success: false,
     userErrors: [],
   };

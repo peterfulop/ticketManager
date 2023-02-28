@@ -1,29 +1,33 @@
 export const projectTypeDefs = `#graphql
   extend type Query {
+    getProject(id:ID!): ProjectPayload!
     getMyProjects: ProjectsPayload!
-    getMyProject(id:ID!): ProjectPayload!
-    getMyProjectIdByName(projectName: String!): ProjectIdByNamePayload!
+    getProjectCollaborations: ProjectsPayload!
+    getProjectIdByName(projectName: String!): ProjectIdByNamePayload!
   }
 
   extend type Mutation {
     projectCreate(input: ProjectCreateInput!): ProjectPayload!
     projectUpdate(input: ProjectUpdateInput!): ProjectPayload!
-    projectDelete(id: ID!): ProjectDeletePayload!
+    projectDelete(id: ID!): BooleanPayload!
   }
 
   input ProjectCreateInput {
     name: String!
+    shared: Boolean
   }
 
   input ProjectUpdateInput {
     projectId: String!
     name: String!
+    shared: Boolean
   }
 
   type Project {
     id: ID!
     name: String!
     sequence: Int!
+    shared: Boolean!
     createdAt: String
     updatedAt: String
     tickets:[Ticket!]!
@@ -45,11 +49,6 @@ export const projectTypeDefs = `#graphql
   type ProjectIdByNamePayload {
     userErrors: [UserError!]!
     projectId: ID
-  }
-
-  type ProjectDeletePayload {
-    userErrors: [UserError!]!
-    success: Boolean
   }
 
 `;

@@ -7,7 +7,14 @@ import { TEXT } from '../../helpers/translate/translate-objects';
 import { ProjectListItem } from './project-list-item';
 
 const Projects = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
   marginTop: '2rem',
+});
+
+const List = styled.div({
+  marginTop: '.5rem',
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',
@@ -22,18 +29,22 @@ const Projects = styled.div({
 
 interface IProjectList {
   projects: Project[];
+  title?: string;
 }
 
-export const ProjectList: FC<IProjectList> = ({ projects }) => {
+export const ProjectList: FC<IProjectList> = ({ projects, title }) => {
   return (
     <Projects>
-      {projects.length ? (
-        projects.map((project, key) => {
-          return <ProjectListItem key={key} project={project} />;
-        })
-      ) : (
-        <p>{translate(TEXT.pages.projects.labels.noProjects)}</p>
-      )}
+      <h5>{title}</h5>
+      <List>
+        {projects.length ? (
+          projects.map((project, key) => {
+            return <ProjectListItem key={key} project={project} />;
+          })
+        ) : (
+          <p>{translate(TEXT.pages.projects.labels.noProjects)}</p>
+        )}
+      </List>
     </Projects>
   );
 };

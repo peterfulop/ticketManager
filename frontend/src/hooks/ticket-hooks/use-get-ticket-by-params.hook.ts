@@ -23,6 +23,7 @@ export const useGetTicketByParams = (props: IUseGetTicketByParams) => {
     error: getTicketError,
   } = useGetTicketQuery({
     variables: {
+      projectId: '',
       id: ticketId as string,
     },
     skip: !ticketId,

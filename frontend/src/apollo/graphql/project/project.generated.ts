@@ -7,14 +7,14 @@ const defaultOptions = {} as const;
 export type GetMyProjectsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetMyProjectsQuery = { __typename?: 'Query', getMyProjects: { __typename?: 'ProjectsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, projects: Array<{ __typename?: 'Project', id: string, name: string, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, status: Types.TicketStatus }> }> } };
+export type GetMyProjectsQuery = { __typename?: 'Query', getMyProjects: { __typename?: 'ProjectsPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, projects: Array<{ __typename?: 'Project', id: string, name: string, shared: boolean, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, status: Types.TicketStatus }> }> } };
 
-export type GetMyProjectQueryVariables = Types.Exact<{
+export type GetProjectQueryVariables = Types.Exact<{
   id: Types.Scalars['ID'];
 }>;
 
 
-export type GetMyProjectQuery = { __typename?: 'Query', getMyProject: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, sequence: number, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, status: Types.TicketStatus }> } | null } };
+export type GetProjectQuery = { __typename?: 'Query', getProject: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, sequence: number, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, status: Types.TicketStatus }> } | null } };
 
 export type ProjectCreateMutationVariables = Types.Exact<{
   input: Types.ProjectCreateInput;
@@ -35,7 +35,7 @@ export type ProjectDeleteMutationVariables = Types.Exact<{
 }>;
 
 
-export type ProjectDeleteMutation = { __typename?: 'Mutation', projectDelete: { __typename?: 'ProjectDeletePayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
+export type ProjectDeleteMutation = { __typename?: 'Mutation', projectDelete: { __typename?: 'BooleanPayload', success?: boolean | null, userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }> } };
 
 
 export const GetMyProjectsDocument = gql`
@@ -48,6 +48,7 @@ export const GetMyProjectsDocument = gql`
     projects {
       id
       name
+      shared
       createdAt
       updatedAt
       tickets {
@@ -85,9 +86,9 @@ export function useGetMyProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetMyProjectsQueryHookResult = ReturnType<typeof useGetMyProjectsQuery>;
 export type GetMyProjectsLazyQueryHookResult = ReturnType<typeof useGetMyProjectsLazyQuery>;
 export type GetMyProjectsQueryResult = Apollo.QueryResult<GetMyProjectsQuery, GetMyProjectsQueryVariables>;
-export const GetMyProjectDocument = gql`
-    query GetMyProject($id: ID!) {
-  getMyProject(id: $id) {
+export const GetProjectDocument = gql`
+    query GetProject($id: ID!) {
+  getProject(id: $id) {
     userErrors {
       message
       values
@@ -108,32 +109,32 @@ export const GetMyProjectDocument = gql`
     `;
 
 /**
- * __useGetMyProjectQuery__
+ * __useGetProjectQuery__
  *
- * To run a query within a React component, call `useGetMyProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMyProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMyProjectQuery({
+ * const { data, loading, error } = useGetProjectQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetMyProjectQuery(baseOptions: Apollo.QueryHookOptions<GetMyProjectQuery, GetMyProjectQueryVariables>) {
+export function useGetProjectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMyProjectQuery, GetMyProjectQueryVariables>(GetMyProjectDocument, options);
+        return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
       }
-export function useGetMyProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyProjectQuery, GetMyProjectQueryVariables>) {
+export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMyProjectQuery, GetMyProjectQueryVariables>(GetMyProjectDocument, options);
+          return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
         }
-export type GetMyProjectQueryHookResult = ReturnType<typeof useGetMyProjectQuery>;
-export type GetMyProjectLazyQueryHookResult = ReturnType<typeof useGetMyProjectLazyQuery>;
-export type GetMyProjectQueryResult = Apollo.QueryResult<GetMyProjectQuery, GetMyProjectQueryVariables>;
+export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
+export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
+export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
 export const ProjectCreateDocument = gql`
     mutation ProjectCreate($input: ProjectCreateInput!) {
   projectCreate(input: $input) {

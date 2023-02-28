@@ -8,7 +8,7 @@ export const sprintTypeDefs = `#graphql
     sprintCreate(input: SprintCreateInput!): SprintPayload!
     sprintClose(sprintId: ID!): SprintPayload!
     sprintUpdate(input: SprintUpdateInput!): SprintPayload!
-    sprintDelete(id: ID!): SprintDeletePayload!
+    sprintDelete(id: ID!): BooleanPayload!
   }
 
   input SearchSprintInput {
@@ -55,11 +55,6 @@ export const sprintTypeDefs = `#graphql
   type SprintsPayload {
     userErrors: [UserError!]!
     sprints: [Sprint!]
-  }
-
-  type SprintDeletePayload {
-    userErrors: [UserError!]!
-    success: Boolean
   }
 
 `;

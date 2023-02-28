@@ -14,9 +14,38 @@ export type Scalars = {
   Float: number;
 };
 
-export type AuthPayload = {
-  __typename?: 'AuthPayload';
+export type BooleanPayload = {
+  __typename?: 'BooleanPayload';
   success: Maybe<Scalars['Boolean']>;
+  userErrors: Array<UserError>;
+};
+
+export type Collaboration = {
+  __typename?: 'Collaboration';
+  createdAt: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  inviterId: Scalars['String'];
+  projectId: Scalars['String'];
+  role: Role;
+  updatedAt: Maybe<Scalars['String']>;
+  userId: Scalars['String'];
+};
+
+export type CollaborationCreateInput = {
+  projectId: Scalars['String'];
+  role: Role;
+  userId: Scalars['String'];
+};
+
+export type CollaborationPayload = {
+  __typename?: 'CollaborationPayload';
+  collaboration: Maybe<Collaboration>;
+  userErrors: Array<UserError>;
+};
+
+export type CollaborationsPayload = {
+  __typename?: 'CollaborationsPayload';
+  collaboration: Array<Collaboration>;
   userErrors: Array<UserError>;
 };
 
@@ -34,21 +63,33 @@ export type GetUserPayload = {
 export type Mutation = {
   __typename?: 'Mutation';
   _: Maybe<Scalars['Boolean']>;
-  confirmResend: AuthPayload;
-  confirmUser: AuthPayload;
+  collaborationCreate: BooleanPayload;
+  collaborationDelete: BooleanPayload;
+  confirmResend: BooleanPayload;
+  confirmUser: BooleanPayload;
   projectCreate: ProjectPayload;
-  projectDelete: ProjectDeletePayload;
+  projectDelete: BooleanPayload;
   projectUpdate: ProjectPayload;
   signin: SigninPayload;
-  signup: AuthPayload;
+  signup: BooleanPayload;
   sprintClose: SprintPayload;
   sprintCreate: SprintPayload;
-  sprintDelete: SprintDeletePayload;
+  sprintDelete: BooleanPayload;
   sprintUpdate: SprintPayload;
   ticketCreate: TicketPayload;
-  ticketDelete: TicketDeletePayload;
+  ticketDelete: BooleanPayload;
   ticketStatusUpdate: TicketPayload;
   ticketUpdate: TicketPayload;
+};
+
+
+export type MutationCollaborationCreateArgs = {
+  input: CollaborationCreateInput;
+};
+
+
+export type MutationCollaborationDeleteArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -132,6 +173,7 @@ export type Project = {
   id: Scalars['ID'];
   name: Scalars['String'];
   sequence: Scalars['Int'];
+  shared: Scalars['Boolean'];
   tickets: Array<Ticket>;
   updatedAt: Maybe<Scalars['String']>;
   user: User;
@@ -140,12 +182,7 @@ export type Project = {
 
 export type ProjectCreateInput = {
   name: Scalars['String'];
-};
-
-export type ProjectDeletePayload = {
-  __typename?: 'ProjectDeletePayload';
-  success: Maybe<Scalars['Boolean']>;
-  userErrors: Array<UserError>;
+  shared: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ProjectIdByNamePayload = {
@@ -163,6 +200,7 @@ export type ProjectPayload = {
 export type ProjectUpdateInput = {
   name: Scalars['String'];
   projectId: Scalars['String'];
+  shared: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ProjectsPayload = {
@@ -174,31 +212,34 @@ export type ProjectsPayload = {
 export type Query = {
   __typename?: 'Query';
   _: Maybe<Scalars['Boolean']>;
+  getCollaboration: CollaborationPayload;
+  getCollaborations: CollaborationsPayload;
   getMyProfile: GetUserPayload;
-  getMyProject: ProjectPayload;
-  getMyProjectIdByName: ProjectIdByNamePayload;
   getMyProjects: ProjectsPayload;
-  getMyTickets: TicketsPayload;
+  getProject: ProjectPayload;
+  getProjectCollaborations: ProjectsPayload;
+  getProjectIdByName: ProjectIdByNamePayload;
   getSprint: SprintPayload;
   getSprints: SprintsPayload;
   getTicket: TicketPayload;
+  getTickets: TicketsPayload;
   getUser: GetUserPayload;
   verifyUser: VerifyPayload;
 };
 
 
-export type QueryGetMyProjectArgs = {
+export type QueryGetCollaborationArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryGetMyProjectIdByNameArgs = {
-  projectName: Scalars['String'];
+export type QueryGetProjectArgs = {
+  id: Scalars['ID'];
 };
 
 
-export type QueryGetMyTicketsArgs = {
-  input: InputMaybe<SearchTicketInput>;
+export type QueryGetProjectIdByNameArgs = {
+  projectName: Scalars['String'];
 };
 
 
@@ -214,6 +255,13 @@ export type QueryGetSprintsArgs = {
 
 export type QueryGetTicketArgs = {
   id: Scalars['ID'];
+  projectId: Scalars['ID'];
+};
+
+
+export type QueryGetTicketsArgs = {
+  input: InputMaybe<SearchTicketInput>;
+  projectId: Scalars['ID'];
 };
 
 
@@ -225,6 +273,14 @@ export type QueryGetUserArgs = {
 export type QueryVerifyUserArgs = {
   token: Scalars['String'];
 };
+
+export enum Role {
+  ADMIN = 'ADMIN',
+  DEVELOPER = 'DEVELOPER',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  TEAMLEAD = 'TEAMLEAD',
+  USER = 'USER'
+}
 
 export type SearchSprintInput = {
   goal: InputMaybe<Scalars['String']>;
@@ -276,12 +332,6 @@ export type SprintCreateInput = {
   projectId: Scalars['String'];
   startDate: Scalars['String'];
   title: Scalars['String'];
-};
-
-export type SprintDeletePayload = {
-  __typename?: 'SprintDeletePayload';
-  success: Maybe<Scalars['Boolean']>;
-  userErrors: Array<UserError>;
 };
 
 export type SprintPayload = {
@@ -338,12 +388,6 @@ export type TicketCreateInput = {
   storyPoints: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   type: TicketType;
-};
-
-export type TicketDeletePayload = {
-  __typename?: 'TicketDeletePayload';
-  success: Maybe<Scalars['Boolean']>;
-  userErrors: Array<UserError>;
 };
 
 export type TicketPayload = {
@@ -493,8 +537,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  AuthPayload: ResolverTypeWrapper<AuthPayload>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  BooleanPayload: ResolverTypeWrapper<BooleanPayload>;
+  Collaboration: ResolverTypeWrapper<Collaboration>;
+  CollaborationCreateInput: CollaborationCreateInput;
+  CollaborationPayload: ResolverTypeWrapper<CollaborationPayload>;
+  CollaborationsPayload: ResolverTypeWrapper<CollaborationsPayload>;
   CredentialsInput: CredentialsInput;
   GetUserPayload: ResolverTypeWrapper<GetUserPayload>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -502,19 +550,18 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   Project: ResolverTypeWrapper<Project>;
   ProjectCreateInput: ProjectCreateInput;
-  ProjectDeletePayload: ResolverTypeWrapper<ProjectDeletePayload>;
   ProjectIdByNamePayload: ResolverTypeWrapper<ProjectIdByNamePayload>;
   ProjectPayload: ResolverTypeWrapper<ProjectPayload>;
   ProjectUpdateInput: ProjectUpdateInput;
   ProjectsPayload: ResolverTypeWrapper<ProjectsPayload>;
   Query: ResolverTypeWrapper<{}>;
+  Role: Role;
   SearchSprintInput: SearchSprintInput;
   SearchTicketInput: SearchTicketInput;
   SigninPayload: ResolverTypeWrapper<SigninPayload>;
   SignupInput: SignupInput;
   Sprint: ResolverTypeWrapper<Sprint>;
   SprintCreateInput: SprintCreateInput;
-  SprintDeletePayload: ResolverTypeWrapper<SprintDeletePayload>;
   SprintPayload: ResolverTypeWrapper<SprintPayload>;
   SprintUpdateInput: SprintUpdateInput;
   SprintsPayload: ResolverTypeWrapper<SprintsPayload>;
@@ -522,7 +569,6 @@ export type ResolversTypes = {
   Subscription: ResolverTypeWrapper<{}>;
   Ticket: ResolverTypeWrapper<Ticket>;
   TicketCreateInput: TicketCreateInput;
-  TicketDeletePayload: ResolverTypeWrapper<TicketDeletePayload>;
   TicketPayload: ResolverTypeWrapper<TicketPayload>;
   TicketPriority: TicketPriority;
   TicketStatus: TicketStatus;
@@ -537,8 +583,12 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AuthPayload: AuthPayload;
   Boolean: Scalars['Boolean'];
+  BooleanPayload: BooleanPayload;
+  Collaboration: Collaboration;
+  CollaborationCreateInput: CollaborationCreateInput;
+  CollaborationPayload: CollaborationPayload;
+  CollaborationsPayload: CollaborationsPayload;
   CredentialsInput: CredentialsInput;
   GetUserPayload: GetUserPayload;
   ID: Scalars['ID'];
@@ -546,7 +596,6 @@ export type ResolversParentTypes = {
   Mutation: {};
   Project: Project;
   ProjectCreateInput: ProjectCreateInput;
-  ProjectDeletePayload: ProjectDeletePayload;
   ProjectIdByNamePayload: ProjectIdByNamePayload;
   ProjectPayload: ProjectPayload;
   ProjectUpdateInput: ProjectUpdateInput;
@@ -558,7 +607,6 @@ export type ResolversParentTypes = {
   SignupInput: SignupInput;
   Sprint: Sprint;
   SprintCreateInput: SprintCreateInput;
-  SprintDeletePayload: SprintDeletePayload;
   SprintPayload: SprintPayload;
   SprintUpdateInput: SprintUpdateInput;
   SprintsPayload: SprintsPayload;
@@ -566,7 +614,6 @@ export type ResolversParentTypes = {
   Subscription: {};
   Ticket: Ticket;
   TicketCreateInput: TicketCreateInput;
-  TicketDeletePayload: TicketDeletePayload;
   TicketPayload: TicketPayload;
   TicketStatusUpdateInput: TicketStatusUpdateInput;
   TicketUpdateInput: TicketUpdateInput;
@@ -576,8 +623,31 @@ export type ResolversParentTypes = {
   VerifyPayload: VerifyPayload;
 };
 
-export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
+export type BooleanPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['BooleanPayload'] = ResolversParentTypes['BooleanPayload']> = {
   success: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CollaborationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Collaboration'] = ResolversParentTypes['Collaboration']> = {
+  createdAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  inviterId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  projectId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  role: Resolver<ResolversTypes['Role'], ParentType, ContextType>;
+  updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CollaborationPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CollaborationPayload'] = ResolversParentTypes['CollaborationPayload']> = {
+  collaboration: Resolver<Maybe<ResolversTypes['Collaboration']>, ParentType, ContextType>;
+  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CollaborationsPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['CollaborationsPayload'] = ResolversParentTypes['CollaborationsPayload']> = {
+  collaboration: Resolver<Array<ResolversTypes['Collaboration']>, ParentType, ContextType>;
   userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -590,19 +660,21 @@ export type GetUserPayloadResolvers<ContextType = any, ParentType extends Resolv
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  confirmResend: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationConfirmResendArgs, 'email'>>;
-  confirmUser: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationConfirmUserArgs, 'token'>>;
+  collaborationCreate: Resolver<ResolversTypes['BooleanPayload'], ParentType, ContextType, RequireFields<MutationCollaborationCreateArgs, 'input'>>;
+  collaborationDelete: Resolver<ResolversTypes['BooleanPayload'], ParentType, ContextType, RequireFields<MutationCollaborationDeleteArgs, 'id'>>;
+  confirmResend: Resolver<ResolversTypes['BooleanPayload'], ParentType, ContextType, RequireFields<MutationConfirmResendArgs, 'email'>>;
+  confirmUser: Resolver<ResolversTypes['BooleanPayload'], ParentType, ContextType, RequireFields<MutationConfirmUserArgs, 'token'>>;
   projectCreate: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<MutationProjectCreateArgs, 'input'>>;
-  projectDelete: Resolver<ResolversTypes['ProjectDeletePayload'], ParentType, ContextType, RequireFields<MutationProjectDeleteArgs, 'id'>>;
+  projectDelete: Resolver<ResolversTypes['BooleanPayload'], ParentType, ContextType, RequireFields<MutationProjectDeleteArgs, 'id'>>;
   projectUpdate: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<MutationProjectUpdateArgs, 'input'>>;
   signin: Resolver<ResolversTypes['SigninPayload'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'input'>>;
-  signup: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'input'>>;
+  signup: Resolver<ResolversTypes['BooleanPayload'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'input'>>;
   sprintClose: Resolver<ResolversTypes['SprintPayload'], ParentType, ContextType, RequireFields<MutationSprintCloseArgs, 'sprintId'>>;
   sprintCreate: Resolver<ResolversTypes['SprintPayload'], ParentType, ContextType, RequireFields<MutationSprintCreateArgs, 'input'>>;
-  sprintDelete: Resolver<ResolversTypes['SprintDeletePayload'], ParentType, ContextType, RequireFields<MutationSprintDeleteArgs, 'id'>>;
+  sprintDelete: Resolver<ResolversTypes['BooleanPayload'], ParentType, ContextType, RequireFields<MutationSprintDeleteArgs, 'id'>>;
   sprintUpdate: Resolver<ResolversTypes['SprintPayload'], ParentType, ContextType, RequireFields<MutationSprintUpdateArgs, 'input'>>;
   ticketCreate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketCreateArgs, 'input'>>;
-  ticketDelete: Resolver<ResolversTypes['TicketDeletePayload'], ParentType, ContextType, RequireFields<MutationTicketDeleteArgs, 'id'>>;
+  ticketDelete: Resolver<ResolversTypes['BooleanPayload'], ParentType, ContextType, RequireFields<MutationTicketDeleteArgs, 'id'>>;
   ticketStatusUpdate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketStatusUpdateArgs, 'input'>>;
   ticketUpdate: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<MutationTicketUpdateArgs, 'input'>>;
 };
@@ -612,16 +684,11 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   sequence: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  shared: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   tickets: Resolver<Array<ResolversTypes['Ticket']>, ParentType, ContextType>;
   updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   user: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   userId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ProjectDeletePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProjectDeletePayload'] = ResolversParentTypes['ProjectDeletePayload']> = {
-  success: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -645,14 +712,17 @@ export type ProjectsPayloadResolvers<ContextType = any, ParentType extends Resol
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  getCollaboration: Resolver<ResolversTypes['CollaborationPayload'], ParentType, ContextType, RequireFields<QueryGetCollaborationArgs, 'id'>>;
+  getCollaborations: Resolver<ResolversTypes['CollaborationsPayload'], ParentType, ContextType>;
   getMyProfile: Resolver<ResolversTypes['GetUserPayload'], ParentType, ContextType>;
-  getMyProject: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<QueryGetMyProjectArgs, 'id'>>;
-  getMyProjectIdByName: Resolver<ResolversTypes['ProjectIdByNamePayload'], ParentType, ContextType, RequireFields<QueryGetMyProjectIdByNameArgs, 'projectName'>>;
   getMyProjects: Resolver<ResolversTypes['ProjectsPayload'], ParentType, ContextType>;
-  getMyTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, Partial<QueryGetMyTicketsArgs>>;
+  getProject: Resolver<ResolversTypes['ProjectPayload'], ParentType, ContextType, RequireFields<QueryGetProjectArgs, 'id'>>;
+  getProjectCollaborations: Resolver<ResolversTypes['ProjectsPayload'], ParentType, ContextType>;
+  getProjectIdByName: Resolver<ResolversTypes['ProjectIdByNamePayload'], ParentType, ContextType, RequireFields<QueryGetProjectIdByNameArgs, 'projectName'>>;
   getSprint: Resolver<ResolversTypes['SprintPayload'], ParentType, ContextType, RequireFields<QueryGetSprintArgs, 'id'>>;
   getSprints: Resolver<ResolversTypes['SprintsPayload'], ParentType, ContextType, Partial<QueryGetSprintsArgs>>;
-  getTicket: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<QueryGetTicketArgs, 'id'>>;
+  getTicket: Resolver<ResolversTypes['TicketPayload'], ParentType, ContextType, RequireFields<QueryGetTicketArgs, 'id' | 'projectId'>>;
+  getTickets: Resolver<ResolversTypes['TicketsPayload'], ParentType, ContextType, RequireFields<QueryGetTicketsArgs, 'projectId'>>;
   getUser: Resolver<ResolversTypes['GetUserPayload'], ParentType, ContextType, RequireFields<QueryGetUserArgs, 'id'>>;
   verifyUser: Resolver<ResolversTypes['VerifyPayload'], ParentType, ContextType, RequireFields<QueryVerifyUserArgs, 'token'>>;
 };
@@ -675,12 +745,6 @@ export type SprintResolvers<ContextType = any, ParentType extends ResolversParen
   title: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   userId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type SprintDeletePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['SprintDeletePayload'] = ResolversParentTypes['SprintDeletePayload']> = {
-  success: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -715,12 +779,6 @@ export type TicketResolvers<ContextType = any, ParentType extends ResolversParen
   type: Resolver<ResolversTypes['TicketType'], ParentType, ContextType>;
   updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   userId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TicketDeletePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['TicketDeletePayload'] = ResolversParentTypes['TicketDeletePayload']> = {
-  success: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  userErrors: Resolver<Array<ResolversTypes['UserError']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -761,23 +819,23 @@ export type VerifyPayloadResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type Resolvers<ContextType = any> = {
-  AuthPayload: AuthPayloadResolvers<ContextType>;
+  BooleanPayload: BooleanPayloadResolvers<ContextType>;
+  Collaboration: CollaborationResolvers<ContextType>;
+  CollaborationPayload: CollaborationPayloadResolvers<ContextType>;
+  CollaborationsPayload: CollaborationsPayloadResolvers<ContextType>;
   GetUserPayload: GetUserPayloadResolvers<ContextType>;
   Mutation: MutationResolvers<ContextType>;
   Project: ProjectResolvers<ContextType>;
-  ProjectDeletePayload: ProjectDeletePayloadResolvers<ContextType>;
   ProjectIdByNamePayload: ProjectIdByNamePayloadResolvers<ContextType>;
   ProjectPayload: ProjectPayloadResolvers<ContextType>;
   ProjectsPayload: ProjectsPayloadResolvers<ContextType>;
   Query: QueryResolvers<ContextType>;
   SigninPayload: SigninPayloadResolvers<ContextType>;
   Sprint: SprintResolvers<ContextType>;
-  SprintDeletePayload: SprintDeletePayloadResolvers<ContextType>;
   SprintPayload: SprintPayloadResolvers<ContextType>;
   SprintsPayload: SprintsPayloadResolvers<ContextType>;
   Subscription: SubscriptionResolvers<ContextType>;
   Ticket: TicketResolvers<ContextType>;
-  TicketDeletePayload: TicketDeletePayloadResolvers<ContextType>;
   TicketPayload: TicketPayloadResolvers<ContextType>;
   TicketsPayload: TicketsPayloadResolvers<ContextType>;
   User: UserResolvers<ContextType>;
