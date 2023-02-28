@@ -33,6 +33,9 @@ export const projectTypeDefs = `#graphql
     tickets:[Ticket!]!
     user: User!
     userId: String!
+    collaborations:[Collaboration!]!
+    users:[User!]!
+    sprints:[Sprint!]!
   }
 
   type ProjectPayload {

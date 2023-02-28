@@ -31,7 +31,9 @@ export const useGetProjectData = (props: IUseGetProjectData) => {
         userErrors: projectData?.getProject.userErrors,
         graphqlError: getProjectError,
       });
-      if (data) setProject(data as Project);
+      if (data) {
+        setProject(data as Project);
+      }
     }
   }, [projectData, getProjectError]);
 

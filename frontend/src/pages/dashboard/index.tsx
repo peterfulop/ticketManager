@@ -6,6 +6,7 @@ import { TbLayoutDashboard } from 'react-icons/tb';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ProjectCreateInput } from '../../apollo/graphql-generated/types';
 import { MainButton } from '../../components/component-library/main-button/main-button';
+import { ProjectDetails } from '../../components/dashboard/project-details/project-details';
 import { MainContainer } from '../../components/main-content/main-content';
 import { ProjectForm } from '../../components/projects/forms/project-form';
 import { translate } from '../../helpers/translate/translate';
@@ -14,6 +15,7 @@ import { useGetProjectData } from '../../hooks/project-hooks/use-get-project-dat
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
+import { DateFormat } from '../../utils/date-format';
 import { NotFound } from '../404';
 
 // type MyForms = 'ProjectForm' | 'TicketForm' | 'SprintForm';
@@ -72,6 +74,42 @@ export const DashboardPage = () => {
                 <FaCog />
               </MainButton>
             </Col>
+          </div>
+          <div className='m-3'>
+            <ProjectDetails project={project} />
+          </div>
+          <div className='d-flex'>
+            <div className='m-3'>
+              {project.sprints.length ? (
+                project.sprints.map((sprint, key) => {
+                  return (
+                    <div key={key}>
+                      <p>{sprint.title}</p>
+                      <small>{DateFormat(sprint.createdAt as string)}</small>
+                      <small>{sprint.endDate}</small>
+                    </div>
+                  );
+                })
+              ) : (
+                <p>no sprints yet...</p>
+              )}
+            </div>
+            {project.shared && (
+              <div className='m-3'>
+                {project.users.length ? (
+                  project.users.map((user, key) => {
+                    return (
+                      <div key={key}>
+                        <p>{user.name}</p>
+                        <small>{user.email}</small>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p>no users yet...</p>
+                )}
+              </div>
+            )}
           </div>
         </MainContainer>
       )}

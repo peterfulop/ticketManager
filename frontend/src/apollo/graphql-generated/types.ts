@@ -168,15 +168,18 @@ export type MutationTicketUpdateArgs = {
 
 export type Project = {
   __typename?: 'Project';
+  collaborations: Array<Collaboration>;
   createdAt?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
   sequence: Scalars['Int'];
   shared: Scalars['Boolean'];
+  sprints: Array<Sprint>;
   tickets: Array<Ticket>;
   updatedAt?: Maybe<Scalars['String']>;
   user: User;
   userId: Scalars['String'];
+  users: Array<User>;
 };
 
 export type ProjectCreateInput = {

@@ -4,13 +4,13 @@ import {
   Ticket,
 } from '../../types/graphql-generated/graphql';
 
-export type GetProjectWithProjectsLoaderUseCaseInput = {
+export type GetProjectWithTicketsUseCaseInput = {
   parent: ResolversParentTypes['Project'];
   context: ApolloContext;
 };
 
 export const getProjectWithTicketsUseCase = async (
-  input: GetProjectWithProjectsLoaderUseCaseInput
+  input: GetProjectWithTicketsUseCaseInput
 ): Promise<Ticket> => {
   const { prisma, user } = input.context;
   const parent = input.parent;

@@ -169,15 +169,18 @@ export type MutationTicketUpdateArgs = {
 
 export type Project = {
   __typename?: 'Project';
+  collaborations: Array<Collaboration>;
   createdAt: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
   sequence: Scalars['Int'];
   shared: Scalars['Boolean'];
+  sprints: Array<Sprint>;
   tickets: Array<Ticket>;
   updatedAt: Maybe<Scalars['String']>;
   user: User;
   userId: Scalars['String'];
+  users: Array<User>;
 };
 
 export type ProjectCreateInput = {
@@ -680,15 +683,18 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type ProjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = {
+  collaborations: Resolver<Array<ResolversTypes['Collaboration']>, ParentType, ContextType>;
   createdAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   sequence: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   shared: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  sprints: Resolver<Array<ResolversTypes['Sprint']>, ParentType, ContextType>;
   tickets: Resolver<Array<ResolversTypes['Ticket']>, ParentType, ContextType>;
   updatedAt: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   user: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   userId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  users: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

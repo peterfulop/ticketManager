@@ -11,7 +11,9 @@ import {
   QueryGetProjectArgs,
   QueryGetProjectIdByNameArgs,
   ResolversParentTypes,
+  Sprint,
   Ticket,
+  User,
 } from '../../types/graphql-generated/graphql';
 
 import { createProjectUseCase } from '../../use-case/project-use-case/create-project.use-case';
@@ -19,6 +21,8 @@ import { deleteProjectUseCase } from '../../use-case/project-use-case/delete-pro
 import { getMyProjectsUseCase } from '../../use-case/project-use-case/get-my-projects.use-case';
 import { getProjectCollaborationsUseCase } from '../../use-case/project-use-case/get-project-collaborations.use-case';
 import { getProjectByNameUseCase } from '../../use-case/project-use-case/get-project-id-by-name.use-case';
+import { getProjectWithCollaborationsUseCase } from '../../use-case/project-use-case/get-project-with-collaborations.use-case';
+import { getProjectWithSprintsUseCase } from '../../use-case/project-use-case/get-project-with-sprints.use-case';
 import { getProjectWithTicketsUseCase } from '../../use-case/project-use-case/get-project-with-tickets.use-case';
 import { getProjectUseCase } from '../../use-case/project-use-case/get-project.use-case';
 import { updateProjectUseCase } from '../../use-case/project-use-case/update-project.use-case';
@@ -92,6 +96,22 @@ export const projectGQLResolver = {
     ): Promise<Ticket> => {
       authMiddleware(context);
       return await getProjectWithTicketsUseCase({ parent, context });
+    },
+    users: async (
+      parent: ResolversParentTypes['User'],
+      _args: unknown,
+      context: ApolloContext
+    ): Promise<User> => {
+      authMiddleware(context);
+      return await getProjectWithCollaborationsUseCase({ parent, context });
+    },
+    sprints: async (
+      parent: ResolversParentTypes['Sprint'],
+      _args: unknown,
+      context: ApolloContext
+    ): Promise<Sprint> => {
+      authMiddleware(context);
+      return await getProjectWithSprintsUseCase({ parent, context });
     },
   },
 };

@@ -35,6 +35,17 @@ query GetProject($id: ID!) {
         id
         status
       }
+      users {
+        id
+        email
+        name
+      }
+      sprints {
+        title
+        goal
+        startDate
+        endDate
+      }
     }
   }
 }
