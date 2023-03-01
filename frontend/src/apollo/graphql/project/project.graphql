@@ -33,7 +33,18 @@ query GetProject($id: ID!) {
       updatedAt
       tickets {
         id
+        projectId
+        sprintId
+        title
+        priority
+        storyPoints
+        type
+        description
         status
+        references
+        sequenceId
+        createdAt
+        updatedAt
       }
       users {
         id
@@ -43,6 +54,7 @@ query GetProject($id: ID!) {
       sprints {
         title
         goal
+        closed
         startDate
         endDate
       }

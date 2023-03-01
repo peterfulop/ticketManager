@@ -6,7 +6,7 @@ import { IMutationProps } from './common.interface';
 export interface ITicket {
   modalURL?: string;
   toggle?: () => void;
-  refetch: (
+  refetch?: (
     variables?:
       | Partial<
           Exact<{

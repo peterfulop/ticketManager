@@ -6,7 +6,6 @@ import { TEXT } from '../../../helpers/translate/translate-objects';
 import { DateFormat } from '../../../utils/date-format';
 
 const Details = styled.div({
-  marginBottom: '1rem',
   p: {
     fontWeight: 'bold',
   },
@@ -22,7 +21,7 @@ interface IProjectDetails {
 
 export const ProjectDetails: FC<IProjectDetails> = ({ project }) => {
   return (
-    <Details>
+    <Details className='m-2'>
       <p>
         {'shared:'}
         <span>{String(project.shared)}</span>

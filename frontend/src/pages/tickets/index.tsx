@@ -99,14 +99,18 @@ export const TicketsPage = () => {
             <MainButton
               label='back'
               handleClick={() => {
-                navigate(ERoutePath.PROJECTS);
+                navigate(
+                  ERoutePath.DASHBOARD.replace(
+                    ':projectId',
+                    projectId as string
+                  )
+                );
               }}
             >
               <MdOutlineArrowBackIos />
             </MainButton>
             <MainButton
               label={translate(TEXT.forms.ticketForms.CREATE.buttons.submitBtn)}
-              // toggle={toggle}
               handleClick={() => {
                 toggle();
                 setActionType(EActionTypes.CREATE);
@@ -125,7 +129,6 @@ export const TicketsPage = () => {
             </MainSelect>
             <MainButton
               label={'Backlog'}
-              // toggle={toggle}
               handleClick={() => {
                 toggle();
                 navigate(

@@ -20,9 +20,9 @@ const TicketComponent = styled.div({
   justifyItems: 'center',
   alignItems: 'flex-start',
   padding: '10px',
-  backgroundColor: 'rgb(255, 255, 255)',
-  borderRadius: '5px',
   margin: '0.25rem 0.5rem',
+  borderRadius: '5px',
+  backgroundColor: 'rgb(255, 255, 255)',
   boxShadow: '0 1px 2px 0 rgba(9, 30, 66, 0.25)',
   ':hover': {
     cursor: 'pointer',
@@ -92,11 +92,13 @@ const TicketItemContent = styled.div({
 interface ITicketItem extends ITicket {
   ticketItem: Ticket;
   modalURL: string;
+  isStatusUpdate: boolean;
 }
 
 export const TicketItem: FC<ITicketItem> = ({
   ticketItem,
   modalURL,
+  isStatusUpdate,
   refetch,
 }) => {
   const { id, title, status, priority, type, storyPoints, sequenceId } =
@@ -126,7 +128,7 @@ export const TicketItem: FC<ITicketItem> = ({
         },
       },
     });
-    await refetch();
+    refetch && (await refetch());
   };
 
   const handleClick = () => {
@@ -137,13 +139,15 @@ export const TicketItem: FC<ITicketItem> = ({
     <TicketComponent key={id} onClick={handleClick}>
       <TicketItemHeading>
         <p title={title}>{title}</p>
-        <MainSelect
-          id={id}
-          name='ticket-status'
-          value={status}
-          options={setSelectOptions(ticketStatuses)}
-          onChange={handleChange}
-        />
+        {isStatusUpdate && (
+          <MainSelect
+            id={id}
+            name='ticket-status'
+            value={status}
+            options={setSelectOptions(ticketStatuses)}
+            onChange={handleChange}
+          />
+        )}
       </TicketItemHeading>
       <TicketItemContent>
         <Symbols>

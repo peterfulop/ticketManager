@@ -10,7 +10,7 @@ import {
 import { MainButton } from '../../components/component-library/main-button/main-button';
 import { MainContainer } from '../../components/main-content/main-content';
 import { TicketForm } from '../../components/tickets/form/ticket-form';
-import { TicketBacklogList } from '../../components/tickets/ticket-backlog-list/ticket-backlog';
+import { TicketSingleList } from '../../components/tickets/ticket-single-list/ticket-single-list';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useGetProjectData } from '../../hooks/project-hooks/use-get-project-data.hook';
@@ -25,7 +25,6 @@ export const BacklogPage = () => {
   const { projectId, ticketId } = useParams();
 
   const TICKET_INITIAL_INPUT: TicketCreateInput = {
-    comment: '',
     description: '',
     priority: TicketPriority.MEDIUM,
     projectId: projectId || '',
@@ -50,7 +49,7 @@ export const BacklogPage = () => {
     navigate(ERoutePath.BACKLOG.replace(':projectId', projectId as string));
   };
 
-  const { projectName } = useGetProjectData({ projectId: projectId as string });
+  const { project } = useGetProjectData({ projectId: projectId as string });
 
   const { tickets, getTicketsLoading, refetchMyTickets } = useGetTickets({
     projectId: projectId as string,
@@ -77,7 +76,7 @@ export const BacklogPage = () => {
         <TicketForm
           tickets={tickets}
           action={actionType}
-          projectName={projectName}
+          projectName={project?.name as string}
           initialValues={ticketInitialValues}
           toggle={toggle}
           refetch={refetchMyTickets}
@@ -86,7 +85,7 @@ export const BacklogPage = () => {
         />
       )}
       <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <h3 className='mb-3'>{projectName} - backlog</h3>
+        <h3 className='mb-3'>{project?.name} - backlog</h3>
         <div className='d-flex justify-content-start gap-2'>
           <MainButton
             label='back'
@@ -100,7 +99,7 @@ export const BacklogPage = () => {
           </MainButton>
         </div>
         {getTicketsLoading && <p>{translate(TEXT.general.loading)}</p>}
-        <TicketBacklogList tickets={tickets} refetch={refetchMyTickets} />
+        <TicketSingleList tickets={tickets} refetch={refetchMyTickets} />
       </MainContainer>
     </>
   );

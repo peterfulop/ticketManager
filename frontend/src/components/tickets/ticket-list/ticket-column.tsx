@@ -47,6 +47,7 @@ export const TicketColumn: FC<ITicketColumn> = ({
                 key={index}
                 ticketItem={ticket}
                 refetch={refetch}
+                isStatusUpdate={true}
                 toggle={toggle}
                 modalURL={ERoutePath.TICKET_DETAILS.replace(
                   ':projectId',

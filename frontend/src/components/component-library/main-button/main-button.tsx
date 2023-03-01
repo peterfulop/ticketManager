@@ -4,7 +4,7 @@ import { breakPoints } from '../../../assets/theme';
 import { IReact } from '../../../types/interfaces/common.interface';
 
 const MainBtn = styled.button({
-  background: 'none',
+  background: 'white',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -30,6 +30,7 @@ interface ICreateNewButton extends IReact {
   handleClick: () => void;
   disabled?: boolean;
   type?: 'button' | 'reset' | 'submit';
+  labelFirst?: boolean;
 }
 
 export const MainButton: FC<ICreateNewButton> = ({
@@ -37,6 +38,7 @@ export const MainButton: FC<ICreateNewButton> = ({
   children,
   disabled,
   type,
+  labelFirst,
   handleClick,
 }) => {
   return (
@@ -45,6 +47,9 @@ export const MainButton: FC<ICreateNewButton> = ({
       disabled={disabled}
       onClick={() => {
         handleClick();
+      }}
+      style={{
+        flexFlow: `${labelFirst && 'row-reverse'}`,
       }}
     >
       {children}

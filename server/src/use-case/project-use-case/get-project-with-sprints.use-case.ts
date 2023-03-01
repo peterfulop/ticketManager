@@ -17,8 +17,7 @@ export const getProjectWithSprintsUseCase = async (
 
   return (await prisma.sprint.findMany({
     where: {
-      projectId: parent.projectId,
-      closed: false,
+      projectId: parent.id,
     },
     orderBy: [
       {
