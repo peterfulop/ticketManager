@@ -101,9 +101,9 @@ export const DashboardPage = () => {
               </MainButton>
             </Col>
           </div>
-
           <DashboardContent
             project={project}
+            refetch={refetchProjectData}
             toggle={toggle}
             setDashboardModal={setDashboardModal}
           />

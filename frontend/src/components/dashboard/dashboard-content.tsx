@@ -5,6 +5,7 @@ import { Project, TicketStatus } from '../../apollo/graphql-generated/types';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { DashboardModal } from '../../pages/dashboard';
+import { ITicket } from '../../types/interfaces/ticket.interface';
 import { MainButton } from '../component-library/main-button/main-button';
 import { TicketSingleList } from '../tickets/ticket-single-list/ticket-single-list';
 import { MemberList } from './members/member-list';
@@ -23,7 +24,6 @@ const Content = styled.div({
 const ContentColumn = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  width: 'calc(100% / 3)',
 });
 
 const ContentRow = styled.div({
@@ -48,6 +48,7 @@ const DashboardBoxTitle = styled.div({
   padding: '5px 10px',
   alignItems: 'center',
   background: '#dbdbdb',
+  minHeight: '48px',
   h5: {
     margin: 0,
   },
@@ -55,7 +56,7 @@ const DashboardBoxTitle = styled.div({
   borderTopRightRadius: '5px',
 });
 
-interface IDashboardContent {
+interface IDashboardContent extends ITicket {
   project: Project;
   toggle: () => void;
   setDashboardModal: React.Dispatch<React.SetStateAction<DashboardModal>>;
@@ -65,10 +66,11 @@ export const DashboardContent: FC<IDashboardContent> = ({
   project,
   toggle,
   setDashboardModal,
+  refetch,
 }) => {
   return (
     <Content>
-      <ContentColumn>
+      <ContentColumn style={{ flex: '2' }}>
         <DashboardBox>
           <DashboardBoxTitle>
             <h5>Details</h5>
@@ -106,20 +108,14 @@ export const DashboardContent: FC<IDashboardContent> = ({
           </DashboardBox>
         </ContentRow>
       </ContentColumn>
-
-      <ContentColumn>
+      <ContentColumn style={{ flex: '1' }}>
         <DashboardBox>
           <DashboardBoxTitle>
             <h5>Active tickets</h5>
-            <MainButton
-              label={translate(TEXT.buttons.addBtn)}
-              handleClick={() => null}
-            >
-              <GrAdd />
-            </MainButton>
           </DashboardBoxTitle>
           <TicketSingleList
-            isStatusUpdate={false}
+            refetch={refetch}
+            isStatusUpdate={true}
             tickets={project.tickets.filter(
               (ticket) =>
                 ticket.status !== TicketStatus.ARCHIVED &&
@@ -128,20 +124,15 @@ export const DashboardContent: FC<IDashboardContent> = ({
           />
         </DashboardBox>
       </ContentColumn>
-
-      <ContentColumn>
+      <ContentColumn style={{ flex: '1' }}>
         <DashboardBox>
           <DashboardBoxTitle>
             <h5>Backlog</h5>
-            <MainButton
-              label={translate(TEXT.buttons.addBtn)}
-              handleClick={() => null}
-            >
-              <GrAdd />
-            </MainButton>
           </DashboardBoxTitle>
           <TicketSingleList
-            isStatusUpdate={false}
+            style={{ maxHeight: '315px' }}
+            refetch={refetch}
+            isStatusUpdate={true}
             tickets={project.tickets.filter(
               (ticket) => ticket.status === TicketStatus.BACKLOG
             )}
@@ -150,14 +141,9 @@ export const DashboardContent: FC<IDashboardContent> = ({
         <DashboardBox>
           <DashboardBoxTitle>
             <h5>Archived</h5>
-            <MainButton
-              label={translate(TEXT.buttons.addBtn)}
-              handleClick={() => null}
-            >
-              <GrAdd />
-            </MainButton>
           </DashboardBoxTitle>
           <TicketSingleList
+            style={{ maxHeight: '315px' }}
             isStatusUpdate={false}
             tickets={project.tickets.filter(
               (ticket) => ticket.status === TicketStatus.ARCHIVED

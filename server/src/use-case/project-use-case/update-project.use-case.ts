@@ -78,14 +78,23 @@ export const updateProjectUseCase = async (
     });
 
     if (shared) {
-      await prisma.collaboration.create({
-        data: {
-          userId: user.userId,
-          inviterId: user.userId,
+      const isProjectAlreadyShared = await prisma.collaboration.findFirst({
+        where: {
           projectId: project.id,
           role: Role.SUPER_ADMIN,
         },
       });
+
+      if (!isProjectAlreadyShared) {
+        await prisma.collaboration.create({
+          data: {
+            userId: user.userId,
+            inviterId: user.userId,
+            projectId: project.id,
+            role: Role.SUPER_ADMIN,
+          },
+        });
+      }
     }
 
     return {

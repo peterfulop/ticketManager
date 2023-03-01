@@ -14,7 +14,7 @@ export const MemberList: FC<IMemberList> = ({ users }) => {
           return <MemberListItem key={key} user={user} />;
         })
       ) : (
-        <p>{'No sprints yet...'}</p>
+        <p>{'No members yet...'}</p>
       )}
     </div>
   );
