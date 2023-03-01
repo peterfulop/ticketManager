@@ -1,26 +1,52 @@
 import { FC } from 'react';
-import { Col, Row } from 'react-bootstrap';
 import { BiRun } from 'react-icons/bi';
 import { RxLockClosed } from 'react-icons/rx';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { Sprint } from '../../../apollo/graphql-generated/types';
+import { dateFormat } from '../../../utils/date-format';
+
+const SprintItem = styled.div({
+  display: 'flex',
+  justifyContent: 'start',
+  alignItems: 'center',
+  gap: '1rem',
+  margin: '5px 0',
+  padding: '5px',
+  borderBottom: '1px solid lightgray',
+  height: '60px',
+  p: {
+    fontWeight: 'bold',
+  },
+  ':hover': {
+    background: 'rgb(227,236,242)',
+    cursor: 'pointer',
+  },
+});
 
 interface ISprintListItem {
   sprint: Sprint;
+  modalURL: string;
 }
 
-export const SprintListItem: FC<ISprintListItem> = ({ sprint }) => {
+export const SprintListItem: FC<ISprintListItem> = ({ sprint, modalURL }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(modalURL);
+  };
+
+  const { startDate, endDate, closed, title } = sprint;
+
   return (
-    <Row>
-      <Col>
-        {sprint.closed ? <RxLockClosed size={25} /> : <BiRun size={25} />}
-      </Col>
-      <Col>
-        <p>{sprint.title}</p>
-        <div>
-          <small>{sprint.startDate}</small>
-          <small>{sprint.endDate}</small>
+    <SprintItem onClick={handleClick}>
+      {closed ? <RxLockClosed size={25} /> : <BiRun size={25} />}
+      <div>
+        <p>{title}</p>
+        <div className='d-flex justify-content-between gap-2'>
+          <small>startDate: {dateFormat(startDate)}</small>
+          <small>endDate: {dateFormat(endDate)}</small>
         </div>
-      </Col>
-    </Row>
+      </div>
+    </SprintItem>
   );
 };

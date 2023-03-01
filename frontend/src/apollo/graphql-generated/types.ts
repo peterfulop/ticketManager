@@ -318,11 +318,11 @@ export type Sprint = {
   __typename?: 'Sprint';
   closed: Scalars['Boolean'];
   createdAt?: Maybe<Scalars['String']>;
-  endDate?: Maybe<Scalars['String']>;
+  endDate: Scalars['String'];
   goal: Scalars['String'];
   id: Scalars['ID'];
   projectId: Scalars['String'];
-  startDate?: Maybe<Scalars['String']>;
+  startDate: Scalars['String'];
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
   userId: Scalars['String'];

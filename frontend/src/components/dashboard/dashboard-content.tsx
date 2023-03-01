@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { GrAdd } from 'react-icons/gr';
+import { FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';
 import { Project, TicketStatus } from '../../apollo/graphql-generated/types';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { DashboardModal } from '../../pages/dashboard';
+import { ERoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
 import { MainButton } from '../component-library/main-button/main-button';
 import { TicketSingleList } from '../tickets/ticket-single-list/ticket-single-list';
@@ -59,15 +59,17 @@ const DashboardBoxTitle = styled.div({
 interface IDashboardContent extends ITicket {
   project: Project;
   toggle: () => void;
-  setDashboardModal: React.Dispatch<React.SetStateAction<DashboardModal>>;
 }
 
 export const DashboardContent: FC<IDashboardContent> = ({
   project,
   toggle,
-  setDashboardModal,
+  setDashboardModalState,
   refetch,
 }) => {
+  const anyActiveSprints =
+    project.sprints.filter((sprint) => sprint.closed === false).length > 0;
+
   return (
     <Content>
       <ContentColumn style={{ flex: '2' }}>
@@ -82,17 +84,14 @@ export const DashboardContent: FC<IDashboardContent> = ({
             <DashboardBoxTitle>
               <h5>Sprints</h5>
               <MainButton
+                glowing={!anyActiveSprints}
                 label={translate(TEXT.buttons.addBtn)}
                 handleClick={() => null}
               >
-                <GrAdd />
+                <FiPlus size={20} />
               </MainButton>
             </DashboardBoxTitle>
-            <SprintList
-              sprints={project.sprints}
-              toggle={toggle}
-              setDashboardModal={setDashboardModal}
-            />
+            <SprintList sprints={project.sprints} toggle={toggle} />
           </DashboardBox>
           <DashboardBox style={{ flex: '1' }}>
             <DashboardBoxTitle>
@@ -101,7 +100,7 @@ export const DashboardContent: FC<IDashboardContent> = ({
                 label={translate(TEXT.buttons.addBtn)}
                 handleClick={() => null}
               >
-                <GrAdd />
+                <FiPlus size={20} />
               </MainButton>
             </DashboardBoxTitle>
             <MemberList users={project.users} />
@@ -114,6 +113,8 @@ export const DashboardContent: FC<IDashboardContent> = ({
             <h5>Active tickets</h5>
           </DashboardBoxTitle>
           <TicketSingleList
+            modalURL={ERoutePath.DASHBOARD_TICKET_DETAILS}
+            setDashboardModalState={setDashboardModalState}
             refetch={refetch}
             isStatusUpdate={true}
             tickets={project.tickets.filter(
@@ -130,6 +131,8 @@ export const DashboardContent: FC<IDashboardContent> = ({
             <h5>Backlog</h5>
           </DashboardBoxTitle>
           <TicketSingleList
+            modalURL={ERoutePath.DASHBOARD_TICKET_DETAILS}
+            setDashboardModalState={setDashboardModalState}
             style={{ maxHeight: '315px' }}
             refetch={refetch}
             isStatusUpdate={true}
@@ -143,6 +146,8 @@ export const DashboardContent: FC<IDashboardContent> = ({
             <h5>Archived</h5>
           </DashboardBoxTitle>
           <TicketSingleList
+            modalURL={ERoutePath.DASHBOARD_TICKET_DETAILS}
+            setDashboardModalState={setDashboardModalState}
             style={{ maxHeight: '315px' }}
             isStatusUpdate={false}
             tickets={project.tickets.filter(

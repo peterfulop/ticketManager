@@ -1,5 +1,4 @@
 import { NotFound } from '../pages/404';
-import { BacklogPage } from '../pages/backlog';
 import { ConfirmUser } from '../pages/confirm-user';
 import { DashboardPage } from '../pages/dashboard';
 import { HomePage } from '../pages/home';
@@ -67,6 +66,16 @@ const projectRoutes: IRoute[] = [
     component: ProjectsPage,
     name: 'Projects page',
   },
+
+  {
+    path: ERoutePath.PROJECTS_DETAILS,
+    auth: true,
+    component: ProjectsPage,
+    name: 'Projects page',
+  },
+];
+
+const dashboardRoutes: IRoute[] = [
   {
     path: ERoutePath.DASHBOARD,
     auth: true,
@@ -74,17 +83,23 @@ const projectRoutes: IRoute[] = [
     name: 'Dashboard page',
   },
   {
-    path: ERoutePath.PROJECTS_DETAILS,
+    path: ERoutePath.DASHBOARD_USER_DETAILS,
     auth: true,
-    component: ProjectsPage,
-    name: 'Projects page',
+    component: DashboardPage,
+    name: 'User details page',
   },
-  // {
-  //   path: ERoutePath.PROJECT_UPDATE,
-  //   auth: true,
-  //   component: DashboardPage,
-  //   name: 'Dashboard page',
-  // },
+  {
+    path: ERoutePath.DASHBOARD_TICKET_DETAILS,
+    auth: true,
+    component: DashboardPage,
+    name: 'Ticket details page',
+  },
+  {
+    path: ERoutePath.DASHBOARD_SPRINT_DETAILS,
+    auth: true,
+    component: DashboardPage,
+    name: 'Sprint details page',
+  },
 ];
 
 const ticketRoutes: IRoute[] = [
@@ -100,24 +115,13 @@ const ticketRoutes: IRoute[] = [
     component: TicketsPage,
     name: 'Tickets page',
   },
-  {
-    path: ERoutePath.BACKLOG,
-    auth: true,
-    component: BacklogPage,
-    name: 'Backlog page',
-  },
-  {
-    path: ERoutePath.BACKLOG_TICKET_DETAILS,
-    auth: true,
-    component: BacklogPage,
-    name: 'Backlog page',
-  },
 ];
 
 const routes: IRoute[] = [
   ...authRoutes,
   ...mainRoutes,
   ...projectRoutes,
+  ...dashboardRoutes,
   ...ticketRoutes,
 ];
 

@@ -6,7 +6,7 @@ import { useUserErrorHandler } from '../use-user-errors-handler.hook';
 
 interface IUseGetTicketByParams {
   ticketId?: string;
-  setActionType: React.Dispatch<React.SetStateAction<EActionTypes>>;
+  setActionType?: React.Dispatch<React.SetStateAction<EActionTypes>>;
   setTicketInitialValues: React.Dispatch<
     React.SetStateAction<TicketCreateInput>
   >;
@@ -15,7 +15,7 @@ interface IUseGetTicketByParams {
 
 export const useGetTicketByParams = (props: IUseGetTicketByParams) => {
   const { ticketId, setActionType, setTicketInitialValues, callBackFn } = props;
-  const { notFound, checkErrorMessage } = useUserErrorHandler();
+  const { notFound, errorMessage, checkErrorMessage } = useUserErrorHandler();
 
   const {
     data: ticketData,
@@ -39,12 +39,12 @@ export const useGetTicketByParams = (props: IUseGetTicketByParams) => {
         });
         if (data) {
           setTicketInitialValues(data);
-          setActionType(EActionTypes.UPDATE);
+          setActionType && setActionType(EActionTypes.UPDATE);
           callBackFn && callBackFn();
         }
       }
     }
   }, [ticketData, getTicketError]);
 
-  return { notFound, getTicketError };
+  return { notFound, getTicketLoading, errorMessage, getTicketError };
 };

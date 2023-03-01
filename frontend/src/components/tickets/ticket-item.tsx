@@ -100,6 +100,7 @@ export const TicketItem: FC<ITicketItem> = ({
   modalURL,
   isStatusUpdate,
   refetch,
+  setDashboardModalState,
 }) => {
   const { id, title, status, priority, type, storyPoints, sequenceId } =
     ticketItem;
@@ -132,11 +133,12 @@ export const TicketItem: FC<ITicketItem> = ({
   };
 
   const handleClick = () => {
+    setDashboardModalState && setDashboardModalState('TicketForm');
     navigate(modalURL);
   };
 
   return (
-    <TicketComponent key={id} onClick={handleClick}>
+    <TicketComponent onClick={handleClick}>
       <TicketItemHeading>
         <p title={title}>{title}</p>
         {isStatusUpdate && (

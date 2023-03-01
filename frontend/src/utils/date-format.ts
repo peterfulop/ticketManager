@@ -1,3 +1,3 @@
-export const DateFormat = (date?: string) => {
-  if (date) return new Date(date).toLocaleString();
+export const dateFormat = (date: string | number) => {
+  return new Date(Number(date)).toLocaleDateString();
 };

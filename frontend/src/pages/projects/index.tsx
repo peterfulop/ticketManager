@@ -3,7 +3,7 @@ import { ProjectCreateInput } from '../../apollo/graphql-generated/types';
 import { MainContainer } from '../../components/main-content/main-content';
 
 import { AiOutlineFundProjectionScreen } from 'react-icons/ai';
-import { GrAdd } from 'react-icons/gr';
+import { FiPlus } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MainButton } from '../../components/component-library/main-button/main-button';
 import { ProjectForm } from '../../components/projects/forms/project-form';
@@ -76,7 +76,7 @@ export const ProjectsPage = () => {
             setProjectInitialValues(PROJECT_INITIAL_VALUES);
           }}
         >
-          <GrAdd />
+          <FiPlus size={20} />
         </MainButton>
         {getProjectsDataLoading && <p>{translate(TEXT.general.loading)}</p>}
         {!getProjectsDataLoading && (

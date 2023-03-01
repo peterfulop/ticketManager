@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Project } from '../../../apollo/graphql-generated/types';
 import { translate } from '../../../helpers/translate/translate';
 import { TEXT } from '../../../helpers/translate/translate-objects';
-import { DateFormat } from '../../../utils/date-format';
+import { dateFormat } from '../../../utils/date-format';
 
 const Details = styled.div({
   p: {
@@ -36,11 +36,11 @@ export const ProjectDetails: FC<IProjectDetails> = ({ project }) => {
       </p>
       <p>
         {translate(TEXT.pages.projects.labels.createdAt)}
-        <span>{DateFormat(project.createdAt || '')}</span>
+        <span>{dateFormat(project.createdAt || '')}</span>
       </p>
       <p>
         {translate(TEXT.pages.projects.labels.updatedAt)}
-        <span>{DateFormat(project.createdAt || '')}</span>
+        <span>{dateFormat(project.createdAt || '')}</span>
       </p>
     </Details>
   );

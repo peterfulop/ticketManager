@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Col } from 'react-bootstrap';
-import { GrAdd, GrRun } from 'react-icons/gr';
+import { FiPlus } from 'react-icons/fi';
+import { GrRun } from 'react-icons/gr';
 import {
   MdOutlineArrowBackIos,
   MdOutlineSettingsBackupRestore,
@@ -31,7 +32,6 @@ import { NotFound } from '../404';
 
 export const TicketsPage = () => {
   const { projectId, ticketId } = useParams();
-
   const TICKET_INITIAL_INPUT: TicketCreateInput = {
     description: '',
     priority: TicketPriority.MEDIUM,
@@ -117,7 +117,7 @@ export const TicketsPage = () => {
                 setTicketInitialValues(TICKET_INITIAL_INPUT);
               }}
             >
-              <GrAdd />
+              <FiPlus size={20} />
             </MainButton>
           </Col>
           <Col className='d-flex gap-3 justify-content-end'>

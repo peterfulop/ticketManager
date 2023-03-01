@@ -14,7 +14,7 @@ export type GetProjectQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', getProject: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, shared: boolean, sequence: number, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, projectId: string, sprintId?: string | null, title: string, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null }>, users: Array<{ __typename?: 'User', id: string, email: string, name: string }>, sprints: Array<{ __typename?: 'Sprint', title: string, goal: string, closed: boolean, startDate?: string | null, endDate?: string | null }> } | null } };
+export type GetProjectQuery = { __typename?: 'Query', getProject: { __typename?: 'ProjectPayload', userErrors: Array<{ __typename?: 'UserError', message: string, values?: Array<string | null> | null }>, project?: { __typename?: 'Project', id: string, name: string, shared: boolean, sequence: number, createdAt?: string | null, updatedAt?: string | null, tickets: Array<{ __typename?: 'Ticket', id: string, projectId: string, sprintId?: string | null, title: string, priority: Types.TicketPriority, storyPoints?: number | null, type: Types.TicketType, description?: string | null, status: Types.TicketStatus, references?: Array<string | null> | null, sequenceId: string, createdAt?: string | null, updatedAt?: string | null }>, users: Array<{ __typename?: 'User', id: string, email: string, name: string, tickets: Array<{ __typename?: 'Ticket', id: string }> }>, sprints: Array<{ __typename?: 'Sprint', id: string, title: string, goal: string, closed: boolean, startDate: string, endDate: string, createdAt?: string | null, updatedAt?: string | null }> } | null } };
 
 export type ProjectCreateMutationVariables = Types.Exact<{
   input: Types.ProjectCreateInput;
@@ -119,13 +119,19 @@ export const GetProjectDocument = gql`
         id
         email
         name
+        tickets {
+          id
+        }
       }
       sprints {
+        id
         title
         goal
         closed
         startDate
         endDate
+        createdAt
+        updatedAt
       }
     }
   }

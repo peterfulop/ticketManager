@@ -6,19 +6,27 @@ import { MdOutlineArrowBackIos } from 'react-icons/md';
 import { SlRocket } from 'react-icons/sl';
 import { TbLayoutDashboard } from 'react-icons/tb';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ProjectCreateInput } from '../../apollo/graphql-generated/types';
+import {
+  ProjectCreateInput,
+  TicketCreateInput,
+  TicketPriority,
+  TicketStatus,
+  TicketType,
+} from '../../apollo/graphql-generated/types';
 import { MainButton } from '../../components/component-library/main-button/main-button';
 import { DashboardContent } from '../../components/dashboard/dashboard-content';
 import { MainContainer } from '../../components/main-content/main-content';
 import { ProjectForm } from '../../components/projects/forms/project-form';
+import { TicketForm } from '../../components/tickets/form/ticket-form';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useGetProjectData } from '../../hooks/project-hooks/use-get-project-data.hook';
+import { useGetTicketByParams } from '../../hooks/ticket-hooks/use-get-ticket-by-params.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
 import { ERoutePath } from '../../types/enums/routes.enum';
 import { NotFound } from '../404';
-export type DashboardModal =
+export type DashboardModalState =
   | 'ProjectForm'
   | 'TicketForm'
   | 'SprintForm'
@@ -26,28 +34,55 @@ export type DashboardModal =
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
-  const { projectId } = useParams();
+  const { projectId, ticketId } = useParams();
+
+  const TICKET_INITIAL_INPUT: TicketCreateInput = {
+    description: '',
+    priority: TicketPriority.MEDIUM,
+    projectId: projectId || '',
+    references: [],
+    status: TicketStatus.TO_DO,
+    storyPoints: 1,
+    title: '',
+    type: TicketType.STORY,
+  };
+
   const { isOpen, toggle } = useModal();
 
   const { project, errorMessage, refetchProjectData } = useGetProjectData({
     projectId: projectId as string,
   });
 
-  const [dashboardModal, setDashboardModal] =
-    useState<DashboardModal>('ProjectForm');
-
   const toggleCallBackFn = async () => {
-    setDashboardModal('ProjectForm');
-    toggle();
+    setDashboardModalState('ProjectForm');
+    setTicketInitialValues(TICKET_INITIAL_INPUT);
+    navigate(ERoutePath.DASHBOARD.replace(':projectId', projectId as string));
   };
 
-  if (errorMessage || !project) {
+  const [ticketInitialValues, setTicketInitialValues] =
+    useState<TicketCreateInput>(TICKET_INITIAL_INPUT);
+
+  const [dashboardModalState, setDashboardModalState] =
+    useState<DashboardModalState>('ProjectForm');
+
+  const { notFound } = useGetTicketByParams({
+    ticketId: ticketId,
+    setTicketInitialValues,
+    callBackFn: () => {
+      if (!isOpen) {
+        setDashboardModalState('TicketForm');
+        toggle();
+      }
+    },
+  });
+
+  if (errorMessage || !project || notFound) {
     return <NotFound />;
   }
 
   return (
     <>
-      {dashboardModal === 'ProjectForm' && isOpen && (
+      {isOpen && dashboardModalState === 'ProjectForm' && (
         <ProjectForm
           toggle={toggle}
           refetch={refetchProjectData}
@@ -56,7 +91,18 @@ export const DashboardPage = () => {
           toggleCallBackFn={toggleCallBackFn}
         />
       )}
-
+      {isOpen && dashboardModalState === 'TicketForm' && (
+        <TicketForm
+          tickets={project.tickets}
+          action={EActionTypes.UPDATE}
+          projectName={project?.name as string}
+          initialValues={ticketInitialValues}
+          toggle={toggle}
+          refetch={refetchProjectData}
+          toggleCallBackFn={toggleCallBackFn}
+          modalURL={ERoutePath.TICKET_DETAILS}
+        />
+      )}
       {project && (
         <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
           <h3 className='d-flex justify-content-start align-items-center gap-2 mb-3'>
@@ -77,7 +123,6 @@ export const DashboardPage = () => {
               <MainButton
                 label='settings'
                 handleClick={() => {
-                  setDashboardModal('ProjectForm');
                   toggle();
                 }}
               >
@@ -85,27 +130,33 @@ export const DashboardPage = () => {
               </MainButton>
             </Col>
             <Col className='d-flex justify-content-end'>
-              <MainButton
-                label='Go to work!'
-                labelFirst={true}
-                handleClick={() => {
-                  navigate(
-                    ERoutePath.TICKETS.replace(
-                      ':projectId',
-                      projectId as string
-                    )
-                  );
-                }}
-              >
-                <SlRocket />
-              </MainButton>
+              {
+                <MainButton
+                  disabled={
+                    project.sprints.filter((sprint) => sprint.closed !== true)
+                      .length === 0
+                  }
+                  label='Go to work!'
+                  labelFirst={true}
+                  handleClick={() => {
+                    navigate(
+                      ERoutePath.TICKETS.replace(
+                        ':projectId',
+                        projectId as string
+                      )
+                    );
+                  }}
+                >
+                  <SlRocket />
+                </MainButton>
+              }
             </Col>
           </div>
           <DashboardContent
             project={project}
             refetch={refetchProjectData}
             toggle={toggle}
-            setDashboardModal={setDashboardModal}
+            setDashboardModalState={setDashboardModalState}
           />
         </MainContainer>
       )}

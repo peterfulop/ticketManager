@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import styled from 'styled-components';
 import { Ticket } from '../../../apollo/graphql-generated/types';
-import { ERoutePath } from '../../../types/enums/routes.enum';
 import { ITicket } from '../../../types/interfaces/ticket.interface';
 import { TicketItem } from '../ticket-item';
 
@@ -21,7 +20,9 @@ export const TicketSingleList: FC<ITicketSingleList> = ({
   tickets,
   isStatusUpdate,
   style,
+  modalURL,
   refetch,
+  setDashboardModalState,
 }) => {
   return (
     <SingleList style={style}>
@@ -33,10 +34,14 @@ export const TicketSingleList: FC<ITicketSingleList> = ({
               ticketItem={ticket}
               isStatusUpdate={isStatusUpdate}
               refetch={refetch}
-              modalURL={ERoutePath.BACKLOG_TICKET_DETAILS.replace(
-                ':projectId',
-                ticket.projectId
-              ).replace(':ticketId', ticket.id)}
+              setDashboardModalState={setDashboardModalState}
+              modalURL={
+                modalURL
+                  ? modalURL
+                      .replace(':projectId', ticket.projectId)
+                      .replace(':ticketId', ticket.id)
+                  : ''
+              }
             />
           );
         })

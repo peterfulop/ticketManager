@@ -41,8 +41,8 @@ export const sprintTypeDefs = `#graphql
     title: String!
     goal: String!
     closed: Boolean!
-    startDate: String
-    endDate: String
+    startDate: String!
+    endDate: String!
     createdAt: String
     updatedAt: String
   }

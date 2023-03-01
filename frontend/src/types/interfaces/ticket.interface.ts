@@ -2,6 +2,7 @@ import { ApolloQueryResult } from '@apollo/client';
 import { Exact, TicketCreateInput } from '../../apollo/graphql-generated/types';
 import { GetProjectQuery } from '../../apollo/graphql/project/project.generated';
 import { GetTicketsQuery } from '../../apollo/graphql/tickets/ticket.generated';
+import { DashboardModalState } from '../../pages/dashboard';
 import { IMutationProps } from './common.interface';
 
 export interface ITicket {
@@ -26,6 +27,9 @@ export interface ITicket {
             >
           | undefined
       ) => Promise<ApolloQueryResult<GetProjectQuery>>);
+  setDashboardModalState?: React.Dispatch<
+    React.SetStateAction<DashboardModalState>
+  >;
 }
 
 export interface ITicketMutation extends IMutationProps {

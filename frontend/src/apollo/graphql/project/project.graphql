@@ -50,13 +50,19 @@ query GetProject($id: ID!) {
         id
         email
         name
+        tickets {
+          id
+        }
       }
       sprints {
+        id
         title
         goal
         closed
         startDate
         endDate
+        createdAt
+        updatedAt
       }
     }
   }

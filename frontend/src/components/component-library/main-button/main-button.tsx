@@ -16,12 +16,32 @@ const MainBtn = styled.button({
   maxWidth: '220px',
   ':hover': {
     border: `1px solid gray`,
+    animation: 'none !important',
+  },
+  ':disabled': {
+    cursor: 'not-allowed',
+  },
+  ':disabled:hover': {
+    border: `1px solid lightgray`,
   },
   [`@media screen and (max-width: ${breakPoints.sm})`]: {
     p: {
       display: 'none',
     },
     maxWidth: 100,
+  },
+  '@keyframes glowing': {
+    '0%': {
+      transform: 'scale(1.005)',
+    },
+    '50%': {
+      transform: 'scale(1.05)',
+      border: '1px solid green',
+      color: 'green',
+    },
+    '100%': {
+      transform: 'scale(1.005)',
+    },
   },
 });
 
@@ -31,6 +51,7 @@ interface ICreateNewButton extends IReact {
   disabled?: boolean;
   type?: 'button' | 'reset' | 'submit';
   labelFirst?: boolean;
+  glowing?: boolean;
 }
 
 export const MainButton: FC<ICreateNewButton> = ({
@@ -39,6 +60,7 @@ export const MainButton: FC<ICreateNewButton> = ({
   disabled,
   type,
   labelFirst,
+  glowing,
   handleClick,
 }) => {
   return (
@@ -50,6 +72,7 @@ export const MainButton: FC<ICreateNewButton> = ({
       }}
       style={{
         flexFlow: `${labelFirst && 'row-reverse'}`,
+        animation: `${glowing && 'glowing 1300ms infinite'}`,
       }}
     >
       {children}
