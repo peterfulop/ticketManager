@@ -1,11 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Col } from 'react-bootstrap';
 import { FiPlus } from 'react-icons/fi';
 import { GrRun } from 'react-icons/gr';
-import {
-  MdOutlineArrowBackIos,
-  MdOutlineSettingsBackupRestore,
-} from 'react-icons/md';
+import { MdOutlineArrowBackIos } from 'react-icons/md';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   TicketCreateInput,
@@ -48,6 +45,9 @@ export const TicketsPage = () => {
   const [actionType, setActionType] = useState<EActionTypes>(
     EActionTypes.CREATE
   );
+
+  const [isActiveSprint, setIsActiveSprint] = useState<boolean>(false);
+
   const [ticketInitialValues, setTicketInitialValues] =
     useState<TicketCreateInput>(TICKET_INITIAL_INPUT);
 
@@ -57,11 +57,24 @@ export const TicketsPage = () => {
     navigate(ERoutePath.TICKETS.replace(':projectId', projectId as string));
   };
 
-  const { project } = useGetProjectData({ projectId: projectId as string });
+  const { project, getProjectLoading } = useGetProjectData({
+    projectId: projectId as string,
+  });
 
   const { tickets, getTicketsLoading, refetchMyTickets } = useGetTickets({
     projectId: projectId as string,
   });
+
+  useEffect(() => {
+    if (project) {
+      const activeSprints = project?.sprints.filter((sprint) => !sprint.closed);
+      if (activeSprints?.length) {
+        setIsActiveSprint(true);
+      } else {
+        setIsActiveSprint(false);
+      }
+    }
+  }, [project]);
 
   const { notFound } = useGetTicketByParams({
     ticketId: ticketId,
@@ -92,61 +105,64 @@ export const TicketsPage = () => {
           modalURL={ERoutePath.TICKET_DETAILS}
         />
       )}
-      <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
-        <h3 className='mb-3'>{project?.name} - active tickets</h3>
-        <div className='d-flex justify-content-between gap-2'>
-          <Col className='d-flex gap-3'>
-            <MainButton
-              label='back'
-              handleClick={() => {
-                navigate(
-                  ERoutePath.DASHBOARD.replace(
-                    ':projectId',
-                    projectId as string
-                  )
-                );
-              }}
-            >
-              <MdOutlineArrowBackIos />
-            </MainButton>
-            <MainButton
-              label={translate(TEXT.forms.ticketForms.CREATE.buttons.submitBtn)}
-              handleClick={() => {
-                toggle();
-                setActionType(EActionTypes.CREATE);
-                setTicketInitialValues(TICKET_INITIAL_INPUT);
-              }}
-            >
-              <FiPlus size={20} />
-            </MainButton>
-          </Col>
-          <Col className='d-flex gap-3 justify-content-end'>
-            <MainSelect
-              options={setSelectOptions(ticketStatuses)}
-              style={{ width: 'auto' }}
-            >
-              <GrRun size={22} />
-            </MainSelect>
-            <MainButton
-              label={'Backlog'}
-              handleClick={() => {
-                toggle();
-                navigate(
-                  ERoutePath.BACKLOG.replace(':projectId', projectId as string)
-                );
-              }}
-            >
-              <MdOutlineSettingsBackupRestore />
-            </MainButton>
-          </Col>
-        </div>
-        {getTicketsLoading && <p>{translate(TEXT.general.loading)}</p>}
-        <TicketColumns
-          tickets={tickets}
-          refetch={refetchMyTickets}
-          toggle={toggle}
-        />
-      </MainContainer>
+      {!getProjectLoading && !getTicketsLoading && (
+        <MainContainer style={{ display: 'block', padding: '2rem 1rem' }}>
+          <h3 className='mb-3'>{project?.name} - active tickets</h3>
+          <div className='d-flex justify-content-between gap-2'>
+            <Col className='d-flex gap-3'>
+              <MainButton
+                label='back'
+                handleClick={() => {
+                  navigate(
+                    ERoutePath.DASHBOARD.replace(
+                      ':projectId',
+                      projectId as string
+                    )
+                  );
+                }}
+              >
+                <MdOutlineArrowBackIos />
+              </MainButton>
+              {isActiveSprint && (
+                <MainButton
+                  label={translate(
+                    TEXT.forms.ticketForms.CREATE.buttons.submitBtn
+                  )}
+                  handleClick={() => {
+                    toggle();
+                    setActionType(EActionTypes.CREATE);
+                    setTicketInitialValues(TICKET_INITIAL_INPUT);
+                  }}
+                >
+                  <FiPlus size={20} />
+                </MainButton>
+              )}
+            </Col>
+            <Col className='d-flex gap-3 justify-content-end'>
+              {isActiveSprint && (
+                <MainSelect
+                  options={setSelectOptions(ticketStatuses)}
+                  style={{ width: 'auto' }}
+                >
+                  <GrRun size={22} />
+                </MainSelect>
+              )}
+            </Col>
+          </div>
+          {getTicketsLoading && <p>{translate(TEXT.general.loading)}</p>}
+          {isActiveSprint ? (
+            <TicketColumns
+              tickets={tickets}
+              refetch={refetchMyTickets}
+              toggle={toggle}
+            />
+          ) : (
+            <div className='mt-3'>
+              <h5>{translate(TEXT.pages.tickets.labels.noActiveSprint)}</h5>
+            </div>
+          )}
+        </MainContainer>
+      )}
     </>
   );
 };

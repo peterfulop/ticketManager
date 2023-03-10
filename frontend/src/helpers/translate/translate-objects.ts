@@ -75,6 +75,9 @@ export const TEXT: Text = {
       name: { ENG: 'Tickets' },
       labels: {
         noTickets: { ENG: 'No tickets yet!' },
+        noActiveSprint: {
+          ENG: 'There are no active sprints yet! Create a sprint first!',
+        },
       },
     },
     notFound: {

@@ -79,6 +79,7 @@ export type Text = {
       name: Content;
       labels: {
         noTickets: Content;
+        noActiveSprint: Content;
       };
     };
     profile: { name: Content };
