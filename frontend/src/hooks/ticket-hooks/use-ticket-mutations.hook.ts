@@ -36,7 +36,7 @@ export const useTicketMutations = (props: ITicket) => {
     if (!loading) {
       checkErrorMessage({ userErrors, graphqlError });
       if (data) {
-        refetch();
+        refetch && refetch();
       }
     }
   }, [data, graphqlError]);

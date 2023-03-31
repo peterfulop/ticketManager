@@ -8,6 +8,7 @@ import { TbLayoutDashboard } from 'react-icons/tb';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   ProjectCreateInput,
+  SprintCreateInput,
   TicketCreateInput,
   TicketPriority,
   TicketStatus,
@@ -15,6 +16,7 @@ import {
 } from '../../apollo/graphql-generated/types';
 import { MainButton } from '../../components/component-library/main-button/main-button';
 import { DashboardContent } from '../../components/dashboard/dashboard-content';
+import { SprintForm } from '../../components/dashboard/sprints/form/sprint-form';
 import { MainContainer } from '../../components/main-content/main-content';
 import { ProjectForm } from '../../components/projects/forms/project-form';
 import { TicketForm } from '../../components/tickets/form/ticket-form';
@@ -45,6 +47,14 @@ export const DashboardPage = () => {
     storyPoints: 1,
     title: '',
     type: TicketType.STORY,
+  };
+
+  const SPRINT_INITIAL_INPUT: SprintCreateInput = {
+    title: '',
+    goal: '',
+    projectId: projectId || '',
+    startDate: new Date().toISOString(),
+    endDate: new Date().toISOString(),
   };
 
   const { isOpen, toggle } = useModal();
@@ -101,6 +111,17 @@ export const DashboardPage = () => {
           refetch={refetchProjectData}
           toggleCallBackFn={toggleCallBackFn}
           modalURL={ERoutePath.TICKET_DETAILS}
+        />
+      )}
+      {isOpen && dashboardModalState === 'SprintForm' && (
+        <SprintForm
+          action={EActionTypes.UPDATE}
+          projectName={project?.name as string}
+          initialValues={SPRINT_INITIAL_INPUT}
+          toggle={toggle}
+          // refetch={refetchProjectData}
+          toggleCallBackFn={toggleCallBackFn}
+          modalURL={ERoutePath.DASHBOARD_SPRINT_DETAILS}
         />
       )}
       {project && (

@@ -86,7 +86,11 @@ export const DashboardContent: FC<IDashboardContent> = ({
               <MainButton
                 glowing={!anyActiveSprints}
                 label={translate(TEXT.buttons.addBtn)}
-                handleClick={() => null}
+                handleClick={() => {
+                  setDashboardModalState &&
+                    setDashboardModalState('SprintForm');
+                  toggle();
+                }}
               >
                 <FiPlus size={20} />
               </MainButton>
