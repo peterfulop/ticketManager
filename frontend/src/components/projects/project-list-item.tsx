@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Project } from '../../apollo/graphql-generated/types';
 import { breakPoints } from '../../assets/theme';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 
 const ListItem = styled.div({
   display: 'flex',
@@ -54,7 +54,7 @@ export const ProjectListItem: FC<IProjectListItem> = ({ project }) => {
   return (
     <ListItem
       onClick={() =>
-        navigate(ERoutePath.DASHBOARD.replace(':projectId', project.id))
+        navigate(RoutePath.DASHBOARD.replace(':projectId', project.id))
       }
     >
       {project.shared && <GrGroup size={22} />}

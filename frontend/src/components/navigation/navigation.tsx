@@ -11,7 +11,7 @@ import UserContext from '../../context/user';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useModal } from '../../hooks/use-modal.hook';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 import { LogoutForm } from '../logout-form/logout-form';
 import { Content } from '../main-content/main-content';
 import { NavigationItem } from './navigation-item';
@@ -65,18 +65,18 @@ export const Navigation = () => {
       {isOpen && <LogoutForm toggle={toggle} />}
       <Nav>
         <Content>
-          <NavigationItem to={ERoutePath.HOME}>
+          <NavigationItem to={RoutePath.HOME}>
             <AiOutlineHome size={20} />
             <p>{translate(TEXT.pages.home.name)}</p>
           </NavigationItem>
           {user ? (
             <Div>
-              <NavigationItem to={ERoutePath.PROJECTS}>
+              <NavigationItem to={RoutePath.PROJECTS}>
                 <AiOutlineFundProjectionScreen size={20} />
                 <p>{translate(TEXT.pages.projects.name)}</p>
               </NavigationItem>
 
-              <NavigationItem to={ERoutePath.PROFILE}>
+              <NavigationItem to={RoutePath.PROFILE}>
                 <AiOutlineUser size={20} />
                 <p>{translate(TEXT.pages.profile.name)}</p>
               </NavigationItem>
@@ -86,10 +86,10 @@ export const Navigation = () => {
             </Div>
           ) : (
             <Div>
-              <NavigationItem to={ERoutePath.LOGIN}>
+              <NavigationItem to={RoutePath.LOGIN}>
                 <p>{translate(TEXT.pages.login.name)}</p>
               </NavigationItem>
-              <NavigationItem to={ERoutePath.SIGNUP}>
+              <NavigationItem to={RoutePath.SIGNUP}>
                 <p>{translate(TEXT.pages.signup.name)}</p>
               </NavigationItem>
             </Div>

@@ -26,7 +26,7 @@ import { useGetProjectData } from '../../hooks/project-hooks/use-get-project-dat
 import { useGetTicketByParams } from '../../hooks/ticket-hooks/use-get-ticket-by-params.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 import { NotFound } from '../404';
 export type DashboardModalState =
   | 'ProjectForm'
@@ -66,7 +66,7 @@ export const DashboardPage = () => {
   const toggleCallBackFn = async () => {
     setDashboardModalState('ProjectForm');
     setTicketInitialValues(TICKET_INITIAL_INPUT);
-    navigate(ERoutePath.DASHBOARD.replace(':projectId', projectId as string));
+    navigate(RoutePath.DASHBOARD.replace(':projectId', projectId as string));
   };
 
   const [ticketInitialValues, setTicketInitialValues] =
@@ -110,7 +110,7 @@ export const DashboardPage = () => {
           toggle={toggle}
           refetch={refetchProjectData}
           toggleCallBackFn={toggleCallBackFn}
-          modalURL={ERoutePath.TICKET_DETAILS}
+          modalURL={RoutePath.TICKET_DETAILS}
         />
       )}
       {isOpen && dashboardModalState === 'SprintForm' && (
@@ -121,7 +121,7 @@ export const DashboardPage = () => {
           toggle={toggle}
           // refetch={refetchProjectData}
           toggleCallBackFn={toggleCallBackFn}
-          modalURL={ERoutePath.DASHBOARD_SPRINT_DETAILS}
+          modalURL={RoutePath.DASHBOARD_SPRINT_DETAILS}
         />
       )}
       {project && (
@@ -136,7 +136,7 @@ export const DashboardPage = () => {
               <MainButton
                 label='back to projects'
                 handleClick={() => {
-                  navigate(ERoutePath.PROJECTS);
+                  navigate(RoutePath.PROJECTS);
                 }}
               >
                 <MdOutlineArrowBackIos />
@@ -161,7 +161,7 @@ export const DashboardPage = () => {
                   labelFirst={true}
                   handleClick={() => {
                     navigate(
-                      ERoutePath.TICKETS.replace(
+                      RoutePath.TICKETS.replace(
                         ':projectId',
                         projectId as string
                       )

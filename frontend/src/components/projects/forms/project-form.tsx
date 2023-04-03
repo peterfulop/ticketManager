@@ -16,7 +16,7 @@ import { createProjectMutation } from '../../../modules/project-modules/create-p
 import { deleteProjectMutation } from '../../../modules/project-modules/delete-project';
 import { updateProjectMutation } from '../../../modules/project-modules/update-project';
 import { EActionTypes } from '../../../types/enums/common.enum';
-import { ERoutePath } from '../../../types/enums/routes.enum';
+import { RoutePath } from '../../../types/enums/routes.enum';
 import { IProject } from '../../../types/interfaces/project.interface';
 import { FormActions } from '../../component-library/form-actions/form-actions';
 import { MyAlert } from '../../component-library/my-alert/my-alert';
@@ -119,7 +119,7 @@ export const ProjectForm: FC<IProjectForm> = ({
   useEffect(() => {
     if (actionType === EActionTypes.DELETE && success) {
       setTimeout(() => {
-        navigate(ERoutePath.PROJECTS);
+        navigate(RoutePath.PROJECTS);
       }, 1000);
     }
   }, [actionType, success]);

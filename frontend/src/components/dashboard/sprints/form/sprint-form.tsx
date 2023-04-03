@@ -11,7 +11,7 @@ import { useTicketMutations } from '../../../../hooks/ticket-hooks/use-ticket-mu
 import { useAlerts } from '../../../../hooks/use-alerts.hook';
 import { useForm } from '../../../../hooks/use-form.hook';
 import { EActionTypes } from '../../../../types/enums/common.enum';
-import { ERoutePath } from '../../../../types/enums/routes.enum';
+import { RoutePath } from '../../../../types/enums/routes.enum';
 import { setSelectOptions } from '../../../../utils/set-select-options';
 import { FormActions } from '../../../component-library/form-actions/form-actions';
 import { MainSelect } from '../../../component-library/main-select/main-select';
@@ -48,7 +48,7 @@ interface ISprintForm {
   action: EActionTypes;
   toggle: () => void;
   toggleCallBackFn: () => void;
-  modalURL: ERoutePath;
+  modalURL: RoutePath;
 }
 
 export const SprintForm: FC<ISprintForm> = ({

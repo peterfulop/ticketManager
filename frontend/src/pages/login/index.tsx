@@ -14,7 +14,7 @@ import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useForm } from '../../hooks/use-form.hook';
 import { ServerSideError } from '../../types/enums/db-errors.enum';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 
 const FormContainer = styled.div({
   margin: '2rem',
@@ -84,7 +84,7 @@ export const LoginPage = () => {
             user,
           },
         });
-        navigate(ERoutePath.PROJECTS);
+        navigate(RoutePath.PROJECTS);
       }
     } catch (error) {
       setAlertMessage(translate(TEXT.ERRORS.SERVER_ERROR));
@@ -171,7 +171,7 @@ export const LoginPage = () => {
                 name='navigate-to-signup'
                 variant='link'
                 type='button'
-                onClick={() => navigate(ERoutePath.SIGNUP)}
+                onClick={() => navigate(RoutePath.SIGNUP)}
               >
                 {translate(TEXT.forms.loginForm.buttons.signupBtn)}
               </Button>

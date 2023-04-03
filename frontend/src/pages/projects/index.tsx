@@ -15,7 +15,7 @@ import { useGetProjects } from '../../hooks/project-hooks/use-get-my-projects.ho
 import { useGetProjectByParams } from '../../hooks/project-hooks/use-get-project-by-params.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 import { NotFound } from '../404';
 
 const PROJECT_INITIAL_VALUES: ProjectCreateInput = { name: '', shared: false };
@@ -30,7 +30,7 @@ export const ProjectsPage = () => {
 
   const toggleCallBackFn = () => {
     setProjectInitialValues(PROJECT_INITIAL_VALUES);
-    navigate(ERoutePath.PROJECTS);
+    navigate(RoutePath.PROJECTS);
   };
 
   const { projects, getProjectsDataLoading, refetchProjects } =

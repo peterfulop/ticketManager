@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { User } from '../../../apollo/graphql-generated/types';
-import { ERoutePath } from '../../../types/enums/routes.enum';
+import { RoutePath } from '../../../types/enums/routes.enum';
 import { MemberListItem } from './member-list-item';
 
 interface IMemberList {
@@ -17,7 +17,7 @@ export const MemberList: FC<IMemberList> = ({ users }) => {
         users.map((user, key) => {
           return (
             <MemberListItem
-              modalURL={ERoutePath.DASHBOARD_USER_DETAILS.replace(
+              modalURL={RoutePath.DASHBOARD_USER_DETAILS.replace(
                 ':projectId',
                 projectId as string
               ).replace(':userId', user.id)}

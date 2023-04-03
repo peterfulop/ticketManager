@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { Sprint } from '../../../apollo/graphql-generated/types';
-import { ERoutePath } from '../../../types/enums/routes.enum';
+import { RoutePath } from '../../../types/enums/routes.enum';
 import { SprintListItem } from './sprint-list-item';
 
 interface ISprintList {
@@ -18,7 +18,7 @@ export const SprintList: FC<ISprintList> = ({ sprints }) => {
         sprints.map((sprint, key) => {
           return (
             <SprintListItem
-              modalURL={ERoutePath.DASHBOARD_SPRINT_DETAILS.replace(
+              modalURL={RoutePath.DASHBOARD_SPRINT_DETAILS.replace(
                 ':projectId',
                 projectId as string
               ).replace(':sprintId', sprint.id)}

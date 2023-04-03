@@ -9,7 +9,7 @@ import { MainContainer } from '../../components/main-content/main-content';
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
 import { useForm } from '../../hooks/use-form.hook';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 
 const FormContainer = styled.div({
   margin: '2rem',
@@ -159,7 +159,7 @@ export const SignupPage = () => {
                 name='navigate-to-signup'
                 variant='link'
                 type='button'
-                onClick={() => navigate(ERoutePath.LOGIN)}
+                onClick={() => navigate(RoutePath.LOGIN)}
                 disabled={loading}
               >
                 {translate(TEXT.forms.signupForm.buttons.loginBtn)}

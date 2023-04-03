@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import styled from 'styled-components';
 import { Ticket, TicketStatus } from '../../../apollo/graphql-generated/types';
-import { ERoutePath } from '../../../types/enums/routes.enum';
+import { RoutePath } from '../../../types/enums/routes.enum';
 import { ITicket } from '../../../types/interfaces/ticket.interface';
 import { TicketItem } from '../ticket-item';
 
@@ -49,7 +49,7 @@ export const TicketColumn: FC<ITicketColumn> = ({
                 refetch={refetch}
                 isStatusUpdate={true}
                 toggle={toggle}
-                modalURL={ERoutePath.TICKET_DETAILS.replace(
+                modalURL={RoutePath.TICKET_DETAILS.replace(
                   ':projectId',
                   ticket.projectId
                 ).replace(':ticketId', ticket.id)}

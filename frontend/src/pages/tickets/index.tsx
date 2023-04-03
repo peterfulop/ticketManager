@@ -23,7 +23,7 @@ import { useGetTicketByParams } from '../../hooks/ticket-hooks/use-get-ticket-by
 import { useGetTickets } from '../../hooks/ticket-hooks/use-get-tickets.hook';
 import { useModal } from '../../hooks/use-modal.hook';
 import { EActionTypes } from '../../types/enums/common.enum';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 import { setSelectOptions } from '../../utils/set-select-options';
 import { NotFound } from '../404';
 
@@ -54,7 +54,7 @@ export const TicketsPage = () => {
   const toggleCallBackFn = () => {
     setActionType(EActionTypes.CREATE);
     setTicketInitialValues(TICKET_INITIAL_INPUT);
-    navigate(ERoutePath.TICKETS.replace(':projectId', projectId as string));
+    navigate(RoutePath.TICKETS.replace(':projectId', projectId as string));
   };
 
   const { project, getProjectLoading } = useGetProjectData({
@@ -102,7 +102,7 @@ export const TicketsPage = () => {
           toggle={toggle}
           refetch={refetchMyTickets}
           toggleCallBackFn={toggleCallBackFn}
-          modalURL={ERoutePath.TICKET_DETAILS}
+          modalURL={RoutePath.TICKET_DETAILS}
         />
       )}
       {!getProjectLoading && !getTicketsLoading && (
@@ -114,7 +114,7 @@ export const TicketsPage = () => {
                 label='back'
                 handleClick={() => {
                   navigate(
-                    ERoutePath.DASHBOARD.replace(
+                    RoutePath.DASHBOARD.replace(
                       ':projectId',
                       projectId as string
                     )

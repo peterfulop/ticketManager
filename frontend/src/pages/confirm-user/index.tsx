@@ -7,7 +7,7 @@ import { MyAlert } from '../../components/component-library/my-alert/my-alert';
 import { MainContainer } from '../../components/main-content/main-content';
 import { translate, translateERR } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 
 export const ConfirmUser = () => {
   const [alertMessage, setAlertMessage] = useState<null | string>(null);
@@ -40,7 +40,7 @@ export const ConfirmUser = () => {
           )
         );
         setTimeout(() => {
-          navigate(ERoutePath.LOGIN);
+          navigate(RoutePath.LOGIN);
         }, 3000);
       }
     } catch (error) {

@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { FiPlus } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Project, TicketStatus } from '../../apollo/graphql-generated/types';
 import { translate } from '../../helpers/translate/translate';
 import { TEXT } from '../../helpers/translate/translate-objects';
-import { ERoutePath } from '../../types/enums/routes.enum';
+import { RoutePath } from '../../types/enums/routes.enum';
 import { ITicket } from '../../types/interfaces/ticket.interface';
 import { MainButton } from '../component-library/main-button/main-button';
 import { TicketSingleList } from '../tickets/ticket-single-list/ticket-single-list';
@@ -67,6 +68,8 @@ export const DashboardContent: FC<IDashboardContent> = ({
   setDashboardModalState,
   refetch,
 }) => {
+  const navigate = useNavigate();
+
   const anyActiveSprints =
     project.sprints.filter((sprint) => sprint.closed === false).length > 0;
 
@@ -89,6 +92,7 @@ export const DashboardContent: FC<IDashboardContent> = ({
                 handleClick={() => {
                   setDashboardModalState &&
                     setDashboardModalState('SprintForm');
+                  navigate('modalURL');
                   toggle();
                 }}
               >
@@ -117,10 +121,10 @@ export const DashboardContent: FC<IDashboardContent> = ({
             <h5>Active tickets</h5>
           </DashboardBoxTitle>
           <TicketSingleList
-            modalURL={ERoutePath.DASHBOARD_TICKET_DETAILS}
+            modalURL={RoutePath.DASHBOARD_TICKET_DETAILS}
             setDashboardModalState={setDashboardModalState}
             refetch={refetch}
-            isStatusUpdate={true}
+            isStatusUpdate={false}
             tickets={project.tickets.filter(
               (ticket) =>
                 ticket.status !== TicketStatus.ARCHIVED &&
@@ -135,11 +139,11 @@ export const DashboardContent: FC<IDashboardContent> = ({
             <h5>Backlog</h5>
           </DashboardBoxTitle>
           <TicketSingleList
-            modalURL={ERoutePath.DASHBOARD_TICKET_DETAILS}
+            modalURL={RoutePath.DASHBOARD_TICKET_DETAILS}
             setDashboardModalState={setDashboardModalState}
             style={{ maxHeight: '315px' }}
             refetch={refetch}
-            isStatusUpdate={true}
+            isStatusUpdate={false}
             tickets={project.tickets.filter(
               (ticket) => ticket.status === TicketStatus.BACKLOG
             )}
@@ -150,7 +154,7 @@ export const DashboardContent: FC<IDashboardContent> = ({
             <h5>Archived</h5>
           </DashboardBoxTitle>
           <TicketSingleList
-            modalURL={ERoutePath.DASHBOARD_TICKET_DETAILS}
+            modalURL={RoutePath.DASHBOARD_TICKET_DETAILS}
             setDashboardModalState={setDashboardModalState}
             style={{ maxHeight: '315px' }}
             isStatusUpdate={false}
